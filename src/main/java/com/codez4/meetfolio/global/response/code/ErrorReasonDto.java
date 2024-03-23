@@ -1,4 +1,4 @@
-package com.codez4.meetfolio.global.common.response.code;
+package com.codez4.meetfolio.global.response.code;
 
 import lombok.Builder;
 import lombok.Getter;

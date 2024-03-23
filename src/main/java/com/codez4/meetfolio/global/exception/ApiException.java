@@ -1,7 +1,7 @@
 package com.codez4.meetfolio.global.exception;
 
-import com.codez4.meetfolio.global.common.response.code.ErrorReasonDto;
-import com.codez4.meetfolio.global.common.response.code.status.ErrorStatus;
+import com.codez4.meetfolio.global.response.code.ErrorReasonDto;
+import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 
 public class ApiException extends RuntimeException{
 

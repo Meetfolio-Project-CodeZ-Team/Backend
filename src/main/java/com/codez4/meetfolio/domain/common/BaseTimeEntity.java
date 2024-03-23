@@ -1,4 +1,4 @@
-package com.codez4.meetfolio.global.common;
+package com.codez4.meetfolio.domain.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

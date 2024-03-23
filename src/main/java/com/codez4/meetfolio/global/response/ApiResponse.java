@@ -1,7 +1,7 @@
-package com.codez4.meetfolio.global.common.response;
+package com.codez4.meetfolio.global.response;
 
-import com.codez4.meetfolio.global.common.response.code.BaseCode;
-import com.codez4.meetfolio.global.common.response.code.status.SuccessStatus;
+import com.codez4.meetfolio.global.response.code.BaseCode;
+import com.codez4.meetfolio.global.response.code.status.SuccessStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

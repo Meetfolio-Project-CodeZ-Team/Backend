@@ -1,7 +1,7 @@
-package com.codez4.meetfolio.global.common.response.code.status;
+package com.codez4.meetfolio.global.response.code.status;
 
-import com.codez4.meetfolio.global.common.response.code.BaseErrorCode;
-import com.codez4.meetfolio.global.common.response.code.ErrorReasonDto;
+import com.codez4.meetfolio.global.response.code.BaseErrorCode;
+import com.codez4.meetfolio.global.response.code.ErrorReasonDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

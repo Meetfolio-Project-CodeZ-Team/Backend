@@ -1,8 +1,8 @@
 package com.codez4.meetfolio.global.exception;
 
-import com.codez4.meetfolio.global.common.response.ApiResponse;
-import com.codez4.meetfolio.global.common.response.code.ErrorReasonDto;
-import com.codez4.meetfolio.global.common.response.code.status.ErrorStatus;
+import com.codez4.meetfolio.global.response.ApiResponse;
+import com.codez4.meetfolio.global.response.code.ErrorReasonDto;
+import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
