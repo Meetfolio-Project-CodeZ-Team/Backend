@@ -1,0 +1,3 @@
+[submodule "application-config"]
+	path = application-config
+	url = https://github.com/Meetfolio-Project-CodeZ-Team/application-config.git
