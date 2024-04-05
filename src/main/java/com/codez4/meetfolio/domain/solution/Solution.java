@@ -21,9 +21,7 @@ public class Solution extends BaseTimeEntity {
     @JoinColumn(name = "cover_letter_id", nullable = false)
     private CoverLetter coverLetter;
 
-    /*
-     AI 기능 확정 후 수정 필
-     */
+    // TODO : AI 기능 확정 후 수정 필요
     @Column(name = "spell_check",nullable = false)
     private String spellCheck;
 
