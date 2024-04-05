@@ -1,4 +1,4 @@
-package com.codez4.meetfolio.domain.Point;
+package com.codez4.meetfolio.domain.point;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.PointType;
