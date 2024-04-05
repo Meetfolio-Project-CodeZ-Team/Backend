@@ -1,4 +1,4 @@
-package com.codez4.meetfolio.domain.solution;
+package com.codez4.meetfolio.domain.feedback;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Solution extends BaseTimeEntity {
+public class Feedback extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +36,7 @@ public class Solution extends BaseTimeEntity {
 
     @Column(name="recommend_question_3",nullable = false)
     private String recommendQuestion3;
+
+    @Column(nullable = false)
+    private Integer satisfaction;
 }
