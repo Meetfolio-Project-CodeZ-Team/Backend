@@ -4,8 +4,6 @@ import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,7 +17,7 @@ public class Analysis extends BaseTimeEntity {
     private Long id;
 
     @Column(name = "job_suitability", precision =3, scale = 1, nullable = false)
-    private BigDecimal jobSuitability;
+    private double jobSuitability;
 
     @Column(name = "keyword_1",nullable = false)
     private String keyword1;
