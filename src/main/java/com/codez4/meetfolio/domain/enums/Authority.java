@@ -7,9 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Authority {
 
-    MEMBER ("MEMBER"),
-    ADMIN("ADMIN")
+    USER,
+    ADMIN
     ;
 
-    private final String description;
 }
