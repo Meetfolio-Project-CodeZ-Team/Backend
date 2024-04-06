@@ -6,8 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Status {
-    ACTIVE("ACTIVE"),
-    INACTIVE("INACTIVE");
+    ACTIVE,
+    INACTIVE;
 
-    private final String description;
 }

@@ -17,16 +17,15 @@ import org.hibernate.annotations.DynamicInsert;
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "DTYPE")
-@Table(name = "board")
 public class Board extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
+    @Column(name = "board_id",nullable = false)
     private Long id;
 
-    @ManyToOne
-    @Column(name = "member_id",nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
     @Column(nullable = false)
@@ -36,11 +35,11 @@ public class Board extends BaseTimeEntity {
     private String content;
 
     @Column(name = "like_count",nullable = false)
-    @ColumnDefault("0")
+    @ColumnDefault("'0'")
     private Integer likeCount;
 
     @Column(name = "comment_count", nullable = false)
-    @ColumnDefault("0")
+    @ColumnDefault("'0'")
     private Integer commentCount;
 
 
