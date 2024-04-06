@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum JobKeywordEnum {
+public enum JobKeyword {
 
     BACKEND("백엔드"),
     WEB("웹개발"),
