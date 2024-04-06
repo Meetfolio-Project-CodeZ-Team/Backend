@@ -1,7 +1,7 @@
 package com.codez4.meetfolio.domain.dataset;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
-import com.codez4.meetfolio.domain.enums.JobKeywordEnum;
+import com.codez4.meetfolio.domain.enums.JobKeyword;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +18,7 @@ public class Dataset extends BaseTimeEntity {
 
     @Column(name = "job")
     @Enumerated(value = EnumType.STRING)
-    private JobKeywordEnum jobKeywordEnum;
+    private JobKeyword jobKeyword;
 
     @Column(nullable = false)
     private String url;

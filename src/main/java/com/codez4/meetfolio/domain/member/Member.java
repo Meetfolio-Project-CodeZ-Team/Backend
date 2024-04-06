@@ -3,15 +3,24 @@ package com.codez4.meetfolio.domain.member;
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.Authority;
 import com.codez4.meetfolio.domain.enums.Grade;
+import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.enums.Major;
 import com.codez4.meetfolio.domain.enums.Status;
-import com.codez4.meetfolio.domain.jobKeyword.JobKeyword;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
-
-import java.time.LocalDateTime;
 
 @DynamicInsert
 @Getter
@@ -46,19 +55,19 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = true)
-    private String image;
+    @Column
+    private String profile;
 
     @Column(nullable = false)
     @ColumnDefault("'MEMBER'")
     @Enumerated(EnumType.STRING)
     private Authority authority ;
 
-    @Column(nullable = true)
+    @Column
     private LocalDateTime inactiveDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_keyword_id",nullable = false)
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private JobKeyword jobKeyword;
 
 }
