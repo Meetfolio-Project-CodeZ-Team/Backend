@@ -13,10 +13,10 @@ public class Analysis extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "analysis_id")
+    @Column(name = "analysis_id",nullable = false)
     private Long id;
 
-    @Column(name = "job_suitability", precision =3, scale = 1, nullable = false)
+    @Column(name = "job_suitability", nullable = false)
     private double jobSuitability;
 
     @Column(name = "keyword_1",nullable = false)

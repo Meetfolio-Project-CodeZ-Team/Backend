@@ -16,17 +16,17 @@ import java.time.LocalDate;
 public class Experience extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "experience_id")
+    @Column(name = "experience_id",nullable = false)
     private Long id;
 
     @Column(nullable = false)
     private String title;
 
-    @ManyToOne
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_keyword_id", nullable = false)
     private JobKeyword jobKeyword;
 

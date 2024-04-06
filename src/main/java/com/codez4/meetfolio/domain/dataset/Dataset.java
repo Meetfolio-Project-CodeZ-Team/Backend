@@ -13,7 +13,7 @@ import lombok.*;
 public class Dataset extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dataset_id")
+    @Column(name = "dataset_id",nullable = false)
     private Long id;
 
     @Column(name = "job")

@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.like;
 
 import com.codez4.meetfolio.domain.board.Board;
+import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.Member;
 import jakarta.persistence.*;
@@ -16,23 +17,24 @@ import org.hibernate.annotations.DynamicInsert;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Like {
+@Table(name = "board_like")
+public class Like extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "like_id")
+    @Column(name = "like_id",nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
     @Column(nullable = false)
-    @ColumnDefault("ACTIVE")
+    @ColumnDefault("'ACTIVE'")
     @Enumerated(EnumType.STRING)
     private Status status;
 
