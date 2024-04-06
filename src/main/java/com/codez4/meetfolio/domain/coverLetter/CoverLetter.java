@@ -16,11 +16,11 @@ public class CoverLetter extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cover_letter_id")
+    @Column(name = "cover_letter_id",nullable = false)
     private Long id;
 
-    @ManyToOne
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
     @Column(nullable = false)
@@ -33,8 +33,8 @@ public class CoverLetter extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private ShareType shareType;
 
-    @ManyToOne
-    @Column(nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = true)
     private JobKeyword jobKeyword;
 
     @Column(name = "keyword_1",nullable = true)

@@ -12,7 +12,7 @@ import lombok.*;
 public class Authentication extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "authentication_id")
+    @Column(name = "authentication_id",nullable = false)
     private Long id;
 
     @Column(nullable = false)

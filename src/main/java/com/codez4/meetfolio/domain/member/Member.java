@@ -10,7 +10,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
@@ -22,10 +21,9 @@ import java.time.LocalDateTime;
 @Builder
 public class Member extends BaseTimeEntity {
 
-    @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
+    @Column(name = "member_id",nullable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -40,11 +38,11 @@ public class Member extends BaseTimeEntity {
     private Grade grade;
 
     @Column(nullable = false)
-    @ColumnDefault("0")
+    @ColumnDefault("'0'")
     private Integer point;
 
     @Column(nullable = false)
-    @ColumnDefault("ACTIVE")
+    @ColumnDefault("'ACTIVE'")
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -52,15 +50,15 @@ public class Member extends BaseTimeEntity {
     private String image;
 
     @Column(nullable = false)
-    @ColumnDefault("MEMBER")
+    @ColumnDefault("'MEMBER'")
     @Enumerated(EnumType.STRING)
     private Authority authority ;
 
     @Column(nullable = true)
     private LocalDateTime inactiveDate;
 
-    @ManyToOne
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_keyword_id",nullable = false)
     private JobKeyword jobKeyword;
 
 }

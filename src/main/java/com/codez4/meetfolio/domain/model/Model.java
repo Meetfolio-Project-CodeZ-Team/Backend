@@ -35,7 +35,7 @@ public class Model extends BaseTimeEntity {
     private String filePath;
 
     @Column(nullable = false)
-    @ColumnDefault("ACTIVE")
+    @ColumnDefault("'ACTIVE'")
     @Enumerated(EnumType.STRING)
     private Status status;
 
