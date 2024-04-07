@@ -1,11 +1,24 @@
 package com.codez4.meetfolio.domain.coverLetter;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
+import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.enums.ShareType;
-import com.codez4.meetfolio.domain.jobKeyword.JobKeyword;
 import com.codez4.meetfolio.domain.member.Member;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
@@ -16,11 +29,11 @@ public class CoverLetter extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cover_letter_id",nullable = false)
+    @Column(name = "cover_letter_id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id",nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @Column(nullable = false)
@@ -33,13 +46,13 @@ public class CoverLetter extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private ShareType shareType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = true)
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private JobKeyword jobKeyword;
 
-    @Column(name = "keyword_1",nullable = true)
+    @Column(name = "keyword_1")
     private String keyword1;
 
-    @Column(name = "keyword_2",nullable = true)
+    @Column(name = "keyword_2")
     private String keyword2;
 }
