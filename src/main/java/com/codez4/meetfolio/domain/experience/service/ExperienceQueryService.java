@@ -20,10 +20,12 @@ public class ExperienceQueryService {
 
     public ExperienceInfo getExperience(Long experienceId) {
 
-        // 경험 분해
-        Experience experience = experienceRepository.findById(experienceId).orElseThrow(
-            () -> new ApiException(ErrorStatus._EXPERIENCE_NOT_FOUND));
+        return toExperienceInfo(findById(experienceId));
+    }
 
-        return toExperienceInfo(experience);
+    public Experience findById(Long experienceId) {
+        return experienceRepository.findById(experienceId).orElseThrow(
+            () -> new ApiException(ErrorStatus._EXPERIENCE_NOT_FOUND)
+        );
     }
 }
