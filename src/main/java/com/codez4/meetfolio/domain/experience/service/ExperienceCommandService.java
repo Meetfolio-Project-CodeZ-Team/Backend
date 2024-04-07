@@ -17,7 +17,7 @@ public class ExperienceCommandService {
 
     private final ExperienceRepository experienceRepository;
 
-    public ExperienceProc post(ExperienceRequest.Post post, Member member) {
+    public ExperienceProc post(ExperienceRequest post, Member member) {
 
         // TODO: 로그인 사용자로 추후 수정
         Experience experience = experienceRepository.save(ExperienceRequest.toEntity(post, member));

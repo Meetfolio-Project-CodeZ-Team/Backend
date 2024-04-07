@@ -7,44 +7,41 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.Getter;
 
+@Schema(description = "경험 분해 작성 Request")
+@Getter
 public class ExperienceRequest {
 
-    @Schema(description = "경험 분해 작성 Request")
-    @Getter
-    public static class Post {
+    @Schema(description = "경험 분해 제목")
+    private String title;
 
-        @Schema(description = "경험 분해 제목")
-        private String title;
+    @Schema(description = "경험 분해 시작 기간", example = "2024-02-02")
+    private String startDate;
 
-        @Schema(description = "경험 분해 시작 기간", example = "2024-02-02")
-        private String startDate;
+    @Schema(description = "경험 분해 종료 기간", example = "2024-03-01")
+    private String endDate;
 
-        @Schema(description = "경험 분해 종료 기간", example = "2024-03-01")
-        private String endDate;
+    @Schema(description = "경험 카테고리")
+    private String experienceType;
 
-        @Schema(description = "경험 카테고리")
-        private String experienceType;
+    @Schema(description = "경험 업무 내용")
+    private String task;
 
-        @Schema(description = "경험 업무 내용")
-        private String task;
+    @Schema(description = "경험 동기 & 이유")
+    private String motivation;
 
-        @Schema(description = "경험 동기 & 이유")
-        private String motivation;
+    @Schema(description = "맡았던 직무", example = "BACKEND")
+    private String jobKeyword;
 
-        @Schema(description = "맡았던 직무", example = "BACKEND")
-        private String jobKeyword;
+    @Schema(description = "사용한 기술 스택", example = "spring/mysql")
+    private String stack;
 
-        @Schema(description = "사용한 기술 스택", example = "spring/mysql")
-        private String stack;
+    @Schema(description = "경험 세부 내용")
+    private String detail;
 
-        @Schema(description = "경험 세부 내용")
-        private String detail;
+    @Schema(description = "결과 및 성과")
+    private String advance;
 
-        @Schema(description = "결과 및 성과")
-        private String advance;
-    }
-
-    public static Experience toEntity(Post reqeust, Member member) {
+    public static Experience toEntity(ExperienceRequest reqeust, Member member) {
 
         return Experience.builder()
             .title(reqeust.getTitle())
