@@ -35,4 +35,14 @@ public class ExperienceCommandService {
 
         return ExperienceResponse.toExperienceProc(experienceId);
     }
+
+    public ExperienceProc delete(Long experienceId) {
+
+        deleteById(experienceId);
+        return ExperienceResponse.toExperienceProc(experienceId);
+    }
+
+    public void deleteById(Long experienceId) {
+        experienceRepository.deleteById(experienceId);
+    }
 }
