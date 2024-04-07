@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,5 +56,14 @@ public class ExperienceController {
         Member member = memberQueryService.findById(1L);
 
         return ApiResponse.onSuccess(experienceCommandService.post(post, member));
+    }
+
+    @Operation(summary = "경험 분해 수정", description = "경험 분해 수정 요청을 PATCH로 보냅니다.")
+    @Parameter(name = "experienceId", description = "경험 분해 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
+    @PatchMapping("{experienceId}")
+    public ApiResponse<ExperienceProc> patch(@RequestBody ExperienceRequest patch,
+        @PathVariable(name = "experienceId") Long experienceId) {
+
+        return ApiResponse.onSuccess(experienceCommandService.patch(patch, experienceId));
     }
 }

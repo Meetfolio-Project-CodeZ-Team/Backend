@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.Getter;
 
-@Schema(description = "경험 분해 작성 Request")
+@Schema(description = "경험 분해 작성 및 수정 Request")
 @Getter
 public class ExperienceRequest {
 
