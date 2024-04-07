@@ -49,7 +49,7 @@ public class ExperienceController {
 
     @Operation(summary = "경험 분해 작성", description = "경험 분해 작성 요청을 POST로 보냅니다.")
     @PostMapping
-    public ApiResponse<ExperienceProc> post(@RequestBody ExperienceRequest.Post post) {
+    public ApiResponse<ExperienceProc> post(@RequestBody ExperienceRequest post) {
 
         // TODO: 추후 로그인 사용자로 수정 - 1L
         Member member = memberQueryService.findById(1L);
