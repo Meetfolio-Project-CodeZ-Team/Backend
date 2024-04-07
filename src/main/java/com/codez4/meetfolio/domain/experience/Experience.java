@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.experience;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
+import com.codez4.meetfolio.domain.experience.dto.ExperienceRequest;
 import com.codez4.meetfolio.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -66,4 +67,18 @@ public class Experience extends BaseTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private JobKeyword jobKeyword;
+
+    // update
+    public void update(ExperienceRequest patch) {
+        this.title = patch.getTitle();
+        this.startDate = LocalDate.parse(patch.getStartDate());
+        this.endDate = LocalDate.parse(patch.getEndDate());
+        this.experienceType = patch.getExperienceType();
+        this.task = patch.getTask();
+        this.motivation = patch.getMotivation();
+        this.jobKeyword = JobKeyword.valueOf(patch.getJobKeyword());
+        this.stack = patch.getStack();
+        this.detail = patch.getDetail();
+        this.advance = patch.getAdvance();
+    }
 }

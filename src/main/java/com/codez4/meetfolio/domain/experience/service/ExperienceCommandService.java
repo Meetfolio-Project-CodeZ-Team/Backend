@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExperienceCommandService {
 
     private final ExperienceRepository experienceRepository;
+    private final ExperienceQueryService experienceQueryService;
 
     public ExperienceProc post(ExperienceRequest post, Member member) {
 
@@ -24,5 +25,14 @@ public class ExperienceCommandService {
 
         return ExperienceResponse.toExperienceProc(experience.getId());
 
+    }
+
+    public ExperienceProc patch(ExperienceRequest patch, Long experienceId) {
+
+        Experience experience = experienceQueryService.findById(experienceId);
+
+        experience.update(patch);
+
+        return ExperienceResponse.toExperienceProc(experienceId);
     }
 }
