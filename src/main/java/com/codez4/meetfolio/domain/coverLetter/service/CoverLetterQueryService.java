@@ -17,7 +17,7 @@ public class CoverLetterQueryService {
 
     private final CoverLetterRepository coverLetterRepository;
 
-    public CoverLetterInfo getCoverLetter(Long coverLetterId) {
+    public CoverLetterInfo getCoverLetterInfo(Long coverLetterId) {
 
         CoverLetter coverLetter = findById(coverLetterId);
         return CoverLetterResponse.toCoverLetterInfo(coverLetter);
