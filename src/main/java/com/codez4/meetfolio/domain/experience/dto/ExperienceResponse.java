@@ -85,13 +85,17 @@ public class ExperienceResponse {
             .build();
     }
 
+    @Schema(description = "경험 분해 작성 & 수정 & 삭제 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class ExperienceProc {
 
+        @Schema(description = "경험 분해 Id")
         private Long experienceId;
+
+        @Schema(description = "응답 DTO 생성 시간")
         private LocalDateTime createdAt;
     }
 
