@@ -4,6 +4,7 @@ import com.codez4.meetfolio.domain.experience.Experience;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -81,6 +82,23 @@ public class ExperienceResponse {
             .stack(experience.getStack())
             .detail(experience.getDetail())
             .advance(experience.getAdvance())
+            .build();
+    }
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class ExperienceProc {
+
+        private Long experienceId;
+        private LocalDateTime createdAt;
+    }
+
+    public static ExperienceProc toExperienceProc(Long experienceId) {
+        return ExperienceProc.builder()
+            .experienceId(experienceId)
+            .createdAt(LocalDateTime.now())
             .build();
     }
 }
