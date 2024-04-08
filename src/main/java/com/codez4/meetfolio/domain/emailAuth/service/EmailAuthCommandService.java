@@ -1,7 +1,7 @@
-package com.codez4.meetfolio.domain.authentication.service;
+package com.codez4.meetfolio.domain.emailAuth.service;
 
-import com.codez4.meetfolio.domain.authentication.dto.AuthenticationRequest;
-import com.codez4.meetfolio.domain.authentication.repository.AuthenticationRepository;
+import com.codez4.meetfolio.domain.emailAuth.dto.EmailAuthRequest;
+import com.codez4.meetfolio.domain.emailAuth.repository.EmailAuthRepository;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class AuthenticationCommandService {
-    private final AuthenticationRepository authenticationRepository;
+public class EmailAuthCommandService {
+    private final EmailAuthRepository emailAuthRepository;
     private final MailService mailService;
 
-    public void save(AuthenticationRequest request) {
-        authenticationRepository.save(AuthenticationRequest.toEntity(request));
+    public void save(EmailAuthRequest request) {
+        emailAuthRepository.save(EmailAuthRequest.toEntity(request));
     }
 
     public void sendEmail(String email) {
@@ -30,7 +30,7 @@ public class AuthenticationCommandService {
         String authCode = this.createCode();
         mailService.sendEmail(email, title, authCode);
 
-        this.save(new AuthenticationRequest(email, authCode));
+        this.save(new EmailAuthRequest(email, authCode));
     }
 
     private String createCode() {
@@ -43,7 +43,7 @@ public class AuthenticationCommandService {
             }
             return builder.toString();
         } catch (NoSuchAlgorithmException e) {
-            log.debug("AuthenticationCommandService.createCode() exception occur");
+            log.debug("EmailAuthCommandService.createCode() exception occur");
             throw new ApiException(ErrorStatus._INTERNAL_SERVER_ERROR);
         }
     }
