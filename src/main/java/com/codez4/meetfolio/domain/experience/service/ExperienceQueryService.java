@@ -4,12 +4,15 @@ import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.toEx
 import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.toExperienceInfo;
 
 import com.codez4.meetfolio.domain.experience.Experience;
+import com.codez4.meetfolio.domain.experience.dto.ExperienceResponse;
 import com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.ExperienceCardInfo;
+import com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.ExperienceCardItem;
 import com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.ExperienceInfo;
 import com.codez4.meetfolio.domain.experience.repository.ExperienceRepository;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -39,6 +42,18 @@ public class ExperienceQueryService {
         PageRequest pageRequest = PageRequest.of(page, 6, Sort.by("createdAt").descending());
 
         return toExperienceCardInfo(experienceRepository.findAllByMember(member, pageRequest));
+    }
+
+    public List<ExperienceCardItem> getRecommendCard(Member member) {
+
+        List<Experience> experiences;
+        if (member == null) {
+            experiences = experienceRepository.findTop12ByOrderByIdDesc();
+        } else {
+            experiences = experienceRepository.findTop12ByJobKeywordOrderByIdDesc(
+                member.getJobKeyword());
+        }
+        return ExperienceResponse.toExperienceCardItems(experiences);
     }
 
 }
