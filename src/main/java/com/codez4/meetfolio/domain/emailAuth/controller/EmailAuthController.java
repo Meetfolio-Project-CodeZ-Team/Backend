@@ -4,6 +4,7 @@ import com.codez4.meetfolio.domain.emailAuth.dto.EmailAuthRequest;
 import com.codez4.meetfolio.domain.emailAuth.dto.EmailRequest;
 import com.codez4.meetfolio.domain.emailAuth.service.EmailAuthCommandService;
 import com.codez4.meetfolio.domain.emailAuth.service.EmailAuthQueryService;
+import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,10 +24,12 @@ public class EmailAuthController {
 
     private final EmailAuthQueryService emailAuthQueryService;
     private final EmailAuthCommandService emailAuthCommandService;
+    private final MemberQueryService memberQueryService;
 
     @Operation(summary = "이메일 인증 코드 전송 요청", description = "입력한 이메일로 인증 코드를 전송합니다.")
     @PostMapping
     public ApiResponse<String> sendAuthCode(@RequestBody EmailRequest request) {
+        memberQueryService.checkDuplicatedEmail(request.getEmail());
         emailAuthCommandService.sendEmail(request.getEmail());
         return ApiResponse.onSuccess("이메일 전송이 완료되었습니다.");
     }
