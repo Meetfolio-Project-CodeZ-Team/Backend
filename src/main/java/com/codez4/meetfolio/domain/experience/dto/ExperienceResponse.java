@@ -207,4 +207,30 @@ public class ExperienceResponse {
             .stack(experience.getStack())
             .build();
     }
+
+    @Schema(description = "랜딩페이지 추천 경험 카드 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class RecommendCard {
+
+        private MemberInfo memberInfo;
+        private List<ExperienceCardItem> recommendCardInfo;
+    }
+
+    public static RecommendCard toRecommendCard(MemberInfo memberInfo,
+        List<ExperienceCardItem> experienceCardItems) {
+
+        return RecommendCard.builder()
+            .memberInfo(memberInfo)
+            .recommendCardInfo(experienceCardItems)
+            .build();
+    }
+
+    public static List<ExperienceCardItem> toExperienceCardItems(List<Experience> experiences) {
+        return experiences.stream()
+            .map(ExperienceResponse::toExperienceCardItem)
+            .toList();
+    }
 }
