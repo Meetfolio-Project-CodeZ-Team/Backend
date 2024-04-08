@@ -26,10 +26,11 @@ public class MemberResponse {
 
     public static MemberInfo toMemberInfo(Member member) {
 
-        return MemberInfo.builder()
-            .memberName(member.getEmail())
-            .profile(member.getProfile())
-            .major(member.getMajor().name())
-            .build();
+        return member == null ? null :
+            MemberInfo.builder()
+                .memberName(member.getEmail())
+                .profile(member.getProfile())
+                .major(member.getMajor().name())
+                .build();
     }
 }
