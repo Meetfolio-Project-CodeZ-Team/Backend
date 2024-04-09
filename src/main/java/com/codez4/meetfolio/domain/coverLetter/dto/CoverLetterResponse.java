@@ -73,13 +73,17 @@ public class CoverLetterResponse {
             .build();
     }
 
+    @Schema(description = "자기소개서 작성 & 수정 & 삭제 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class CoverLetterProc {
 
+        @Schema(description = "자기소개서 아이디")
         private Long coverLetterId;
+
+        @Schema(description = "응답 처리 완료된 시간")
         private LocalDateTime createdAt;
     }
 

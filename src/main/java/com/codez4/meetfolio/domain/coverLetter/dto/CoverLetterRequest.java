@@ -18,7 +18,7 @@ public class CoverLetterRequest {
     @Schema(description = "자기소개서 답변")
     private String answer;
 
-    @Schema(description = "자기소개서 공개 여부")
+    @Schema(description = "자기소개서 공개 여부", example = "PUBLIC")
     @EnumValid(enumClass = ShareType.class)
     private String shareType;
 
@@ -28,7 +28,7 @@ public class CoverLetterRequest {
     @Schema(description = "나의 역량 키워드 2")
     private String keyword2;
 
-    @Schema(description = "자기소개서 지원 직무")
+    @Schema(description = "자기소개서 지원 직무", example = "BACKEND")
     @EnumValid(enumClass = JobKeyword.class)
     private String jobKeyword;
 
