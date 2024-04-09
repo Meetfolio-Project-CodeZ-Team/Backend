@@ -19,10 +19,10 @@ public class EmailAuthRequest {
     @Schema(description = "인증 코드", example = "123456")
     private String authCode;
 
-    public static EmailAuth toEntity(EmailAuthRequest request) {
+    public static EmailAuth toEntity(String email, String authCode) {
         return EmailAuth.builder()
-                .email(request.getEmail())
-                .code(request.getAuthCode())
+                .email(email)
+                .code(authCode)
                 .build();
 
     }

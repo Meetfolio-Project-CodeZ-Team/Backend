@@ -8,6 +8,7 @@ import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class EmailAuthController {
 
     @Operation(summary = "이메일 인증 코드 전송 요청", description = "입력한 이메일로 인증 코드를 전송합니다.")
     @PostMapping
-    public ApiResponse<String> sendAuthCode(@RequestBody EmailRequest request) {
+    public ApiResponse<String> sendAuthCode(@Valid @RequestBody EmailRequest request) {
         memberQueryService.checkDuplicatedEmail(request.getEmail());
         emailAuthCommandService.sendEmail(request.getEmail());
         return ApiResponse.onSuccess("이메일 전송이 완료되었습니다.");
@@ -36,7 +37,7 @@ public class EmailAuthController {
 
     @Operation(summary = "가천대 재학생 인증 요청", description = "가천대 재학생 인증을 요청합니다.")
     @PostMapping("/authentication")
-    public ApiResponse<String> verifyAuthCode(@RequestBody EmailAuthRequest request) {
+    public ApiResponse<String> verifyAuthCode(@Valid @RequestBody EmailAuthRequest request) {
         String result = emailAuthQueryService.verifyAuthCode(request);
         return ApiResponse.onSuccess(result);
     }

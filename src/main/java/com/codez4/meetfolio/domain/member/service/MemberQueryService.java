@@ -9,10 +9,8 @@ import com.codez4.meetfolio.global.jwt.JwtTokenProvider;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.codez4.meetfolio.global.security.Password;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
 
 import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo;
@@ -41,12 +39,13 @@ public class MemberQueryService {
         return toMemberInfo(findById(memberId));
     }
 
-    public String login(LoginRequest request){
-        Member member = findByEmail(request.getEmail()).orElseThrow(()-> new ApiException(ErrorStatus._MEMBER_NOT_FOUND) );
+    public String login(LoginRequest request) {
+        Member member = findByEmail(request.getEmail()).orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
         comparePassword(request.getPassword(), member.getPassword());
         String token = jwtTokenProvider.generate(member.getEmail(), member.getId(), member.getAuthority());
         return token;
     }
+
     public void checkDuplicatedEmail(String email) {
         Optional<Member> member = findByEmail(email);
         if (member.isPresent()) {
@@ -55,9 +54,8 @@ public class MemberQueryService {
     }
 
     private void comparePassword(String password, Password savedPassword) {
-        if(!savedPassword.isSamePassword(password, ENCODER)) {
+        if (!savedPassword.isSamePassword(password, ENCODER)) {
             throw new ApiException(ErrorStatus._INVALID_PASSWORD);
         }
     }
-
 }

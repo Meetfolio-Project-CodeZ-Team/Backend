@@ -18,7 +18,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // ================================================================================================================= //
     // 사용자 인증 관련
-    _INVALID_TOKEN(HttpStatus.NOT_FOUND, "AUTHENTICATION4001","해당 유저의 토큰 정보를 찾을 수 없습니다."),
+    _INVALID_TOKEN(HttpStatus.NOT_FOUND, "AUTHENTICATION4001","유효하지 않은 토큰입니다."),
     _INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "AUTHENTICATION4002","비밀번호가 일치하지 않습니다."),
 
     // ================================================================================================================= //

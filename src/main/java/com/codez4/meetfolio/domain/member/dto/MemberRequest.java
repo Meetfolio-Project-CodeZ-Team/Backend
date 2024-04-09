@@ -18,7 +18,6 @@ public class MemberRequest {
 
     @Schema(description = "회원 가입 요청 dto")
     @Getter
-    @AllArgsConstructor
     public static class SignUpRequest {
         @NotBlank(message = "이메일 입력은 필수입니다.")
         private String email;
@@ -58,6 +57,7 @@ public class MemberRequest {
      */
     @Getter
     @AllArgsConstructor
+    @Builder
     public static class Patch {
         private String grade;
         private String jobKeyword;

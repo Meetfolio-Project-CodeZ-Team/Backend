@@ -20,6 +20,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.codez4.meetfolio.domain.member.dto.MemberRequest;
+import com.codez4.meetfolio.domain.member.dto.MemberResponse;
+import com.codez4.meetfolio.domain.member.service.MemberCommandService;
+import com.codez4.meetfolio.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "회원 API")
 @RestController
