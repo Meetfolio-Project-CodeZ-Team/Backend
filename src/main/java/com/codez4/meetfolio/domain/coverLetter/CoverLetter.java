@@ -32,10 +32,6 @@ public class CoverLetter extends BaseTimeEntity {
     @Column(name = "cover_letter_id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
     @Column(nullable = false)
     private String question;
 
@@ -46,13 +42,18 @@ public class CoverLetter extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private ShareType shareType;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private JobKeyword jobKeyword;
-
     @Column(name = "keyword_1")
     private String keyword1;
 
     @Column(name = "keyword_2")
     private String keyword2;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private JobKeyword jobKeyword;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
 }

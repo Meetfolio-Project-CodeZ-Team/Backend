@@ -35,7 +35,12 @@ public enum ErrorStatus implements BaseErrorCode {
     // ================================================================================================================= //
 
     // 경험 분해 관련
-    _EXPERIENCE_NOT_FOUND(HttpStatus.NOT_FOUND, "EXPERIENCE4001", "존재하지 않는 경험 분해 데이터입니다.");
+    _EXPERIENCE_NOT_FOUND(HttpStatus.NOT_FOUND, "EXPERIENCE4001", "존재하지 않는 경험 분해 데이터입니다."),
+
+    // ================================================================================================================= //
+
+    // 자기소개서 관련
+    _COVERLETTER_NOT_FOUND(HttpStatus.NOT_FOUND, "COVERLETTER4001", "존재하지 않는 자기소개서 데이터입니다.");
 
 
     private final HttpStatus httpStatus;
