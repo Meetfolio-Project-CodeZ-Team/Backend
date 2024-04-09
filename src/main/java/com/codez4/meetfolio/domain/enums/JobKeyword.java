@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,4 +16,15 @@ public enum JobKeyword {
     ;
 
     private final String description;
+
+    @JsonCreator
+    public static JobKeyword convert(String source)
+    {
+        for (JobKeyword jobKeyword : JobKeyword.values()) {
+            if (jobKeyword.name().equals(source)) {
+                return jobKeyword;
+            }
+        }
+        return null;
+    }
 }
