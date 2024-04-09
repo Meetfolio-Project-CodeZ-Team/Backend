@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,4 +13,15 @@ public enum ShareType {
     ;
 
     private final String description;
+
+    @JsonCreator
+    public static ShareType convert(String source)
+    {
+        for (ShareType shareType : ShareType.values()) {
+            if (shareType.name().equals(source)) {
+                return shareType;
+            }
+        }
+        return null;
+    }
 }
