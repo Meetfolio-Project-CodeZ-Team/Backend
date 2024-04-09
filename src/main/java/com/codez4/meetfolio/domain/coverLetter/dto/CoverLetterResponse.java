@@ -5,6 +5,7 @@ import static com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.Feedback
 
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -69,6 +70,23 @@ public class CoverLetterResponse {
             .coverLetterInfo(coverLetterInfo)
             .feedbackInfo(feedbackInfo)
             .analysisInfo(analysisInfo)
+            .build();
+    }
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CoverLetterProc {
+
+        private Long coverLetterId;
+        private LocalDateTime createdAt;
+    }
+
+    public static CoverLetterProc toCoverLetterProc(Long coverLetterId) {
+        return CoverLetterProc.builder()
+            .coverLetterId(coverLetterId)
+            .createdAt(LocalDateTime.now())
             .build();
     }
 }
