@@ -17,7 +17,11 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // ================================================================================================================= //
+    // 사용자 인증 관련
+    _INVALID_TOKEN(HttpStatus.NOT_FOUND, "AUTHENTICATION4001","유효하지 않은 토큰입니다."),
+    _INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "AUTHENTICATION4002","비밀번호가 일치하지 않습니다."),
 
+    // ================================================================================================================= //
     // 사용자 관련
     _MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4001", "존재하지 않는 사용자 정보입니다."),
     _MEMBER_EXISTS(HttpStatus.BAD_REQUEST, "MEMBER4002", "중복된 이메일입니다."),
@@ -25,8 +29,8 @@ public enum ErrorStatus implements BaseErrorCode {
     // ================================================================================================================= //
 
     // 이메일 인증 관련
-    _AUTHENTICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTHENTICATION4001", "인증코드가 일치하지 않습니다."),
-    _AUTHENTICATION_SEND_EMAIL_ERROR (HttpStatus.INTERNAL_SERVER_ERROR, "AUTHENTICATION4002", "인증 메일 전송에 실패했습니다."),
+    _AUTHENTICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "EMAILAUTH4001", "인증코드가 일치하지 않습니다."),
+    _AUTHENTICATION_SEND_EMAIL_ERROR (HttpStatus.INTERNAL_SERVER_ERROR, "EMAILAUTH4002", "인증 메일 전송에 실패했습니다."),
 
     // ================================================================================================================= //
 

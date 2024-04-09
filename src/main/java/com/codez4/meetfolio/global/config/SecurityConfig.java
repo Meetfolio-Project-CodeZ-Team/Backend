@@ -1,53 +1,65 @@
 package com.codez4.meetfolio.global.config;
 
-import java.util.List;
+import com.codez4.meetfolio.global.jwt.JwtAuthenticationEntryPoint;
+import com.codez4.meetfolio.global.jwt.JwtAuthenticationFilter;
+import com.codez4.meetfolio.global.jwt.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
+    private static final String[] WHITE_LIST_URL = {
+            // application
+            "/api/login",
+            "/api/signup",
+            "/api/signup/email",
+            "/api/signup/email/authentication",
+
+            // swagger
+            "v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+    };
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .httpBasic(HttpBasicConfigurer::disable)
-            .csrf(CsrfConfigurer::disable)
-            .sessionManagement(
-                configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .authorizeHttpRequests(authorize ->
-                authorize
-                    .requestMatchers(
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**",
-                        "/favicon.ico"
-                    ).permitAll()
-                    .anyRequest().permitAll());
-        return http.build();
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers(WHITE_LIST_URL);
     }
 
     @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration cors = new CorsConfiguration();
-        // TODO: 추후 Public IP로 변경
-        cors.setAllowedOrigins(List.of("https://localhost:3000", "http://localhost:8080"));
-        cors.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE"));
-        cors.setAllowCredentials(true); // cookie 활성화
-        cors.addExposedHeader("Authorization"); // Authorization Header 노출
-        source.registerCorsConfiguration("/**", cors);
-        return new CorsFilter(source);
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptionHandlingConfigurer ->
+                        exceptionHandlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
+                        authorizationManagerRequestMatcherRegistry
+                                .requestMatchers("/api/admins/**").hasRole("ADMIN")
+                                .anyRequest()
+                                .authenticated()
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
+
+        return http.build();
     }
 }

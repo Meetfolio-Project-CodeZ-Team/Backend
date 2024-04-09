@@ -43,6 +43,7 @@ public class MemberRequest {
      */
     @Getter
     @AllArgsConstructor
+    @Builder
     public static class Post {
         private String email;
         private String password;
@@ -56,6 +57,7 @@ public class MemberRequest {
      */
     @Getter
     @AllArgsConstructor
+    @Builder
     public static class Patch {
         private String grade;
         private String jobKeyword;

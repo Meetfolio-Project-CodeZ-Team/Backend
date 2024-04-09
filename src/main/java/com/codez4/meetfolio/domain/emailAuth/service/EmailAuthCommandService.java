@@ -28,9 +28,8 @@ public class EmailAuthCommandService {
 
     public void sendEmail(String email) {
         String title = "Meetfolio 이메일 인증 번호";
-        String authCode =  createCode();
+        String authCode = this.createCode();
         mailService.sendEmail(email, title, authCode);
-
         save(EmailAuthRequest.toEntity(email, authCode));
     }
 
@@ -44,6 +43,7 @@ public class EmailAuthCommandService {
             }
             return builder.toString();
         } catch (NoSuchAlgorithmException e) {
+            log.debug("EmailAuthCommandService.createCode() exception occur");
             throw new ApiException(ErrorStatus._INTERNAL_SERVER_ERROR);
         }
     }
