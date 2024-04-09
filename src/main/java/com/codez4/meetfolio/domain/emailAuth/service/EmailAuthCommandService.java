@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.emailAuth.service;
 
+import com.codez4.meetfolio.domain.emailAuth.EmailAuth;
 import com.codez4.meetfolio.domain.emailAuth.dto.EmailAuthRequest;
 import com.codez4.meetfolio.domain.emailAuth.repository.EmailAuthRepository;
 import com.codez4.meetfolio.global.exception.ApiException;
@@ -21,8 +22,8 @@ public class EmailAuthCommandService {
     private final EmailAuthRepository emailAuthRepository;
     private final MailService mailService;
 
-    public void save(EmailAuthRequest request) {
-        emailAuthRepository.save(EmailAuthRequest.toEntity(request));
+    public void save(EmailAuth emailAuth) {
+        emailAuthRepository.save(emailAuth);
     }
 
     public void sendEmail(String email) {
@@ -30,7 +31,7 @@ public class EmailAuthCommandService {
         String authCode =  createCode();
         mailService.sendEmail(email, title, authCode);
 
-        save(new EmailAuthRequest(email, authCode));
+        save(EmailAuthRequest.toEntity(email, authCode));
     }
 
     private String createCode() {

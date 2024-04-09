@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Schema(description = "가천대 재학생 인증 요청 DTO")
-@AllArgsConstructor
 @Getter
 public class EmailAuthRequest {
 
@@ -19,10 +18,10 @@ public class EmailAuthRequest {
     @Schema(description = "인증 코드", example = "123456")
     private String authCode;
 
-    public static EmailAuth toEntity(EmailAuthRequest request) {
+    public static EmailAuth toEntity(String email, String authCode) {
         return EmailAuth.builder()
-                .email(request.getEmail())
-                .code(request.getAuthCode())
+                .email(email)
+                .code(authCode)
                 .build();
 
     }
