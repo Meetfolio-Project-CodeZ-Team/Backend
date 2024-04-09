@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.analysis;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
+import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,4 +31,8 @@ public class Analysis extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Integer satisfaction;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cover_letter_id", nullable = false)
+    private CoverLetter coverLetter;
 }
