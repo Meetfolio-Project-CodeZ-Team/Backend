@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,5 +72,14 @@ public class CoverLetterController {
         @Valid @RequestBody CoverLetterRequest request) {
 
         return ApiResponse.onSuccess(coverLetterCommandService.update(coverLetterId, request));
+    }
+
+    @Operation(summary = "자기소개서 삭제 요청", description = "특정 자기소개서 정보를 삭제합니다.")
+    @Parameter(name = "coverLetterId", description = "자기소개서 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
+    @DeleteMapping("/{coverLetterId}")
+    public ApiResponse<CoverLetterProc> deleteCoverLetter(
+        @PathVariable(name = "coverLetterId") Long coverLetterId) {
+
+        return ApiResponse.onSuccess(coverLetterCommandService.delete(coverLetterId));
     }
 }

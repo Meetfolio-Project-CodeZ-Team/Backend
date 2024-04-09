@@ -26,7 +26,7 @@ public class CoverLetterCommandService {
 
     }
 
-    public CoverLetter save(CoverLetter coverLetter) {
+    private CoverLetter save(CoverLetter coverLetter) {
         return coverLetterRepository.save(coverLetter);
     }
 
@@ -34,5 +34,14 @@ public class CoverLetterCommandService {
         CoverLetter coverLetter = coverLetterQueryService.findById(coverLetterId);
         coverLetter.update(request);
         return CoverLetterResponse.toCoverLetterProc(coverLetterId);
+    }
+
+    public CoverLetterProc delete(Long coverLetterId) {
+        deleteById(coverLetterId);
+        return CoverLetterResponse.toCoverLetterProc(coverLetterId);
+    }
+
+    private void deleteById(Long coverLetterId) {
+        coverLetterRepository.deleteById(coverLetterId);
     }
 }
