@@ -24,7 +24,7 @@ public class EmailAuthQueryService {
 
     // 이메일 인증 코드 검증
     public String verifyAuthCode(EmailAuthRequest request) {
-        EmailAuth emailAuth = this.findByEmail(request.getEmail());
+        EmailAuth emailAuth = findByEmail(request.getEmail());
         if (emailAuth.getCode().equals(request.getAuthCode())) return "재학생 이메일 인증이 성공하였습니다.";
         else throw new ApiException(ErrorStatus._AUTHENTICATION_NOT_FOUND);
     }
