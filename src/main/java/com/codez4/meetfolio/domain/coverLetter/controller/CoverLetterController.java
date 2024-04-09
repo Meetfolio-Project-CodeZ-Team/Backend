@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,5 +61,15 @@ public class CoverLetterController {
         @Valid @RequestBody CoverLetterRequest request) {
 
         return ApiResponse.onSuccess(coverLetterCommandService.write(member, request));
+    }
+
+    @Operation(summary = "자기소개서 수정 요청", description = "특정 자기소개서 정보를 수정합니다.")
+    @Parameter(name = "coverLetterId", description = "자기소개서 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
+    @PatchMapping("/{coverLetterId}")
+    public ApiResponse<CoverLetterProc> updateCoverLetter(
+        @PathVariable(name = "coverLetterId") Long coverLetterId,
+        @Valid @RequestBody CoverLetterRequest request) {
+
+        return ApiResponse.onSuccess(coverLetterCommandService.update(coverLetterId, request));
     }
 }

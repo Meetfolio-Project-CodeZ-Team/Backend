@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CoverLetterCommandService {
 
     private final CoverLetterRepository coverLetterRepository;
+    private final CoverLetterQueryService coverLetterQueryService;
 
     public CoverLetterProc write(Member member, CoverLetterRequest request) {
 
@@ -27,5 +28,11 @@ public class CoverLetterCommandService {
 
     public CoverLetter save(CoverLetter coverLetter) {
         return coverLetterRepository.save(coverLetter);
+    }
+
+    public CoverLetterProc update(Long coverLetterId, CoverLetterRequest request) {
+        CoverLetter coverLetter = coverLetterQueryService.findById(coverLetterId);
+        coverLetter.update(request);
+        return CoverLetterResponse.toCoverLetterProc(coverLetterId);
     }
 }

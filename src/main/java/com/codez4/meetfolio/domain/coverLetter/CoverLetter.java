@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.coverLetter;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
+import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterRequest;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.enums.ShareType;
 import com.codez4.meetfolio.domain.member.Member;
@@ -56,4 +57,15 @@ public class CoverLetter extends BaseTimeEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    /**
+     * update
+     */
+    public void update(CoverLetterRequest request) {
+        this.question = request.getQuestion();
+        this.answer = request.getAnswer();
+        this.shareType = ShareType.convert(request.getShareType());
+        this.keyword1 = request.getKeyword1();
+        this.keyword2 = request.getKeyword2();
+        this.jobKeyword = JobKeyword.convert(request.getJobKeyword());
+    }
 }
