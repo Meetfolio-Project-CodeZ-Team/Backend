@@ -30,7 +30,7 @@ public class MemberQueryService {
         return toMemberInfo(findById(memberId));
     }
 
-    private void checkDuplicatedEmail(String email) {
+    public void checkDuplicatedEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent()) {
             throw new ApiException(ErrorStatus._MEMBER_EXISTS);

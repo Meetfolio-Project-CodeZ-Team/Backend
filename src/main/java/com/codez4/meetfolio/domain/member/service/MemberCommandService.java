@@ -19,7 +19,7 @@ public class MemberCommandService {
     }
 
     public MemberResponse.MemberProc post(MemberRequest.Post post) {
-        Member member = this.save(post);
+        Member member = save(post);
         return MemberResponse.toMemberProc(member);
     }
 }
