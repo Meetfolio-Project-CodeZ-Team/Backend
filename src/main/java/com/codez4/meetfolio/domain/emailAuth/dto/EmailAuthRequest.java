@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Schema(description = "가천대 재학생 인증 요청 DTO")
+@AllArgsConstructor
 @Getter
 public class EmailAuthRequest {
 

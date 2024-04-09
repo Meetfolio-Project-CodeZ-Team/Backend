@@ -2,7 +2,9 @@ package com.codez4.meetfolio.global.exception;
 
 import com.codez4.meetfolio.global.response.code.ErrorReasonDto;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
+import lombok.Getter;
 
+@Getter
 public class ApiException extends RuntimeException{
 
     private final ErrorStatus errorStatus;
