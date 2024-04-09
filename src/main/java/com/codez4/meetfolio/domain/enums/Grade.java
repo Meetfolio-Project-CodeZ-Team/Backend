@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,4 +16,15 @@ public enum Grade {
     ;
 
     private final String description;
+
+    @JsonCreator
+    public static Grade convert(String source)
+    {
+        for (Grade grade : Grade.values()) {
+            if (grade.name().equals(source)) {
+                return grade;
+            }
+        }
+        return null;
+    }
 }

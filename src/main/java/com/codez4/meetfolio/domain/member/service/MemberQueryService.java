@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -20,12 +22,19 @@ public class MemberQueryService {
 
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow(
-            () -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND)
+                () -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND)
         );
     }
 
     public MemberInfo getMemberInfo(Long memberId) {
         return toMemberInfo(findById(memberId));
+    }
+
+    public void checkDuplicatedEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isPresent()) {
+            throw new ApiException(ErrorStatus._MEMBER_EXISTS);
+        }
     }
 
 }
