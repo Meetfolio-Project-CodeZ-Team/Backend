@@ -34,17 +34,10 @@ public class MemberCommandService {
     }
 
     public void inactivateMember(Member member) {
-        // 자식 댓글 삭제
         commentRepository.deleteByParentComment_Member(member);
-        // 부모 댓글 삭제
         commentRepository.deleteByMember(member);
-        // 게시물 삭제
         boardRepository.deleteByMember(member);
-        // 경험 분해 삭제
         experienceRepository.deleteByMember(member);
-        // 자소서 삭제
-        coverLetterRepository.deleteByMember(member);
-        // 회원 비활성화
         member.setInactive();
     }
 }
