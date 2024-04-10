@@ -4,22 +4,10 @@ import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.experience.dto.ExperienceRequest;
 import com.codez4.meetfolio.domain.member.Member;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDate;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
