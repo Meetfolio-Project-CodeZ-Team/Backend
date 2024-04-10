@@ -1,10 +1,12 @@
 package com.codez4.meetfolio.domain.coverLetter.service;
 
+import com.codez4.meetfolio.domain.analysis.service.AnalysisCommandService;
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterRequest;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLetterProc;
 import com.codez4.meetfolio.domain.coverLetter.repository.CoverLetterRepository;
+import com.codez4.meetfolio.domain.feedback.service.FeedbackCommandService;
 import com.codez4.meetfolio.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ public class CoverLetterCommandService {
 
     private final CoverLetterRepository coverLetterRepository;
     private final CoverLetterQueryService coverLetterQueryService;
+    private final AnalysisCommandService analysisCommandService;
+    private final FeedbackCommandService feedbackCommandService;
 
     public CoverLetterProc write(Member member, CoverLetterRequest request) {
 
@@ -36,12 +40,11 @@ public class CoverLetterCommandService {
         return CoverLetterResponse.toCoverLetterProc(coverLetterId);
     }
 
-    public CoverLetterProc delete(Long coverLetterId) {
-        deleteById(coverLetterId);
+    public CoverLetterProc softDelete(Long coverLetterId) {
+        coverLetterQueryService.findById(coverLetterId).delete();
+        analysisCommandService.softDelete(coverLetterId);
+        feedbackCommandService.softDelete(coverLetterId);
         return CoverLetterResponse.toCoverLetterProc(coverLetterId);
     }
 
-    private void deleteById(Long coverLetterId) {
-        coverLetterRepository.deleteById(coverLetterId);
-    }
 }

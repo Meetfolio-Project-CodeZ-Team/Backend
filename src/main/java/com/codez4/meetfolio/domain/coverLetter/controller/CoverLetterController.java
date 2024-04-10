@@ -83,6 +83,6 @@ public class CoverLetterController {
     public ApiResponse<CoverLetterProc> deleteCoverLetter(
         @PathVariable(name = "coverLetterId") Long coverLetterId) {
 
-        return ApiResponse.onSuccess(coverLetterCommandService.delete(coverLetterId));
+        return ApiResponse.onSuccess(coverLetterCommandService.softDelete(coverLetterId));
     }
 }
