@@ -19,8 +19,10 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
+
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "관리자 API")
@@ -57,9 +59,6 @@ public class AdminController {
         return ApiResponse.onSuccess("회원 비활성화 성공입니다.");
     }
 
-          return ApiResponse.onSuccess("회원 삭제 성공입니다.");
-    }
-
     @Operation(summary = "포인트 사용 통계", description = "매출 관리 메뉴에서 포인트 사용 통계를 조회합니다. year, month 모두 입력 안 할 시 현재 달의 통계를 전송합니다. year, month 중 하나만 입력 시 에러를 반환합니다.")
     @Parameter(name = "year", description = "년도", required = false, example = "2024", in = ParameterIn.QUERY)
     @Parameter(name = "month", description = "월", required = false, example = "4", in = ParameterIn.QUERY)
@@ -84,8 +83,8 @@ public class AdminController {
                                                                      @RequestParam(required = false) Integer month) {
         if (year == null && month == null) {
             return ApiResponse.onSuccess(paymentQueryService.getPaymentList(page, LocalDate.now(ZoneId.of("Asia/Seoul")).getYear(), LocalDate.now(ZoneId.of("Asia/Seoul")).getMonthValue()));
-        } else if (year != null && month != null){
-        }   return ApiResponse.onSuccess(paymentQueryService.getPaymentList(page,year, month));
-        else throw new ApiException(ErrorStatus._BAD_REQUEST);
+        } else if (year != null && month != null) {
+            return ApiResponse.onSuccess(paymentQueryService.getPaymentList(page, year, month));
+        } else throw new ApiException(ErrorStatus._BAD_REQUEST);
     }
 }
