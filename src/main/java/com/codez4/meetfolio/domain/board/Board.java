@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.board;
 
 import com.codez4.meetfolio.domain.comment.Comment;
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
+import com.codez4.meetfolio.domain.like.Like;
 import com.codez4.meetfolio.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -44,6 +45,9 @@ public class Board extends BaseTimeEntity {
     @Column(name = "comment_count", nullable = false)
     @ColumnDefault("'0'")
     private Integer commentCount;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
