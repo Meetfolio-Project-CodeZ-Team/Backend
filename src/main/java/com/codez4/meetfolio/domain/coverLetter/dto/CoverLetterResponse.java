@@ -1,16 +1,17 @@
 package com.codez4.meetfolio.domain.coverLetter.dto;
 
-import static com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse.AnalysisInfo;
-import static com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
-
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+import static com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse.AnalysisInfo;
+import static com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
 
 public class CoverLetterResponse {
 

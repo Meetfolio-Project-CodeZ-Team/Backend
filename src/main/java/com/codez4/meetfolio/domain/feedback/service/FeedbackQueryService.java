@@ -4,8 +4,6 @@ import com.codez4.meetfolio.domain.feedback.Feedback;
 import com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse;
 import com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
 import com.codez4.meetfolio.domain.feedback.repository.FeedbackRepository;
-import com.codez4.meetfolio.global.exception.ApiException;
-import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
