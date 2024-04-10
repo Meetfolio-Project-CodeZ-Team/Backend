@@ -1,20 +1,18 @@
 package com.codez4.meetfolio.domain.member.service;
 
+import static com.codez4.meetfolio.global.security.Password.ENCODER;
+
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.LoginRequest;
-import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import com.codez4.meetfolio.domain.member.repository.MemberRepository;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.jwt.JwtTokenProvider;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.codez4.meetfolio.global.security.Password;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
-
-import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo;
-import static com.codez4.meetfolio.global.security.Password.ENCODER;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class MemberQueryService {
 
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow(
-                () -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND)
+            () -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND)
         );
     }
 
@@ -35,14 +33,12 @@ public class MemberQueryService {
         return member;
     }
 
-    public MemberInfo getMemberInfo(Long memberId) {
-        return toMemberInfo(findById(memberId));
-    }
-
     public String login(LoginRequest request) {
-        Member member = findByEmail(request.getEmail()).orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
+        Member member = findByEmail(request.getEmail()).orElseThrow(
+            () -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
         comparePassword(request.getPassword(), member.getPassword());
-        String token = jwtTokenProvider.generate(member.getEmail(), member.getId(), member.getAuthority());
+        String token = jwtTokenProvider.generate(member.getEmail(), member.getId(),
+            member.getAuthority());
         return token;
     }
 

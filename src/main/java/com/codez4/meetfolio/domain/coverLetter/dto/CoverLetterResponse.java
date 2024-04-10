@@ -4,6 +4,7 @@ import static com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse.Analysis
 import static com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
 
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
+import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -52,21 +53,25 @@ public class CoverLetterResponse {
 
     }
 
+    @Schema(description = "자기소개서 세부 정보 조회 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class CoverLetterResult {
 
+        private MemberInfo memberInfo;
         private CoverLetterInfo coverLetterInfo;
         private FeedbackInfo feedbackInfo;
         private AnalysisInfo analysisInfo;
     }
 
-    public static CoverLetterResult toCoverLetterResult(CoverLetterInfo coverLetterInfo,
+    public static CoverLetterResult toCoverLetterResult(MemberInfo memberInfo,
+        CoverLetterInfo coverLetterInfo,
         FeedbackInfo feedbackInfo, AnalysisInfo analysisInfo) {
 
         return CoverLetterResult.builder()
+            .memberInfo(memberInfo)
             .coverLetterInfo(coverLetterInfo)
             .feedbackInfo(feedbackInfo)
             .analysisInfo(analysisInfo)

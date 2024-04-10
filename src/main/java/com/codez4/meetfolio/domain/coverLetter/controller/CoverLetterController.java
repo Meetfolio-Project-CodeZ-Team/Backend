@@ -12,6 +12,8 @@ import com.codez4.meetfolio.domain.coverLetter.service.CoverLetterQueryService;
 import com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
 import com.codez4.meetfolio.domain.feedback.service.FeedbackQueryService;
 import com.codez4.meetfolio.domain.member.Member;
+import com.codez4.meetfolio.domain.member.dto.MemberResponse;
+import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,13 +46,14 @@ public class CoverLetterController {
     @Operation(summary = "자기소개서 상세정보 조회", description = "특정 자기소개서 정보를 조회합니다.")
     @Parameter(name = "coverLetterId", description = "자기소개서 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @GetMapping("/{coverLetterId}")
-    public ApiResponse<CoverLetterResult> getCoverLetter(
+    public ApiResponse<CoverLetterResult> getCoverLetter(@AuthenticationMember Member member,
         @PathVariable(name = "coverLetterId") Long coverLetterId) {
 
+        MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         CoverLetterInfo coverLetterInfo = coverLetterQueryService.getCoverLetterInfo(coverLetterId);
         FeedbackInfo feedbackInfo = feedbackQueryService.getFeedbackInfo(coverLetterId);
         AnalysisInfo analysisInfo = analysisQueryService.getAnalysisInfo(coverLetterId);
-        CoverLetterResult coverLetterResult = CoverLetterResponse.toCoverLetterResult(
+        CoverLetterResult coverLetterResult = CoverLetterResponse.toCoverLetterResult(memberInfo,
             coverLetterInfo, feedbackInfo, analysisInfo);
 
         return ApiResponse.onSuccess(coverLetterResult);
