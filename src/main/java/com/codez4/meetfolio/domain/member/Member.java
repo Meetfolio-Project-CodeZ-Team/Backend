@@ -9,6 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @DynamicInsert
 @Getter
@@ -61,4 +62,9 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private JobKeyword jobKeyword;
 
+    public void setInactive(){
+        this.point = 0;
+        this.inactiveDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.status = Status.INACTIVE;
+    }
 }
