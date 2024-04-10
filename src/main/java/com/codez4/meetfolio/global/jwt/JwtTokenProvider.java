@@ -50,7 +50,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(email)
                 .claim(USER_ID_KEY, userId)
-                .claim(AUTHORITIES_KEY, authority)
+                .claim(AUTHORITIES_KEY, authority.getDescription())
                 .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
                 .setExpiration(expiredAt)
                 .signWith(key, SignatureAlgorithm.HS512)
