@@ -38,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 || request.getServletPath().contains("/swagger-ui")
                 || request.getServletPath().contains("/swagger-resources")
                 || request.getServletPath().contains("v3/api-docs")
+                || request.getServletPath().equals("/api")
         ) {
             filterChain.doFilter(request, response);
             return;

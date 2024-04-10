@@ -26,24 +26,31 @@ public class AuthenticationMemberArgumentResolver implements HandlerMethodArgume
 
     @Override
     public Object resolveArgument(
-            MethodParameter parameter,
-            ModelAndViewContainer mavContainer,
-            NativeWebRequest webRequest,
-            WebDataBinderFactory binderFactory
+        MethodParameter parameter,
+        ModelAndViewContainer mavContainer,
+        NativeWebRequest webRequest,
+        WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
+        // 비로그인 / 로그인 경로 예외
+        if (request.getServletPath().equals("/api")
+            && JwtAuthenticationFilter.resolveToken(request) == null) {
+            return null;
+        }
+
         String token = JwtAuthenticationFilter.resolveToken(request);
 
-        if (token.isEmpty() || token.isBlank())
+        if (token.isEmpty() || token.isBlank()) {
             throw new ApiException(ErrorStatus._FORBIDDEN);
+        }
 
         validateTokenIntegrity(token);
 
         Long memberId = jwtTokenProvider.getUserId(token);
 
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
     }
 
     private void validateTokenIntegrity(String token) {

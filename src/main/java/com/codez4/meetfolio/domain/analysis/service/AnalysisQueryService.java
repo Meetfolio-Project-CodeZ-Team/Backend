@@ -17,8 +17,10 @@ public class AnalysisQueryService {
 
     public AnalysisInfo getAnalysisInfo(Long coverLetterId) {
 
-        Analysis analysis = analysisRepository.findByCoverLetterId(coverLetterId);
+        return AnalysisResponse.toAnalysisInfo(findByCoverLetterId(coverLetterId));
+    }
 
-        return AnalysisResponse.toAnalysisInfo(analysis);
+    public Analysis findByCoverLetterId(Long coverLetterId) {
+        return analysisRepository.findByCoverLetterId(coverLetterId);
     }
 }
