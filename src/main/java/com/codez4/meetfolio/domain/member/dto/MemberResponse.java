@@ -49,18 +49,6 @@ public class MemberResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class MemberListResult {
-        @Schema(description = "로그인 사용자 정보")
-        private MemberInfo memberInfo;
-        @Schema(description = "회원 목록")
-        private MemberList memberList;
-    }
-
-    @Schema(description = "회원 목록 DTO")
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
     public static class MemberList {
 
         @Schema(description = "회원 목록")
@@ -115,13 +103,7 @@ public class MemberResponse {
                         .build();
     }
 
-    public static MemberListResult toMemberListResult(Member member, Page<Member> members){
-        return MemberListResult.builder()
-                .memberInfo(toMemberInfo(member))
-                .memberList(toMemberList(members))
-                .build();
-    }
-    public static MemberList toMemberList(Page<Member> members){
+    public static MemberList toMemberList(Page<Member> members) {
         List<MemberDetailInfo> memberList = members.stream()
                 .map(MemberResponse::toMemberDetailInfo)
                 .toList();
