@@ -46,7 +46,7 @@ public class AdminController {
     public ApiResponse<String> deleteMember(@AuthenticationMember Member admin,
                                             @PathVariable(value = "memberId") Long memberId){
         Member member = memberQueryService.findById(memberId);
-        memberCommandService.inactiveMember(member);
+        memberCommandService.inactivateMember(member);
         return ApiResponse.onSuccess("회원 삭제 성공입니다.");
     }
 

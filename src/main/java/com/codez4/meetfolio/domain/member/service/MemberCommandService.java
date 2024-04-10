@@ -33,7 +33,7 @@ public class MemberCommandService {
         return MemberResponse.toMemberProc(member);
     }
 
-    public void inactiveMember(Member member) {
+    public void inactivateMember(Member member) {
         // 자식 댓글 삭제
         commentRepository.deleteByParentComment_Member(member);
         // 부모 댓글 삭제
