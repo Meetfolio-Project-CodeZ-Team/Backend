@@ -6,7 +6,6 @@ import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.service.MemberCommandService;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
-import com.codez4.meetfolio.global.annotation.EnumValid;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.ApiResponse;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
@@ -28,23 +27,22 @@ public class AdminController {
 
     @Operation(summary = "회원 목록 조회", description = "회원관리 메뉴의 회원 목록을 조회합니다.")
     @GetMapping("/members-management")
-    public ApiResponse<MemberResponse.MemberListResult> getMemberList(@AuthenticationMember Member admin,
-                                                                      @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                      @RequestParam(value = "jobKeyword", required = false) String jobKeyword){
+    public ApiResponse<MemberResponse.MemberList> getMemberList(@AuthenticationMember Member admin,
+                                                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                @RequestParam(value = "jobKeyword", required = false) String jobKeyword) {
         JobKeyword jobKeywordEnum;
-        if(jobKeyword!=null) {
+        if (jobKeyword != null) {
             jobKeywordEnum = JobKeyword.convert(jobKeyword);
-            if(jobKeywordEnum==null) throw new ApiException(ErrorStatus._BAD_REQUEST);
-        }
-        else jobKeywordEnum = null;
-        return ApiResponse.onSuccess(memberQueryService.getMemberList(admin,page, jobKeywordEnum));
+            if (jobKeywordEnum == null) throw new ApiException(ErrorStatus._BAD_REQUEST);
+        } else jobKeywordEnum = null;
+        return ApiResponse.onSuccess(memberQueryService.getMemberList(page, jobKeywordEnum));
     }
 
     @Operation(summary = "회원 삭제", description = "회원관리 메뉴에서 회원을 삭제합니다.")
     @Parameter(name = "memberId", description = "회원 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @DeleteMapping("/members-management")
     public ApiResponse<String> deleteMember(@AuthenticationMember Member admin,
-                                            @PathVariable(value = "memberId") Long memberId){
+                                            @PathVariable(value = "memberId") Long memberId) {
         Member member = memberQueryService.findById(memberId);
         memberCommandService.inactivateMember(member);
         return ApiResponse.onSuccess("회원 삭제 성공입니다.");
