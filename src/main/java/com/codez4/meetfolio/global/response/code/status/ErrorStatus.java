@@ -40,7 +40,16 @@ public enum ErrorStatus implements BaseErrorCode {
     // ================================================================================================================= //
 
     // 자기소개서 관련
-    _COVERLETTER_NOT_FOUND(HttpStatus.NOT_FOUND, "COVERLETTER4001", "존재하지 않는 자기소개서 데이터입니다.");
+    _COVERLETTER_NOT_FOUND(HttpStatus.NOT_FOUND, "COVERLETTER4001", "존재하지 않는 자기소개서 데이터입니다."),
+
+    // ================================================================================================================= //
+
+    // AI 피드백 관련
+    _FEEDBACK_NOT_FOUND(HttpStatus.NOT_FOUND, "FEEDBACK4001", "존재하지 않는 피드백 데이터입니다."),
+    // ================================================================================================================= //
+
+    // AI 직무 역량 분석 관련
+    _ANALYSIS_NOT_FOUND(HttpStatus.NOT_FOUND, "ANALYSIS4001", "존재하지 않는 AI 직무 역량 분석 데이터입니다.");
 
 
     private final HttpStatus httpStatus;
