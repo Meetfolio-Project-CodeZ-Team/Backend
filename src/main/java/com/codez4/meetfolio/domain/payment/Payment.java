@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.payment;
 
+import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.point.Point;
 import com.codez4.meetfolio.domain.member.Member;
 import jakarta.persistence.*;
@@ -10,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Payment {
+public class Payment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
