@@ -108,9 +108,9 @@ public class MemberResponse {
     public static MemberInfo toMemberInfo(Member member) {
         return member == null ? null :
                 MemberInfo.builder()
-                        .memberName(member.getEmail())
+                        .memberName(member.getEmail().split("@")[0])
                         .profile(member.getProfile())
-                        .major(member.getMajor().name())
+                        .major(member.getMajor().getDescription())
                         .build();
     }
 
