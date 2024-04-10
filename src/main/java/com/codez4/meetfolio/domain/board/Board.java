@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.board;
 
+import com.codez4.meetfolio.domain.comment.Comment;
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.member.Member;
 import jakarta.persistence.*;
@@ -9,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+
+import java.util.List;
 
 @DynamicInsert
 @Getter
@@ -42,5 +45,6 @@ public class Board extends BaseTimeEntity {
     @ColumnDefault("'0'")
     private Integer commentCount;
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 }
