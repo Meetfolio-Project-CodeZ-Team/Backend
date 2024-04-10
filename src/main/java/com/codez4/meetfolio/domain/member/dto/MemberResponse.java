@@ -15,7 +15,7 @@ import java.util.List;
 
 public class MemberResponse {
 
-    @Schema(description = "사용자 정보 응답 DTO")
+    @Schema(description = "로그인 사용자 정보 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -44,7 +44,7 @@ public class MemberResponse {
         private LocalDateTime createdAt;
     }
 
-    @Schema(description = "회원 목록 응답 DTO")
+    @Schema(description = "회원 관리 - 회원 목록 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -56,6 +56,7 @@ public class MemberResponse {
         private MemberList memberList;
     }
 
+    @Schema(description = "회원 목록 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
