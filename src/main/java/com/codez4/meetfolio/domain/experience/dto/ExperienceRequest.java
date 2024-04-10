@@ -3,6 +3,7 @@ package com.codez4.meetfolio.domain.experience.dto;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.experience.Experience;
 import com.codez4.meetfolio.domain.member.Member;
+import com.codez4.meetfolio.global.annotation.EnumValid;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class ExperienceRequest {
     private String motivation;
 
     @Schema(description = "맡았던 직무", example = "BACKEND")
+    @EnumValid(enumClass = JobKeyword.class)
     private String jobKeyword;
 
     @Schema(description = "사용한 기술 스택", example = "spring/mysql")
