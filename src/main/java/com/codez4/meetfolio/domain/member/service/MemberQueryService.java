@@ -1,7 +1,11 @@
 package com.codez4.meetfolio.domain.member.service;
 
+import com.codez4.meetfolio.domain.enums.Authority;
+import com.codez4.meetfolio.domain.enums.JobKeyword;
+import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.LoginRequest;
+import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import com.codez4.meetfolio.domain.member.repository.MemberRepository;
 import com.codez4.meetfolio.global.exception.ApiException;
@@ -9,11 +13,15 @@ import com.codez4.meetfolio.global.jwt.JwtTokenProvider;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.codez4.meetfolio.global.security.Password;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo;
+import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberListResult;
 import static com.codez4.meetfolio.global.security.Password.ENCODER;
 
 @Service
@@ -53,9 +61,19 @@ public class MemberQueryService {
         }
     }
 
+    public MemberResponse.MemberListResult getMemberList(Member member, int page, JobKeyword jobKeyword) {
+        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
+        if (jobKeyword == null) {
+            return toMemberListResult(member, memberRepository.findMemberByStatusAndAuthority(Status.ACTIVE, Authority.MEMBER, pageRequest));
+        } else
+            return toMemberListResult(member, memberRepository.findMemberByStatusAndAuthorityAndJobKeyword(Status.ACTIVE, Authority.MEMBER, jobKeyword, pageRequest));
+    }
+
     private void comparePassword(String password, Password savedPassword) {
         if (!savedPassword.isSamePassword(password, ENCODER)) {
             throw new ApiException(ErrorStatus._INVALID_PASSWORD);
         }
     }
+
+
 }

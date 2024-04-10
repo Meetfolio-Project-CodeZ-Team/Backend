@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExperienceRepository extends JpaRepository<Experience, Long> {
 
+    void deleteByMember(Member member);
+
     Page<Experience> findAllByMember(Member member, Pageable pageable);
 
     List<Experience> findTop12ByJobKeywordOrderByIdDesc(JobKeyword jobKeyword);
