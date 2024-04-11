@@ -18,6 +18,7 @@ public class PointRequest {
         @EnumValid(enumClass = PointType.class)
         String type;
 
+        @Schema(description = "사용할 포인트")
         int point;
     }
 
