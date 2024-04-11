@@ -1,5 +1,7 @@
 package com.codez4.meetfolio.domain.payment.dto;
 
+import com.codez4.meetfolio.domain.member.Member;
+import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.payment.Payment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,34 +14,36 @@ import org.springframework.data.domain.Page;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo;
+
 public class PaymentResponse {
-    @Schema(description = "결제 내역 목록 응답 DTO")
+    @Schema(description = "사용자 - 충전 내역 목록 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class PaymentResult {
 
-        @Schema(description = "요청 년/월")
-        private String yearMonth;
+        @Schema(description = "로그인 사용자 정보")
+        private MemberResponse.MemberInfo memberInfo;
 
-        @Schema(description = "총 매출")
-        private int totalSales;
-
-        @Schema(description = "결제 내역")
+        @Schema(description = "충전 내역")
         private PaymentInfo paymentInfo;
 
     }
 
-    @Schema(description = "결제 내역 목록 DTO")
+    @Schema(description = "사용자 - 충전 내역 목록 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class PaymentInfo {
 
-        @Schema(description = "결제 내역 목록")
-        private List<PaymentResponse.PaymentItem> paymentList;
+        @Schema(description = "내 포인트")
+        private int myPoint;
+
+        @Schema(description = "충전 내역 목록")
+        private List<PaymentItem> paymentList;
 
         @Schema(description = "페이징된 리스트의 항목 개수")
         private Integer listSize;
@@ -57,43 +61,40 @@ public class PaymentResponse {
         private Boolean isLast;
     }
 
-    @Schema(description = "결제 내역 DTO")
+    @Schema(description = "사용자 - 충전 내역 목록 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class PaymentItem {
 
-        @Schema(description = "결제 일시")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd ", timezone = "Asia/Seoul")
+        @Schema(description = "충전 일시")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
-
-        @Schema(description = "이메일")
-        private String email;
 
         @Schema(description = "결제 금액")
         private int payment;
 
-        @Schema(description = "충전 포인트")
+        @Schema(description = "층전 포인트")
         private int point;
 
+        @Schema(description = "충전 후 포인트")
+        private int totalPoint;
     }
 
-    public static PaymentResult toPaymentResult(String yearMonth, int totalSales, Page<Payment> payments) {
+    public static PaymentResult toPaymentResult(Member member,Page<Payment> payments ){
         return PaymentResult.builder()
-                .paymentInfo(toPaymentList(payments))
-                .yearMonth(yearMonth)
-                .totalSales(totalSales)
+                .memberInfo(toMemberInfo(member))
+                .paymentInfo(toPaymentInfo(payments, member.getPoint()))
                 .build();
     }
 
-    public static PaymentInfo toPaymentList(Page<Payment> payments) {
-        List<PaymentItem> paymentItems = payments.stream()
-                .map(PaymentResponse::toPaymentItem)
-                .toList();
+    public static PaymentInfo toPaymentInfo(Page<Payment> payments, int myPoint){
+        List<PaymentItem> paymentList = payments.stream().map(PaymentResponse::toPaymentItem).toList();
         return PaymentInfo.builder()
-                .paymentList(paymentItems)
-                .listSize(paymentItems.size())
+                .myPoint(myPoint)
+                .paymentList(paymentList)
+                .listSize(paymentList.size())
                 .totalPage(payments.getTotalPages())
                 .totalElements(payments.getTotalElements())
                 .isFirst(payments.isFirst())
@@ -101,12 +102,12 @@ public class PaymentResponse {
                 .build();
     }
 
-    public static PaymentItem toPaymentItem(Payment payment) {
+    public static PaymentItem toPaymentItem(Payment payment){
         return PaymentItem.builder()
                 .createdAt(payment.getCreatedAt())
-                .email(payment.getMember().getEmail())
                 .payment(payment.getPayment())
                 .point(payment.getPoint().getPoint())
+                .totalPoint(payment.getPoint().getTotalPoint())
                 .build();
     }
 
