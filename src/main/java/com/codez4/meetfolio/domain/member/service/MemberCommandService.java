@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class MemberCommandService {
+
     private final MemberRepository memberRepository;
     private final ExperienceRepository experienceRepository;
     private final CoverLetterRepository coverLetterRepository;
@@ -41,5 +42,10 @@ public class MemberCommandService {
         experienceRepository.deleteByMember(member);
         coverLetterRepository.findByMember(member).forEach(CoverLetter::delete);
         member.setInactive();
+    }
+
+    public MemberResponse.MemberProc update(Member member, MemberRequest.Patch patch) {
+        member.update(patch);
+        return MemberResponse.toMemberProc(member);
     }
 }
