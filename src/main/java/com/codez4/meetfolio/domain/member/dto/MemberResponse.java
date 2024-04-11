@@ -49,7 +49,7 @@ public class MemberResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class MemberList {
+    public static class MemberListResult {
 
         @Schema(description = "회원 목록")
         private List<MemberResponse.MemberDetailInfo> memberList;
@@ -103,11 +103,11 @@ public class MemberResponse {
                         .build();
     }
 
-    public static MemberList toMemberList(Page<Member> members) {
+    public static MemberListResult toMemberList(Page<Member> members) {
         List<MemberDetailInfo> memberList = members.stream()
                 .map(MemberResponse::toMemberDetailInfo)
                 .toList();
-        return MemberList.builder()
+        return MemberListResult.builder()
                 .memberList(memberList)
                 .listSize(memberList.size())
                 .totalPage(members.getTotalPages())

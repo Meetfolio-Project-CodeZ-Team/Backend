@@ -61,7 +61,7 @@ public class MemberQueryService {
         }
     }
 
-    public MemberResponse.MemberList getMemberList(int page, JobKeyword jobKeyword) {
+    public MemberResponse.MemberListResult getMemberList(int page, JobKeyword jobKeyword) {
         PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
         if (jobKeyword == null) {
             return toMemberList(memberRepository.findMemberByStatusAndAuthority(Status.ACTIVE, Authority.MEMBER, pageRequest));

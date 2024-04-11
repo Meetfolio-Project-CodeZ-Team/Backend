@@ -28,5 +28,7 @@ public class Point extends BaseTimeEntity {
     private Integer total_point;
 
     @Column(nullable = false)
+
+    @Enumerated(EnumType.STRING)
     private PointType pointType;
 }
