@@ -1,5 +1,7 @@
 package com.codez4.meetfolio.domain.member.dto;
 
+import static com.codez4.meetfolio.global.security.Password.ENCODER;
+
 import com.codez4.meetfolio.domain.enums.Grade;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.enums.Major;
@@ -11,8 +13,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-import static com.codez4.meetfolio.global.security.Password.ENCODER;
 
 public class MemberRequest {
 
@@ -52,25 +52,30 @@ public class MemberRequest {
         private Major major;
     }
 
-    /*
-        회원 수정 dto
-     */
+    @Schema(description = "사용자 정보 수정 요청 DTO")
     @Getter
-    @AllArgsConstructor
-    @Builder
     public static class Patch {
-        private String grade;
-        private String jobKeyword;
+
+        @Schema(description = "수정하는 비밀번호 정보")
+        private String password;
+
+        @Schema(description = "수정하는 학과 정보")
         private String major;
+
+        @Schema(description = "수정하는 학년 정보, FRESHMAN/SOPHOMORE/JUNIOR/SENIOR/GRADUATE", example = "GRADUATE")
+        private String grade;
+
+        @Schema(description = "수정하는 희망 직무 키워드, BACKEND/WEB/APP/DESIGN/AI", example = "BACKEND")
+        private String jobKeyword;
     }
 
     public static Member toEntity(Post post) {
         return Member.builder()
-                .email(post.getEmail())
-                .password(Password.encrypt(post.getPassword(), ENCODER))
-                .grade(post.getGrade())
-                .jobKeyword(post.getJobKeyword())
-                .major(post.getMajor())
-                .build();
+            .email(post.getEmail())
+            .password(Password.encrypt(post.getPassword(), ENCODER))
+            .grade(post.getGrade())
+            .jobKeyword(post.getJobKeyword())
+            .major(post.getMajor())
+            .build();
     }
 }
