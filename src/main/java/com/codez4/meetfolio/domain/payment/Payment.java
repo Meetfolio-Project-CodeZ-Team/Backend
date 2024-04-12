@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.payment;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
+import com.codez4.meetfolio.domain.enums.PaymentStatus;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.point.Point;
 import jakarta.persistence.*;
@@ -21,11 +22,16 @@ public class Payment extends BaseTimeEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "point_id", nullable = false)
-    private Point point;
-
     @Column(nullable = false)
     private Integer payment;
+
+    @Column(name = "status", nullable = false)
+    private PaymentStatus paymentStatus;
+
+    /*
+    카카오 페이 고유 결제 번호
+     */
+    @Column(name = "kakao_pay_id", nullable = false)
+    private String kakaoPayId;
 
 }

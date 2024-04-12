@@ -3,6 +3,7 @@ package com.codez4.meetfolio.domain.payment.dto;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.payment.Payment;
+import com.codez4.meetfolio.domain.point.Point;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -82,32 +84,53 @@ public class PaymentResponse {
         private int totalPoint;
     }
 
-    public static PaymentResult toPaymentResult(Member member,Page<Payment> payments ){
+
+    @Schema(description = "포인트 충전 응답 dto")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class PaymentProc{
+        @Schema(description = "결제 내역 ID")
+        private Long paymentId;
+
+        @Schema(description = "결제 일시")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+        private LocalDateTime createdAt;
+    }
+
+    public static PaymentResult toPaymentResult(Member member , Page<Point> points, List<PaymentItem> paymentList ){
         return PaymentResult.builder()
                 .memberInfo(toMemberInfo(member))
-                .paymentInfo(toPaymentInfo(payments, member.getPoint()))
+                .paymentInfo(toPaymentInfo(points, paymentList, member.getPoint()))
                 .build();
     }
 
-    public static PaymentInfo toPaymentInfo(Page<Payment> payments, int myPoint){
-        List<PaymentItem> paymentList = payments.stream().map(PaymentResponse::toPaymentItem).toList();
+    public static PaymentInfo toPaymentInfo(Page<Point> points, List<PaymentItem> paymentList, int myPoint){
         return PaymentInfo.builder()
                 .myPoint(myPoint)
                 .paymentList(paymentList)
                 .listSize(paymentList.size())
-                .totalPage(payments.getTotalPages())
-                .totalElements(payments.getTotalElements())
-                .isFirst(payments.isFirst())
-                .isLast(payments.isLast())
+                .totalPage(points.getTotalPages())
+                .totalElements(points.getTotalElements())
+                .isFirst(points.isFirst())
+                .isLast(points.isLast())
                 .build();
     }
 
-    public static PaymentItem toPaymentItem(Payment payment){
+    public static PaymentItem toPaymentItem(Payment payment, Point point){
         return PaymentItem.builder()
                 .createdAt(payment.getCreatedAt())
                 .payment(payment.getPayment())
-                .point(payment.getPoint().getPoint())
-                .totalPoint(payment.getPoint().getTotalPoint())
+                .point(point.getPoint())
+                .totalPoint(point.getTotalPoint())
+                .build();
+    }
+
+    public static PaymentProc toPaymentProc(Payment payment){
+        return PaymentProc.builder()
+                .paymentId(payment.getId())
+                .createdAt(payment.getCreatedAt())
                 .build();
     }
 
