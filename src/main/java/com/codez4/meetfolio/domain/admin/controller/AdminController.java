@@ -1,13 +1,13 @@
-package com.codez4.meetfolio.domain.member.controller;
+package com.codez4.meetfolio.domain.admin.controller;
 
+import com.codez4.meetfolio.domain.admin.dto.PaymentAdminResponse;
+import com.codez4.meetfolio.domain.admin.dto.PointAdminResponse;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.service.MemberCommandService;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
-import com.codez4.meetfolio.domain.payment.dto.PaymentResponse;
 import com.codez4.meetfolio.domain.payment.service.PaymentQueryService;
-import com.codez4.meetfolio.domain.point.dto.PointResponse;
 import com.codez4.meetfolio.domain.point.service.PointQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.exception.ApiException;
@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import org.springframework.web.bind.annotation.*;
-
 @Tag(name = "관리자 API")
 @RestController
 @RequestMapping("/api/admins")
@@ -37,6 +35,7 @@ public class AdminController {
     private final PaymentQueryService paymentQueryService;
 
     @Operation(summary = "회원 목록 조회", description = "회원 관리 메뉴의 회원 목록을 조회합니다.")
+    @Parameter(name = "jobKeyword", description = "직무 키워드, Query String입니다. BACKEND/WEB/APP/DESIGN/AI", required = false, example = "BACKEND", in = ParameterIn.QUERY)
     @GetMapping("/members-management")
     public ApiResponse<MemberResponse.MemberListResult> getMemberList(@AuthenticationMember Member admin,
                                                                       @RequestParam(value = "page", defaultValue = "0") int page,
@@ -63,9 +62,9 @@ public class AdminController {
     @Parameter(name = "year", description = "년도", required = false, example = "2024", in = ParameterIn.QUERY)
     @Parameter(name = "month", description = "월", required = false, example = "4", in = ParameterIn.QUERY)
     @GetMapping("/point-management")
-    public ApiResponse<PointResponse.PointStatics> getPointStatics(@AuthenticationMember Member admin,
-                                                                   @RequestParam(required = false) Integer year,
-                                                                   @RequestParam(required = false) Integer month) {
+    public ApiResponse<PointAdminResponse.PointStatics> getPointStatics(@AuthenticationMember Member admin,
+                                                                        @RequestParam(required = false) Integer year,
+                                                                        @RequestParam(required = false) Integer month) {
         if (year == null && month == null) {
             return ApiResponse.onSuccess(pointQueryService.getPointStatics(LocalDate.now(ZoneId.of("Asia/Seoul")).getYear(), LocalDate.now(ZoneId.of("Asia/Seoul")).getMonthValue()));
         } else if (year != null && month != null)
@@ -77,10 +76,10 @@ public class AdminController {
     @Parameter(name = "year", description = "년도", required = false, example = "2024", in = ParameterIn.QUERY)
     @Parameter(name = "month", description = "월", required = false, example = "4", in = ParameterIn.QUERY)
     @GetMapping("/payment-management")
-    public ApiResponse<PaymentResponse.PaymentResult> getPaymentList(@AuthenticationMember Member admin,
-                                                                     @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                     @RequestParam(required = false) Integer year,
-                                                                     @RequestParam(required = false) Integer month) {
+    public ApiResponse<PaymentAdminResponse.PaymentAdminResult> getPaymentList(@AuthenticationMember Member admin,
+                                                                               @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                               @RequestParam(required = false) Integer year,
+                                                                               @RequestParam(required = false) Integer month) {
         if (year == null && month == null) {
             return ApiResponse.onSuccess(paymentQueryService.getPaymentList(page, LocalDate.now(ZoneId.of("Asia/Seoul")).getYear(), LocalDate.now(ZoneId.of("Asia/Seoul")).getMonthValue()));
         } else if (year != null && month != null) {

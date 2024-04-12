@@ -24,8 +24,8 @@ public class Point extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer point;
 
-    @Column(nullable = false)
-    private Integer total_point;
+    @Column(name = "total_point", nullable = false)
+    private Integer totalPoint;
 
     @Column(nullable = false)
 

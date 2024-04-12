@@ -67,4 +67,8 @@ public class Member extends BaseTimeEntity {
         this.inactiveDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         this.status = Status.INACTIVE;
     }
+
+    public void setPoint(int point){
+        this.point = point;
+    }
 }
