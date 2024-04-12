@@ -76,10 +76,10 @@ public class AdminController {
     @Parameter(name = "year", description = "년도", required = false, example = "2024", in = ParameterIn.QUERY)
     @Parameter(name = "month", description = "월", required = false, example = "4", in = ParameterIn.QUERY)
     @GetMapping("/payment-management")
-    public ApiResponse<PaymentAdminResponse.PaymentAdminResult> getPaymentList(@AuthenticationMember Member admin,
-                                                                               @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                               @RequestParam(required = false) Integer year,
-                                                                               @RequestParam(required = false) Integer month) {
+    public ApiResponse<PaymentAdminResponse.PaymentResult> getPaymentList(@AuthenticationMember Member admin,
+                                                                          @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                          @RequestParam(required = false) Integer year,
+                                                                          @RequestParam(required = false) Integer month) {
         if (year == null && month == null) {
             return ApiResponse.onSuccess(paymentQueryService.getPaymentList(page, LocalDate.now(ZoneId.of("Asia/Seoul")).getYear(), LocalDate.now(ZoneId.of("Asia/Seoul")).getMonthValue()));
         } else if (year != null && month != null) {
