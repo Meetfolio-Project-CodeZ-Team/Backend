@@ -23,15 +23,24 @@ public class Payment extends BaseTimeEntity {
     private Member member;
 
     @Column(nullable = false)
+    private Integer point;
+
+    @Column(nullable = false)
     private Integer payment;
 
-    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private PaymentStatus paymentStatus;
 
-    /*
-    카카오 페이 고유 결제 번호
-     */
-    @Column(name = "kakao_pay_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "kakao_pay_id")
     private String kakaoPayId;
 
+    public void updateKakaoPayId(String kakaoPayId){
+        this.kakaoPayId = kakaoPayId;
+    }
+
+    public void updateStatus (PaymentStatus paymentStatus){
+        this.paymentStatus = paymentStatus;
+    }
 }
