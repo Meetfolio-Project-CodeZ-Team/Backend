@@ -28,11 +28,10 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer payment;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "kakao_pay_id")
     private String kakaoPayId;
 

@@ -29,6 +29,10 @@ public class PaymentQueryService {
     private final PointRepository pointRepository;
     private final PaymentRepository paymentRepository;
 
+    public Payment findById(Long paymentId){
+       return paymentRepository.findById(paymentId).orElseThrow(()-> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));
+    }
+
     public PaymentResponse.PaymentResult getMyPaymentList(int page, Member member) {
         PageRequest pageRequest = PageRequest.of(page, 9, Sort.by("createdAt").descending());
         Page<Point> points = pointRepository.findByMemberAndPointType(member, PointType.CHARGE, pageRequest);
