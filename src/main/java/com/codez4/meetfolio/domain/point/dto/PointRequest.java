@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.point.dto;
 
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
+import com.codez4.meetfolio.domain.payment.Payment;
 import com.codez4.meetfolio.domain.point.Point;
 import com.codez4.meetfolio.global.annotation.EnumValid;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,6 +34,7 @@ public class PointRequest {
         PointType pointType;
         int totalPoint;
         Member member;
+        Payment payment;
     }
 
     public static Point toEntity(Post post){
@@ -41,6 +43,7 @@ public class PointRequest {
                 .pointType(post.getPointType())
                 .totalPoint(post.getTotalPoint())
                 .member(post.getMember())
+                .payment(post.payment)
                 .build();
     }
 }

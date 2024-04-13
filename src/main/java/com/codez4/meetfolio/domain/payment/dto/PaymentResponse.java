@@ -85,18 +85,42 @@ public class PaymentResponse {
     }
 
 
-    @Schema(description = "포인트 충전 응답 dto")
+    @Schema(description = "카카오 페이 redirect url dto")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class PaymentProc{
+    public static class PaymentReady {
         @Schema(description = "결제 내역 ID")
         private Long paymentId;
 
+        @Schema(description = "카카오 페이 결제 ID")
+        private String tid;
+
+        @Schema(description = "카카오 페이 redirect url")
+        private String nextRedirectPcUrl;
+
         @Schema(description = "결제 일시")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
-        private LocalDateTime createdAt;
+        private String createdAt;
+    }
+
+    @Schema(description = "카카오 페이 충전 완료 응답 dto")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class PaymentApprove {
+        @Schema(description = "결제 내역 ID")
+        private Long paymentId;
+        @Schema(description = "결제 금액 정보")
+        private KakaoPayResponse.Amount amount;
+        @Schema(description = "상품명")
+        private String itemName;
+        @Schema(description = "결제 요청 시간")
+        private String createdAt;
+        @Schema(description = "결제 응답 시간")
+        private String approveAt;
+
     }
 
     public static PaymentResult toPaymentResult(Member member , Page<Point> points, List<PaymentItem> paymentList ){
@@ -127,10 +151,22 @@ public class PaymentResponse {
                 .build();
     }
 
-    public static PaymentProc toPaymentProc(Payment payment){
-        return PaymentProc.builder()
-                .paymentId(payment.getId())
-                .createdAt(payment.getCreatedAt())
+    public static PaymentReady toPaymentReady(long paymentId, KakaoPayResponse.Ready response){
+        return PaymentReady.builder()
+                .paymentId(paymentId)
+                .tid(response.getTid())
+                .nextRedirectPcUrl(response.getNext_redirect_pc_url())
+                .createdAt(response.getCreated_at())
+                .build();
+    }
+
+    public static PaymentApprove toPaymentApprove(long paymentId, KakaoPayResponse.Approve response){
+        return  PaymentApprove.builder()
+                .paymentId(paymentId)
+                .itemName(response.getItem_name())
+                .amount(response.getAmount())
+                .createdAt(response.getCreated_at())
+                .approveAt(response.getApproved_at())
                 .build();
     }
 

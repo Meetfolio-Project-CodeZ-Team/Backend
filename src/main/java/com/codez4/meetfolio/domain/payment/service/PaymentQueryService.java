@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.payment.service;
 
 import com.codez4.meetfolio.domain.admin.dto.PaymentAdminResponse;
 import com.codez4.meetfolio.domain.enums.Authority;
+import com.codez4.meetfolio.domain.enums.PaymentStatus;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.payment.Payment;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.List;
 
 import static com.codez4.meetfolio.domain.admin.dto.PaymentAdminResponse.toPaymentAdminItem;
 import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentItem;
@@ -28,6 +30,10 @@ import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentR
 public class PaymentQueryService {
     private final PointRepository pointRepository;
     private final PaymentRepository paymentRepository;
+
+    public Payment findById(Long paymentId){
+       return paymentRepository.findById(paymentId).orElseThrow(()-> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));
+    }
 
     public PaymentResponse.PaymentResult getMyPaymentList(int page, Member member) {
         PageRequest pageRequest = PageRequest.of(page, 9, Sort.by("createdAt").descending());
@@ -45,7 +51,7 @@ public class PaymentQueryService {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("createdAt").descending());
         String yearMonth = year + "년" + " " + month + "월";
 
-        Page<Payment> payments = paymentRepository.findByMember_Authority(Authority.MEMBER, pageRequest);
+        Page<Payment> payments = paymentRepository.findByMember_AuthorityAndAndPaymentStatusIs(Authority.MEMBER, PaymentStatus.APPROVE, pageRequest);
         List<PaymentAdminResponse.PaymentItem> paymentList = payments.stream().map(payment -> {
             Point point = pointRepository.getPointByPayment(payment).orElseThrow(() -> new ApiException(ErrorStatus._BAD_REQUEST));
             return toPaymentAdminItem(payment, point);
