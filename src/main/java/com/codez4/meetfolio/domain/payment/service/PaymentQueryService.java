@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.payment.service;
 
 import com.codez4.meetfolio.domain.admin.dto.PaymentAdminResponse;
 import com.codez4.meetfolio.domain.enums.Authority;
+import com.codez4.meetfolio.domain.enums.PaymentStatus;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.payment.Payment;
@@ -49,7 +50,7 @@ public class PaymentQueryService {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("createdAt").descending());
         String yearMonth = year + "년" + " " + month + "월";
 
-        Page<Payment> payments = paymentRepository.findByMember_Authority(Authority.MEMBER, pageRequest);
+        Page<Payment> payments = paymentRepository.findByMember_AuthorityAndAndPaymentStatusIs(Authority.MEMBER, PaymentStatus.APPROVE, pageRequest);
         List<PaymentAdminResponse.PaymentItem> paymentList = payments.stream().map(payment -> {
             Point point = pointRepository.getPointByPayment(payment).orElseThrow(() -> new ApiException(ErrorStatus._BAD_REQUEST));
             return toPaymentAdminItem(payment, point);
