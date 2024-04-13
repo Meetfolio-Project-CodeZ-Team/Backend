@@ -29,7 +29,6 @@ public class PaymentAdminResponse {
 
         @Schema(description = "결제 내역")
         private PaymentInfo paymentInfo;
-
     }
 
     @Schema(description = "관리자 - 결제 내역 목록 DTO")
