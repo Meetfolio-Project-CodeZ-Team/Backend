@@ -97,7 +97,7 @@ public class PaymentAdminResponse {
                 .isLast(payments.isLast())
                 .build();
     }
-  
+
     public static PaymentItem toPaymentAdminItem(Payment payment, Point point) {
         return PaymentItem.builder()
                 .createdAt(payment.getCreatedAt())

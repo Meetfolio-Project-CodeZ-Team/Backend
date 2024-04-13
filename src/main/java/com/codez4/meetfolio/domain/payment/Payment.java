@@ -3,7 +3,6 @@ package com.codez4.meetfolio.domain.payment;
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.PaymentStatus;
 import com.codez4.meetfolio.domain.member.Member;
-import com.codez4.meetfolio.domain.point.Point;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,11 +27,10 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer payment;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "kakao_pay_id")
     private String kakaoPayId;
 

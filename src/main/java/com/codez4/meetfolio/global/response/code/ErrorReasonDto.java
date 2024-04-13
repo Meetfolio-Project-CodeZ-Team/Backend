@@ -1,6 +1,5 @@
 package com.codez4.meetfolio.global.response.code;
 
-import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.Builder;
 import lombok.Getter;

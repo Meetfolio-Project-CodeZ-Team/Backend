@@ -49,7 +49,14 @@ public enum ErrorStatus implements BaseErrorCode {
     // ================================================================================================================= //
 
     // AI 직무 역량 분석 관련
-    _ANALYSIS_NOT_FOUND(HttpStatus.NOT_FOUND, "ANALYSIS4001", "존재하지 않는 AI 직무 역량 분석 데이터입니다.");
+    _ANALYSIS_NOT_FOUND(HttpStatus.NOT_FOUND, "ANALYSIS4001", "존재하지 않는 AI 직무 역량 분석 데이터입니다."),
+
+    // ================================================================================================================= //
+
+    // 포인트 / 결제 관련
+    _PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PAYMENT4001", "존재하지 않는 결제 데이터입니다."),
+    _POINT_NOT_FOUND(HttpStatus.NOT_FOUND, "PAYMENT4001", "존재하지 않는 포인트 데이터입니다.")
+    ;
 
 
     private final HttpStatus httpStatus;
