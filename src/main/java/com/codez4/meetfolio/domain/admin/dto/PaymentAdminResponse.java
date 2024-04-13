@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.admin.dto;
 
 import com.codez4.meetfolio.domain.payment.Payment;
+import com.codez4.meetfolio.domain.point.Point;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class PaymentAdminResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class PaymentAdminResult {
+    public static class PaymentResult {
 
         @Schema(description = "요청 년/월")
         private String yearMonth;
@@ -27,8 +28,7 @@ public class PaymentAdminResponse {
         private int totalSales;
 
         @Schema(description = "결제 내역")
-        private PaymentAdminInfo paymentInfo;
-
+        private PaymentInfo paymentInfo;
     }
 
     @Schema(description = "관리자 - 결제 내역 목록 DTO")
@@ -36,10 +36,10 @@ public class PaymentAdminResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class PaymentAdminInfo {
+    public static class PaymentInfo {
 
         @Schema(description = "결제 내역 목록")
-        private List<PaymentAdminItem> paymentList;
+        private List<PaymentItem> paymentList;
 
         @Schema(description = "페이징된 리스트의 항목 개수")
         private Integer listSize;
@@ -62,7 +62,7 @@ public class PaymentAdminResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class PaymentAdminItem {
+    public static class PaymentItem {
 
         @Schema(description = "결제 일시")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
@@ -79,19 +79,16 @@ public class PaymentAdminResponse {
 
     }
 
-    public static PaymentAdminResult toPaymentAdminResult(String yearMonth, int totalSales, Page<Payment> payments) {
-        return PaymentAdminResult.builder()
-                .paymentInfo(toPaymentAdminList(payments))
+    public static PaymentResult toPaymentResult(String yearMonth, int totalSales, Page<Payment> payments, List<PaymentItem> paymentList) {
+        return PaymentResult.builder()
+                .paymentInfo(toPaymentList(payments, paymentList))
                 .yearMonth(yearMonth)
                 .totalSales(totalSales)
                 .build();
     }
 
-    public static PaymentAdminInfo toPaymentAdminList(Page<Payment> payments) {
-        List<PaymentAdminItem> paymentList = payments.stream()
-                .map(PaymentAdminResponse::toPaymentAdminItem)
-                .toList();
-        return PaymentAdminInfo.builder()
+    public static PaymentInfo toPaymentList(Page<Payment> payments, List<PaymentItem> paymentList) {
+        return PaymentInfo.builder()
                 .paymentList(paymentList)
                 .listSize(paymentList.size())
                 .totalPage(payments.getTotalPages())
@@ -100,13 +97,13 @@ public class PaymentAdminResponse {
                 .isLast(payments.isLast())
                 .build();
     }
-
-    public static PaymentAdminItem toPaymentAdminItem(Payment payment) {
-        return PaymentAdminItem.builder()
+  
+    public static PaymentItem toPaymentAdminItem(Payment payment, Point point) {
+        return PaymentItem.builder()
                 .createdAt(payment.getCreatedAt())
                 .email(payment.getMember().getEmail())
                 .payment(payment.getPayment())
-                .point(payment.getPoint().getPoint())
+                .point(point.getPoint())
                 .build();
     }
 }
