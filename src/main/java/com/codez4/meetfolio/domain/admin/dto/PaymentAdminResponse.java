@@ -29,7 +29,6 @@ public class PaymentAdminResponse {
 
         @Schema(description = "결제 내역")
         private PaymentInfo paymentInfo;
-
     }
 
     @Schema(description = "관리자 - 결제 내역 목록 DTO")
@@ -98,7 +97,7 @@ public class PaymentAdminResponse {
                 .isLast(payments.isLast())
                 .build();
     }
-
+  
     public static PaymentItem toPaymentAdminItem(Payment payment, Point point) {
         return PaymentItem.builder()
                 .createdAt(payment.getCreatedAt())

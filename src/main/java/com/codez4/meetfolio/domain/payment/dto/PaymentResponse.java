@@ -84,7 +84,6 @@ public class PaymentResponse {
         private int totalPoint;
     }
 
-
     @Schema(description = "포인트 충전 응답 dto")
     @Builder
     @AllArgsConstructor

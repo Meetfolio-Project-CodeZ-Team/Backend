@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import static com.codez4.meetfolio.domain.point.dto.PointRequest.toEntity;
-
 @Tag(name = "결제 API")
 @RestController
 @RequestMapping("/api")
