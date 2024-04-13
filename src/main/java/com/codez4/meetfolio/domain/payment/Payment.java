@@ -3,7 +3,6 @@ package com.codez4.meetfolio.domain.payment;
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.PaymentStatus;
 import com.codez4.meetfolio.domain.member.Member;
-import com.codez4.meetfolio.domain.point.Point;
 import jakarta.persistence.*;
 import lombok.*;
 

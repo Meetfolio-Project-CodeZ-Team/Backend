@@ -1,11 +1,8 @@
 package com.codez4.meetfolio.domain.payment.service;
 
-import com.codez4.meetfolio.domain.member.Member;
-import com.codez4.meetfolio.domain.member.repository.MemberRepository;
 import com.codez4.meetfolio.domain.payment.dto.KakaoPayRequest;
 import com.codez4.meetfolio.domain.payment.dto.KakaoPayResponse;
 import com.codez4.meetfolio.domain.payment.dto.PaymentRequest;
-import com.codez4.meetfolio.domain.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

@@ -15,10 +15,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.codez4.meetfolio.domain.point.dto.PointRequest.toEntity;
 import static com.codez4.meetfolio.domain.payment.dto.PaymentRequest.toEntity;
 import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentApprove;
 import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentReady;
+import static com.codez4.meetfolio.domain.point.dto.PointRequest.toEntity;
 
 @Service
 @AllArgsConstructor
