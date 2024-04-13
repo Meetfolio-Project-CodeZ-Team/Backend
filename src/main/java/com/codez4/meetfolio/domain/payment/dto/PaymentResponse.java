@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -119,6 +120,7 @@ public class PaymentResponse {
         private String createdAt;
         @Schema(description = "결제 응답 시간")
         private String approveAt;
+
     }
 
     public static PaymentResult toPaymentResult(Member member , Page<Point> points, List<PaymentItem> paymentList ){
