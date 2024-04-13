@@ -4,12 +4,17 @@ import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.board.EmploymentBoard;
 import com.codez4.meetfolio.domain.board.GroupBoard;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse.BoardItem.BoardItemBuilder;
+import com.codez4.meetfolio.domain.enums.Status;
+import com.codez4.meetfolio.domain.like.Like;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
+import com.codez4.meetfolio.global.exception.ApiException;
+import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,19 +68,33 @@ public class BoardResponse {
         private Boolean isLast;
     }
 
-    public static BoardInfo toBoardInfo(Page<Board> boards) {
+    public static <T> BoardInfo toBoardInfo(Page<T> page, List<Status> statusList) {
+        List<BoardItem> boardItems;
+        List<Board> boards;
 
-        List<BoardItem> boardItems = boards.stream()
-            .map(BoardResponse::toBoardItem)
+        boards = page.getContent().stream()
+            .map(item -> {
+                if (item instanceof Board) {
+                    return (Board) item;
+                } else if (item instanceof Like) {
+                    return ((Like) item).getBoard();
+                } else {
+                    throw new ApiException(ErrorStatus._BAD_REQUEST);
+                }
+            })
+            .toList();
+
+        boardItems = IntStream.range(0, boards.size())
+            .mapToObj(i -> toBoardItem(boards.get(i), statusList.get(i)))
             .toList();
 
         return BoardInfo.builder()
             .boardItems(boardItems)
             .listSize(boardItems.size())
-            .totalPage(boards.getTotalPages())
-            .totalElements(boards.getTotalElements())
-            .isFirst(boards.isFirst())
-            .isLast(boards.isLast())
+            .totalPage(page.getTotalPages())
+            .totalElements(page.getTotalElements())
+            .isFirst(page.isFirst())
+            .isLast(page.isLast())
             .build();
     }
 
@@ -101,6 +120,9 @@ public class BoardResponse {
         @Schema(description = "게시글의 좋아요 개수")
         private Integer likeCount;
 
+        @Schema(description = "좋아요 상태 여부")
+        private Status likeStatus;
+
         @Schema(description = "게시글의 댓글 개수")
         private Integer commentCount;
 
@@ -122,13 +144,14 @@ public class BoardResponse {
 
     }
 
-    public static BoardItem toBoardItem(Board board) {
+    public static BoardItem toBoardItem(Board board, Status status) {
         BoardItemBuilder boardItemBuilder = BoardItem.builder()
             .memberName(board.getMember().getEmail().split("@")[0])
             .boardId(board.getId())
             .title(board.getTitle())
             .content(board.getContent())
             .likeCount(board.getLikeCount())
+            .likeStatus(status)
             .commentCount(board.getCommentCount())
             .registrationDate(board.getCreatedAt().toLocalDate());
 
