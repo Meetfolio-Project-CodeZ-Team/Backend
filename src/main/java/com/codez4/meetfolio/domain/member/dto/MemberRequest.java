@@ -25,11 +25,13 @@ public class MemberRequest {
         @NotBlank(message = "비밀번호 입력은 필수입니다.")
         private String password;
 
+
+        @Schema(description = "학년 및 학적, FIRST_GRADE/SECOND_GRADE/THIRD_GRADE/FOURTH_GRADE/GRADUATE")
         @NotBlank(message = "학년 및 학적 입력은 필수입니다.")
         @EnumValid(enumClass = Grade.class)
         private String grade;
 
-        @NotBlank(message = "희망 직무 입력은 필수입니다.")
+        @NotBlank(message = "희망 직무 입력은 필수입니다. BACKEND/WEB/APP/DESIGN/AI")
         @EnumValid(enumClass = JobKeyword.class)
         private String jobKeyword;
 

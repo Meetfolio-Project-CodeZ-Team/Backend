@@ -31,7 +31,7 @@ public class ExperienceRequest {
     @Schema(description = "경험 동기 & 이유")
     private String motivation;
 
-    @Schema(description = "맡았던 직무", example = "BACKEND")
+    @Schema(description = "맡았던 직무, BACKEND/WEB/APP/DESIGN/AI", example = "BACKEND")
     @EnumValid(enumClass = JobKeyword.class)
     private String jobKeyword;
 

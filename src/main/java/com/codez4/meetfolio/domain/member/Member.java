@@ -80,4 +80,8 @@ public class Member extends BaseTimeEntity {
         this.grade = Grade.convert(request.getGrade());
         this.jobKeyword = JobKeyword.convert(request.getJobKeyword());
     }
+      
+    public void setPoint(int point){
+        this.point = point;
+    }
 }
