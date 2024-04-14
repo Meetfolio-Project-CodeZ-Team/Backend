@@ -75,5 +75,9 @@ public class MemberQueryService {
         }
     }
 
+    public MemberResponse.MemberDetailInfo getMyPage(Member member) {
+
+        return MemberResponse.toMemberDetailInfo(member);
+    }
 
 }
