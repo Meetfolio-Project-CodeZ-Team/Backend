@@ -37,6 +37,7 @@ public class AdminController {
     private final PointQueryService pointQueryService;
     private final PaymentQueryService paymentQueryService;
 
+
     @Operation(summary = "대시 보드 조회", description = "관리자 메인페이지의 대시보드를 조회합니다.")
     @GetMapping("/dashboard")
     public ApiResponse<DashboardResponse.DashboardResult> getDashboard(@AuthenticationMember Member admin) {
@@ -95,5 +96,4 @@ public class AdminController {
             return ApiResponse.onSuccess(paymentQueryService.getPaymentList(page, year, month));
         } else throw new ApiException(ErrorStatus._BAD_REQUEST);
     }
-
 }

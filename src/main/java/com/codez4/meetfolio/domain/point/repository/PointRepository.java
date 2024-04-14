@@ -25,4 +25,5 @@ public interface PointRepository extends JpaRepository<Point, Long> {
 
     @Query("SELECT IFNULL(MAX(POINTSUM.POINT), 0) FROM (SELECT DATE_FORMAT(p.createdAt, '%Y-%c') AS MONTH, sum(p.point) AS POINT FROM Point p WHERE p.pointType = :type GROUP BY MONTH) AS POINTSUM WHERE POINTSUM.MONTH =:month")
     long queryGetPointSum(PointType type, String month);
+
 }
