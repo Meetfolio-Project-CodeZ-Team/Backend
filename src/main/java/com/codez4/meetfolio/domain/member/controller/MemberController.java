@@ -3,6 +3,7 @@ package com.codez4.meetfolio.domain.member.controller;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse.BoardInfo;
 import com.codez4.meetfolio.domain.board.service.BoardQueryService;
+import com.codez4.meetfolio.domain.comment.service.CommentQueryService;
 import com.codez4.meetfolio.domain.enums.Grade;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.enums.Major;
@@ -39,6 +40,7 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     private final BoardQueryService boardQueryService;
     private final LikeQueryService likeQueryService;
+    private final CommentQueryService commentQueryService;
 
     @Operation(summary = "회원 가입", description = "회원 가입")
     @PostMapping("/signup")
@@ -89,7 +91,19 @@ public class MemberController {
         @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        BoardInfo boardInfo = likeQueryService.getMyLikedBoards(member, page);
+        BoardInfo boardInfo = likeQueryService.findMyLikedBoards(member, page);
+
+        return ApiResponse.onSuccess(BoardResponse.toMyBoardResult(memberInfo, boardInfo));
+    }
+
+    @Operation(summary = "내가 작성한 댓글의 게시글 목록 조회", description = "내가 작성한 댓글의 게시글 목록 조회 GET으로 보냅니다.")
+    @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
+    @GetMapping("/my-comments")
+    public ApiResponse<BoardResponse.MyBoardResult> getMyComments(
+        @AuthenticationMember Member member, @RequestParam(name = "page") Integer page) {
+
+        MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
+        BoardInfo boardInfo = commentQueryService.findMyComments(member, page);
 
         return ApiResponse.onSuccess(BoardResponse.toMyBoardResult(memberInfo, boardInfo));
     }
