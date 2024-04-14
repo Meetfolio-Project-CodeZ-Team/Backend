@@ -28,9 +28,9 @@ public class BoardQueryService {
 
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
 
-        Page<Board> myBoars = boardRepository.findAllByMember(member, pageRequest);
-        List<Status> likeStatus = likeQueryService.getLikeStatus(member, myBoars.getContent());
+        Page<Board> myBoards = boardRepository.findAllByMember(member, pageRequest);
+        List<Status> likeStatus = likeQueryService.getLikeStatus(member, myBoards.getContent());
 
-        return BoardResponse.toBoardInfo(myBoars, likeStatus);
+        return BoardResponse.toBoardInfo(myBoards, likeStatus);
     }
 }
