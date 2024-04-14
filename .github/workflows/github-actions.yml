@@ -65,5 +65,5 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/meetfolio:latest
             sudo docker tag ${{ secrets.DOCKER_USERNAME }}/meetfolio:latest meetfolio:latest
             sudo docker rm -f meetfolio-server
-            sudo docker run -d --name meetfolio-server -e TZ=Asia/Seoul -p 8080:8080 meetfolio:latest
+            sudo docker run -d --name meetfolio-server -e TZ=Asia/Seoul -p 9090:9090 meetfolio:latest
             docker image prune -af
