@@ -26,15 +26,16 @@ public class PointQueryService {
 
     public PointResponse.PointResult getMyPointList(int page, Member member) {
         PageRequest pageRequest = PageRequest.of(page, 9, Sort.by("createdAt").descending());
-        Page<Point> points = pointRepository.getPointByMemberAndPointTypeIsNot(member, PointType.CHARGE, pageRequest);
+        Page<Point> points = pointRepository.getPointByMember(member, pageRequest);
         return toPointResult(member, points);
     }
 
     public PointAdminResponse.PointStatics getPointStatics(int year, int month) {
         String requestMonth = Integer.toString(year) + '-' + month;
-        int coverLetterPoint = pointRepository.queryGetPointSum(PointType.USE_COVER_LETTER, requestMonth);
-        int analysisPoint = pointRepository.queryGetPointSum(PointType.USE_AI_ANALYSIS, requestMonth);
+        long totalPoint = pointRepository.countAllByPointTypeIsNot(PointType.CHARGE);
+        long coverLetterPoint = pointRepository.queryGetPointSum(PointType.USE_COVER_LETTER, requestMonth);
+        long analysisPoint = pointRepository.queryGetPointSum(PointType.USE_AI_ANALYSIS, requestMonth);
         String yearMonth = year + "년" + " " + month + "월";
-        return toPointStatics(yearMonth, coverLetterPoint, analysisPoint);
+        return toPointStatics(yearMonth, (int) coverLetterPoint, (int) analysisPoint, (int) totalPoint);
     }
 }

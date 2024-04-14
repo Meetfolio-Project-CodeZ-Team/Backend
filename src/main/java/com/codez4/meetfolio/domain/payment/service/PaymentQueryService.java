@@ -19,7 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.List;
 
 import static com.codez4.meetfolio.domain.admin.dto.PaymentAdminResponse.toPaymentAdminItem;
 import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentItem;
@@ -31,8 +30,8 @@ public class PaymentQueryService {
     private final PointRepository pointRepository;
     private final PaymentRepository paymentRepository;
 
-    public Payment findById(Long paymentId){
-       return paymentRepository.findById(paymentId).orElseThrow(()-> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));
+    public Payment findById(Long paymentId) {
+        return paymentRepository.findById(paymentId).orElseThrow(() -> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));
     }
 
     public PaymentResponse.PaymentResult getMyPaymentList(int page, Member member) {
@@ -47,7 +46,7 @@ public class PaymentQueryService {
 
     public PaymentAdminResponse.PaymentResult getPaymentList(int page, int year, int month) {
         String requestMonth = Integer.toString(year) + '-' + month;
-        int totalSales = paymentRepository.queryGetTotalSales(requestMonth);
+        long totalSales = paymentRepository.queryGetTotalSalesByMonth(requestMonth);
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("createdAt").descending());
         String yearMonth = year + "년" + " " + month + "월";
 
@@ -56,7 +55,7 @@ public class PaymentQueryService {
             Point point = pointRepository.getPointByPayment(payment).orElseThrow(() -> new ApiException(ErrorStatus._BAD_REQUEST));
             return toPaymentAdminItem(payment, point);
         }).toList();
-        return PaymentAdminResponse.toPaymentResult(yearMonth, totalSales, payments, paymentList);
+        return PaymentAdminResponse.toPaymentResult(yearMonth, (int) totalSales, payments, paymentList);
 
     }
 }
