@@ -22,7 +22,7 @@ public class LikeQueryService {
     private final LikeRepository likeRepository;
 
     // 내가 좋아요 한 게시글 목록
-    public BoardResponse.BoardInfo getMyLikedBoards(Member member, Integer page) {
+    public BoardResponse.BoardInfo findMyLikedBoards(Member member, Integer page) {
 
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
 
@@ -37,13 +37,9 @@ public class LikeQueryService {
 
     }
 
-    // 내가 작성한 게시글의 좋아요 여부
+    // 사용자에 따른 게시글의 좋아요 여부
     public List<Status> getLikeStatus(Member member, List<Board> boards) {
 
-        return boards.stream()
-            .map(board -> likeRepository.findByMemberAndBoard(member, board))
-            .map(Like::getStatus)
-            .toList();
-
+        return likeRepository.findStatusByMemberAndBoards(member, boards);
     }
 }
