@@ -1,9 +1,6 @@
 package com.codez4.meetfolio.domain.admin.service;
 
-import com.codez4.meetfolio.domain.admin.dto.AIServiceResponse;
-import com.codez4.meetfolio.domain.admin.dto.DashboardResponse;
-import com.codez4.meetfolio.domain.admin.dto.DatasetResponse;
-import com.codez4.meetfolio.domain.admin.dto.PointResponse;
+import com.codez4.meetfolio.domain.admin.dto.*;
 import com.codez4.meetfolio.domain.analysis.repository.AnalysisRepository;
 import com.codez4.meetfolio.domain.dataset.Dataset;
 import com.codez4.meetfolio.domain.dataset.repository.DatasetRepository;
@@ -13,7 +10,6 @@ import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.repository.MemberRepository;
 import com.codez4.meetfolio.domain.model.repository.ModelRepository;
 import com.codez4.meetfolio.domain.payment.Payment;
-import com.codez4.meetfolio.domain.admin.dto.PaymentResponse;
 import com.codez4.meetfolio.domain.payment.repository.PaymentRepository;
 import com.codez4.meetfolio.domain.point.Point;
 import com.codez4.meetfolio.domain.point.repository.PointRepository;

@@ -1,8 +1,5 @@
 package com.codez4.meetfolio.domain.payment.service;
 
-import com.codez4.meetfolio.domain.admin.dto.PaymentAdminResponse;
-import com.codez4.meetfolio.domain.enums.Authority;
-import com.codez4.meetfolio.domain.enums.PaymentStatus;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.payment.Payment;
@@ -17,9 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-import static com.codez4.meetfolio.domain.admin.dto.PaymentAdminResponse.toPaymentAdminItem;
 import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentItem;
 import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentResult;
 
@@ -43,18 +40,4 @@ public class PaymentQueryService {
         return toPaymentResult(member, points, paymentList);
     }
 
-    public PaymentAdminResponse.PaymentResult getPaymentList(int page, int year, int month) {
-        String requestMonth = Integer.toString(year) + '-' + month;
-        long totalSales = paymentRepository.queryGetTotalSalesByMonth(requestMonth);
-        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("createdAt").descending());
-        String yearMonth = year + "년" + " " + month + "월";
-
-        Page<Payment> payments = paymentRepository.findByMember_AuthorityAndAndPaymentStatusIs(Authority.MEMBER, PaymentStatus.APPROVE, pageRequest);
-        List<PaymentAdminResponse.PaymentItem> paymentList = payments.stream().map(payment -> {
-            Point point = pointRepository.getPointByPayment(payment).orElseThrow(() -> new ApiException(ErrorStatus._BAD_REQUEST));
-            return toPaymentAdminItem(payment, point);
-        }).toList();
-        return PaymentAdminResponse.toPaymentResult(yearMonth, (int) totalSales, payments, paymentList);
-
-    }
 }

@@ -1,8 +1,5 @@
 package com.codez4.meetfolio.domain.member.service;
 
-import com.codez4.meetfolio.domain.enums.Authority;
-import com.codez4.meetfolio.domain.enums.JobKeyword;
-import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.LoginRequest;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
@@ -13,15 +10,12 @@ import com.codez4.meetfolio.global.jwt.JwtTokenProvider;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.codez4.meetfolio.global.security.Password;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo;
-import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberList;
 import static com.codez4.meetfolio.global.security.Password.ENCODER;
 
 @Service
@@ -59,14 +53,6 @@ public class MemberQueryService {
         if (member.isPresent()) {
             throw new ApiException(ErrorStatus._MEMBER_EXISTS);
         }
-    }
-
-    public MemberResponse.MemberListResult getMemberList(int page, JobKeyword jobKeyword) {
-        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
-        if (jobKeyword == null) {
-            return toMemberList(memberRepository.findMemberByStatusAndAuthority(Status.ACTIVE, Authority.MEMBER, pageRequest));
-        } else
-            return toMemberList(memberRepository.findMemberByStatusAndAuthorityAndJobKeyword(Status.ACTIVE, Authority.MEMBER, jobKeyword, pageRequest));
     }
 
     private void comparePassword(String password, Password savedPassword) {
