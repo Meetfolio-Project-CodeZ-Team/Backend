@@ -27,12 +27,13 @@ public class PointAdminResponse {
         private int totalPoint;
     }
 
-    public static PointStatics toPointStatics(String yearMonth, int coverLetterPoint, int analysisPoint) {
+    public static PointStatics toPointStatics(String yearMonth, int coverLetterPoint, int analysisPoint, int
+            totalPoint) {
         return PointStatics.builder()
                 .yearMonth(yearMonth)
                 .coverLetterPoint(coverLetterPoint)
                 .analysisPoint(analysisPoint)
-                .totalPoint(coverLetterPoint + analysisPoint)
+                .totalPoint(totalPoint)
                 .build();
     }
 }

@@ -13,6 +13,10 @@ import org.springframework.stereotype.Repository;
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     Page<Payment> findByMember_AuthorityAndAndPaymentStatusIs(Authority authority, PaymentStatus paymentStatus, Pageable pageable);
 
+    @Query("SELECT SUM(p.payment) FROM Payment p WHERE p.paymentStatus = 'APPROVE'")
+    long queryGetTotalSales();
+
     @Query("SELECT IFNULL(MAX(PAYMENTSUM.POINT), 0) FROM (SELECT DATE_FORMAT(p.createdAt, '%Y-%c') AS MONTH, sum(p.payment) AS POINT FROM Payment p WHERE p.paymentStatus ='APPROVE' GROUP BY MONTH) AS PAYMENTSUM WHERE PAYMENTSUM.MONTH =:month")
-    int queryGetTotalSales(String month);
+    long queryGetTotalSalesByMonth(String month);
+
 }

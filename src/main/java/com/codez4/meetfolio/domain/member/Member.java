@@ -1,7 +1,10 @@
 package com.codez4.meetfolio.domain.member;
 
+import static com.codez4.meetfolio.global.security.Password.ENCODER;
+
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.*;
+import com.codez4.meetfolio.domain.member.dto.MemberRequest;
 import com.codez4.meetfolio.global.security.Password;
 import jakarta.persistence.*;
 import lombok.*;
@@ -68,6 +71,16 @@ public class Member extends BaseTimeEntity {
         this.status = Status.INACTIVE;
     }
 
+    /**
+     * update
+     */
+    public void update(MemberRequest.Patch request) {
+        this.password = Password.encrypt(request.getPassword(), ENCODER);
+        this.major = Major.convert(request.getMajor());
+        this.grade = Grade.convert(request.getGrade());
+        this.jobKeyword = JobKeyword.convert(request.getJobKeyword());
+    }
+      
     public void setPoint(int point){
         this.point = point;
     }

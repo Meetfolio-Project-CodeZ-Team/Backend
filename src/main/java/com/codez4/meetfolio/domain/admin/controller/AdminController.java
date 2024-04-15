@@ -1,5 +1,7 @@
 package com.codez4.meetfolio.domain.admin.controller;
 
+import com.codez4.meetfolio.domain.admin.service.AdminService;
+import com.codez4.meetfolio.domain.admin.dto.DashboardResponse;
 import com.codez4.meetfolio.domain.admin.dto.PaymentAdminResponse;
 import com.codez4.meetfolio.domain.admin.dto.PointAdminResponse;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
@@ -29,10 +31,18 @@ import java.time.ZoneId;
 @RequiredArgsConstructor
 public class AdminController {
 
+    private final AdminService adminService;
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
     private final PointQueryService pointQueryService;
     private final PaymentQueryService paymentQueryService;
+
+
+    @Operation(summary = "대시 보드 조회", description = "관리자 메인페이지의 대시보드를 조회합니다.")
+    @GetMapping("/dashboard")
+    public ApiResponse<DashboardResponse.DashboardResult> getDashboard(@AuthenticationMember Member admin) {
+        return ApiResponse.onSuccess(adminService.getDashboard());
+    }
 
     @Operation(summary = "회원 목록 조회", description = "회원 관리 메뉴의 회원 목록을 조회합니다.")
     @Parameter(name = "jobKeyword", description = "직무 키워드, Query String입니다. BACKEND/WEB/APP/DESIGN/AI", required = false, example = "BACKEND", in = ParameterIn.QUERY)

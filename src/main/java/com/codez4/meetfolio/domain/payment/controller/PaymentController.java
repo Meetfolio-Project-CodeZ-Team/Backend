@@ -1,13 +1,11 @@
 package com.codez4.meetfolio.domain.payment.controller;
 
-import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.payment.Payment;
 import com.codez4.meetfolio.domain.payment.dto.PaymentRequest;
 import com.codez4.meetfolio.domain.payment.dto.PaymentResponse;
 import com.codez4.meetfolio.domain.payment.service.PaymentCommandService;
 import com.codez4.meetfolio.domain.payment.service.PaymentQueryService;
-import com.codez4.meetfolio.domain.point.dto.PointRequest;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +14,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import static com.codez4.meetfolio.domain.point.dto.PointRequest.toEntity;
 @Tag(name = "결제 API")
 @RestController
 @RequestMapping("/api")

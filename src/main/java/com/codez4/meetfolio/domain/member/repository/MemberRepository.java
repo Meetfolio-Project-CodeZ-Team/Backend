@@ -12,6 +12,10 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+    int countMemberByStatusAndAuthority(Status status, Authority authority);
+
+    int countMemberByStatusAndAuthorityAndJobKeyword(Status status, Authority authority, JobKeyword jobKeyword);
+
     Optional<Member> findByEmail(String email);
 
     Page<Member> findMemberByStatusAndAuthority(Status status, Authority authority, Pageable pageable);
