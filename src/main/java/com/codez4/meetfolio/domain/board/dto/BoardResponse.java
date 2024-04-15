@@ -12,14 +12,15 @@ import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class BoardResponse {
 
