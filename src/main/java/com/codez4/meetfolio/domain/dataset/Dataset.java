@@ -25,4 +25,7 @@ public class Dataset extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String domain;
+
+    @Column(nullable = false)
+    private String data;
 }

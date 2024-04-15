@@ -1,7 +1,5 @@
 package com.codez4.meetfolio.domain.member;
 
-import static com.codez4.meetfolio.global.security.Password.ENCODER;
-
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.*;
 import com.codez4.meetfolio.domain.member.dto.MemberRequest;
@@ -13,6 +11,8 @@ import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+
+import static com.codez4.meetfolio.global.security.Password.ENCODER;
 
 @DynamicInsert
 @Getter
