@@ -15,12 +15,13 @@ import java.util.List;
 
 public class DatasetResponse {
 
-    @Schema(description = "관리자 - AI 서비스 통계 모델 정보 DTO")
+    @Schema(description = "관리자 - 학습 데이터 리스트 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class DatasetInfo {
+        @Schema(description = "데이터셋 리스트")
         List<DatasetItem> datasetInfo;
 
         @Schema(description = "페이징된 리스트의 항목 개수")
@@ -39,23 +40,28 @@ public class DatasetResponse {
         private Boolean isLast;
     }
 
-    @Schema(description = "관리자 - AI 서비스 통계 모델 정보 DTO")
+    @Schema(description = "관리자 - 학습 데이터 리스트 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class DatasetItem{
-        @Schema(description = "결제 일시")
+        @Schema(description = "생성 일시")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
+
+        @Schema(description = "지원 직무")
         private String job;
 
+        @Schema(description = "데이터 수집 사이트")
         private String domain;
 
+        @Schema(description = "데이터 수집 url")
         private String url;
+
     }
 
-    @Schema(description = "관리자 - AI 서비스 통계 모델 정보 DTO")
+    @Schema(description = "관리자 - 데이터셋 저장 완료 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
