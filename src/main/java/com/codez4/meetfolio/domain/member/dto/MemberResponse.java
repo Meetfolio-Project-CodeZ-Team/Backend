@@ -3,6 +3,8 @@ package com.codez4.meetfolio.domain.member.dto;
 import com.codez4.meetfolio.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -86,8 +88,10 @@ public class MemberResponse {
         @Schema(description = "사용자 학년 및 학적")
         private String grade;
         @Schema(description = "사용자 학과")
+        @Enumerated(EnumType.STRING)
         private String major;
         @Schema(description = "희망 직무")
+        @Enumerated(EnumType.STRING)
         private String jobKeyword;
         @Schema(description = "포인트")
         private int point;

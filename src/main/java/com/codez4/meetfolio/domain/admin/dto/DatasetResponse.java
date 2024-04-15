@@ -1,7 +1,6 @@
 package com.codez4.meetfolio.domain.admin.dto;
 
 import com.codez4.meetfolio.domain.dataset.Dataset;
-import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -47,7 +46,7 @@ public class DatasetResponse {
     @Getter
     public static class DatasetItem{
         @Schema(description = "생성 일시")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
 
         @Schema(description = "지원 직무")
@@ -71,7 +70,7 @@ public class DatasetResponse {
         private Long datasetId;
 
         @Schema(description = "데이터 생성 시각")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
     }
 

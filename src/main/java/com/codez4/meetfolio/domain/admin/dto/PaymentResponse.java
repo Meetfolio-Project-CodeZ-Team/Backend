@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class PaymentAdminResponse {
+public class PaymentResponse {
     @Schema(description = "관리자 - 결제 내역 목록 응답 DTO")
     @Builder
     @AllArgsConstructor
@@ -66,7 +66,7 @@ public class PaymentAdminResponse {
     public static class PaymentItem {
 
         @Schema(description = "결제 일시")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
 
         @Schema(description = "이메일")
@@ -99,7 +99,7 @@ public class PaymentAdminResponse {
                 .build();
     }
 
-    public static PaymentItem toPaymentAdminItem(Payment payment, Point point) {
+    public static PaymentItem toPaymentItem(Payment payment, Point point) {
         return PaymentItem.builder()
                 .createdAt(payment.getCreatedAt())
                 .email(payment.getMember().getEmail())

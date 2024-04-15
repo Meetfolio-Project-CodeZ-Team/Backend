@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class PointAdminResponse {
+public class PointResponse {
     @Schema(description = "포인트 사용 통계 응답 DTO")
     @Builder
     @AllArgsConstructor
