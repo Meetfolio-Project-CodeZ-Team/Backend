@@ -54,8 +54,8 @@ public class AdminController {
 
     @Operation(summary = "회원 관리 -회원 비활성화", description = "회원관리 메뉴에서 회원을 비활성화합니다.")
     @Parameter(name = "memberId", description = "회원 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
-    @DeleteMapping("/members-management")
-    public ApiResponse<String> deleteMember(@AuthenticationMember Member admin,
+    @DeleteMapping("/members-management/{memberId}")
+    public ApiResponse<String> inactivateMember(@AuthenticationMember Member admin,
                                             @PathVariable(value = "memberId") Long memberId) {
         Member member = memberQueryService.findById(memberId);
         adminCommandService.inactivateMember(member);
