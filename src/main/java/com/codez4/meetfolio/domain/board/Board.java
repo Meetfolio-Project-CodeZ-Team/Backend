@@ -75,4 +75,12 @@ public class Board extends BaseTimeEntity {
         }
         this.likeCount = this.likeCount < 0 ? 0 : this.likeCount;
     }
+
+    public void changeComment(boolean isIncrease) {
+        if (isIncrease) {
+            this.commentCount += 1;
+        } else {
+            this.commentCount -= 1;
+        }
+    }
 }
