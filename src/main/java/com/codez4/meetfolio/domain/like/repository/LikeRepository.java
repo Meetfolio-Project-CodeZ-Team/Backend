@@ -4,6 +4,7 @@ import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.like.Like;
 import com.codez4.meetfolio.domain.member.Member;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     @Query("SELECT l.status FROM Like l WHERE l.member = :member AND l.board IN :boards")
     List<Status> findStatusByMemberAndBoards(@Param("member") Member member,
         @Param("boards") List<Board> boards);
+
+    Optional<Like> findByMemberAndBoard(Member member, Board board);
 }
