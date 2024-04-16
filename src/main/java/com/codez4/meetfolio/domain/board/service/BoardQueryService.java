@@ -7,6 +7,8 @@ import com.codez4.meetfolio.domain.board.repository.BoardRepository;
 import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.like.service.LikeQueryService;
 import com.codez4.meetfolio.domain.member.Member;
+import com.codez4.meetfolio.global.exception.ApiException;
+import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,5 +35,11 @@ public class BoardQueryService {
         List<Status> likeStatus = likeQueryService.getLikeStatus(member, myBoards.getContent());
 
         return BoardResponse.toBoardInfo(myBoards, likeStatus);
+    }
+
+    public Board findById(Long boardId) {
+        return boardRepository.findById(boardId).orElseThrow(
+            () -> new ApiException(ErrorStatus._BOARD_NOT_FOUND)
+        );
     }
 }
