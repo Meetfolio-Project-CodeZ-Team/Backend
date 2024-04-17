@@ -29,7 +29,7 @@ public class BoardController {
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @Parameter(name = "category", description = "직무 키워드, Query String입니다. BACKEND/WEB/APP/DESIGN/AI", example = "BACKEND", in = ParameterIn.QUERY)
     @GetMapping("/boards/employment")
-    public ApiResponse<SliceResponse<BoardResponse.BoardItem>> getJobBoardList(@AuthenticationMember Member member,
+    public ApiResponse<SliceResponse<BoardResponse.BoardItem>> getEmploymentBoards(@AuthenticationMember Member member,
                                                                                @RequestParam(name = "page") Integer page,
                                                                                @RequestParam(name = "category", required = false) String category) {
         if (category != null) {
