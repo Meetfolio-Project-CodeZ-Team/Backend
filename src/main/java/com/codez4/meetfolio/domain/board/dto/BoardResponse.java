@@ -1,26 +1,19 @@
 package com.codez4.meetfolio.domain.board.dto;
 
-import com.codez4.meetfolio.domain.board.Board;
-import com.codez4.meetfolio.domain.board.EmploymentBoard;
-import com.codez4.meetfolio.domain.board.GroupBoard;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse.BoardItem.BoardItemBuilder;
 import com.codez4.meetfolio.domain.enums.Status;
-import com.codez4.meetfolio.domain.like.Like;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
-import com.codez4.meetfolio.global.exception.ApiException;
-import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
+import com.codez4.meetfolio.global.response.SliceResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Objects;
 
 public class BoardResponse {
 
@@ -32,72 +25,46 @@ public class BoardResponse {
     public static class MyBoardResult {
 
         private MemberResponse.MemberInfo memberInfo;
-        private BoardInfo boardInfo;
+        private SliceResponse<BoardItem> boardInfo;
     }
 
-    public static MyBoardResult toMyBoardResult(MemberInfo memberInfo, BoardInfo boardInfo) {
+    public static MyBoardResult toMyBoardResult(MemberInfo memberInfo, SliceResponse<BoardItem> boardInfo) {
 
         return MyBoardResult.builder()
             .memberInfo(memberInfo)
             .boardInfo(boardInfo)
             .build();
     }
-
-    @Schema(description = "내가 작성한 게시글 페이징 정보 DTO")
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class BoardInfo {
-
-        @Schema(description = "내가 작성한 게시글 목록")
-        private List<BoardItem> boardItems;
-
-        @Schema(description = "페이징된 리스트의 항목 개수")
-        private Integer listSize;
-
-        @Schema(description = "총 페이징 수 ")
-        private Integer totalPage;
-
-        @Schema(description = "전체 데이터의 개수")
-        private Long totalElements;
-
-        @Schema(description = "첫 페이지의 여부")
-        private Boolean isFirst;
-
-        @Schema(description = "마지막 페이지의 여부")
-        private Boolean isLast;
-    }
-
-    public static <T> BoardInfo toBoardInfo(Page<T> page, List<Status> statusList) {
-        List<BoardItem> boardItems;
-        List<Board> boards;
-
-        boards = page.getContent().stream()
-            .map(item -> {
-                if (item instanceof Board) {
-                    return (Board) item;
-                } else if (item instanceof Like) {
-                    return ((Like) item).getBoard();
-                } else {
-                    throw new ApiException(ErrorStatus._BAD_REQUEST);
-                }
-            })
-            .toList();
-
-        boardItems = IntStream.range(0, boards.size())
-            .mapToObj(i -> toBoardItem(boards.get(i), statusList.get(i)))
-            .toList();
-
-        return BoardInfo.builder()
-            .boardItems(boardItems)
-            .listSize(boardItems.size())
-            .totalPage(page.getTotalPages())
-            .totalElements(page.getTotalElements())
-            .isFirst(page.isFirst())
-            .isLast(page.isLast())
-            .build();
-    }
+//
+//    public static <T> S toBoardInfo(Slice<T> slice, List<Status> statusList) {
+//        List<BoardItem> boardItems;
+//        List<Board> boards;
+//
+//        boards = slice.getContent().stream()
+//            .map(item -> {
+//                if (item instanceof Board) {
+//                    return (Board) item;
+//                } else if (item instanceof Like) {
+//                    return ((Like) item).getBoard();
+//                } else {
+//                    throw new ApiException(ErrorStatus._BAD_REQUEST);
+//                }
+//            })
+//            .toList();
+//
+//        boardItems = IntStream.range(0, boards.size())
+//            .mapToObj(i -> toBoardItem(boards.get(i), statusList.get(i)))
+//            .toList();
+//
+//        return BoardInfo.builder()
+//            .boardItems(boardItems)
+//            .listSize(boardItems.size())
+//            .totalPage(page.getTotalPages())
+//            .totalElements(page.getTotalElements())
+//            .isFirst(page.isFirst())
+//            .isLast(page.isLast())
+//            .build();
+//    }
 
     @Schema(description = "커뮤니티 게시글 응답 DTO")
     @Builder
@@ -106,11 +73,11 @@ public class BoardResponse {
     @Getter
     public static class BoardItem {
 
-        @Schema(description = "게시글 작성자")
-        private String memberName;
-
         @Schema(description = "게시글 아이디")
         private Long boardId;
+
+        @Schema(description = "게시글 작성자")
+        private String memberName;
 
         @Schema(description = "게시글 제목")
         private String title;
@@ -143,31 +110,43 @@ public class BoardResponse {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
         private LocalDate registrationDate;
 
-    }
-
-    public static BoardItem toBoardItem(Board board, Status status) {
-        BoardItemBuilder boardItemBuilder = BoardItem.builder()
-            .memberName(board.getMember().getEmail().split("@")[0])
-            .boardId(board.getId())
-            .title(board.getTitle())
-            .content(board.getContent())
-            .likeCount(board.getLikeCount())
-            .likeStatus(status)
-            .commentCount(board.getCommentCount())
-            .registrationDate(board.getCreatedAt().toLocalDate());
-
-        if (board instanceof EmploymentBoard employmentBoard) {
-            boardItemBuilder
-                .jobCategory(employmentBoard.getJobKeyword().getDescription())
-                .build();
-        } else if (board instanceof GroupBoard groupBoard) {
-            boardItemBuilder
-                .groupCategory(groupBoard.getGroupCategory().getDescription())
-                .recruitment(groupBoard.getRecruitment())
-                .peopleNumber(groupBoard.getPeopleNumber())
-                .build();
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            BoardItem boardItem = (BoardItem) o;
+            return Objects.equals(getBoardId(), boardItem.getBoardId());
         }
 
+        @Override
+        public int hashCode() {
+            return Objects.hash(getBoardId());
+        }
+
+    }
+    public static BoardItem toBoardItem(BoardQueryItem board) {
+        BoardItemBuilder boardItemBuilder = BoardItem.builder()
+                .memberName(board.getEmail().split("@")[0])
+                .boardId(board.getId())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .likeCount(board.getLikeCount())
+                .likeStatus(board.getStatus())
+                .commentCount(board.getCommentCount())
+                .registrationDate(board.getCreatedAt().toLocalDate());
+
+        if (board.getJobKeyword() != null) {
+            boardItemBuilder
+                    .jobCategory(board.getJobKeyword().getDescription())
+                    .build();
+        } else if (board.getGroupCategory() != null) {
+            boardItemBuilder
+                    .groupCategory(board.getGroupCategory().getDescription())
+                    .recruitment(board.getRecruitment())
+                    .peopleNumber(board.getPeopleNumber())
+                    .build();
+        }
         return boardItemBuilder.build();
     }
+
 }

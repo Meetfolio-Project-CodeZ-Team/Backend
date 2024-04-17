@@ -1,7 +1,6 @@
 package com.codez4.meetfolio.domain.member.controller;
 
 import com.codez4.meetfolio.domain.board.dto.BoardResponse;
-import com.codez4.meetfolio.domain.board.dto.BoardResponse.BoardInfo;
 import com.codez4.meetfolio.domain.board.service.BoardQueryService;
 import com.codez4.meetfolio.domain.comment.service.CommentQueryService;
 import com.codez4.meetfolio.domain.enums.Grade;
@@ -16,6 +15,7 @@ import com.codez4.meetfolio.domain.member.service.MemberCommandService;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.response.ApiResponse;
+import com.codez4.meetfolio.global.response.SliceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -73,7 +73,7 @@ public class MemberController {
                                                                 @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        BoardInfo boardInfo = boardQueryService.findMyBoards(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = boardQueryService.findMyBoards(member, page);
 
         return ApiResponse.onSuccess(BoardResponse.toMyBoardResult(memberInfo, boardInfo));
     }
@@ -85,7 +85,7 @@ public class MemberController {
                                                                @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        BoardInfo boardInfo = likeQueryService.findMyLikedBoards(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = likeQueryService.findMyLikedBoards(member, page);
 
         return ApiResponse.onSuccess(BoardResponse.toMyBoardResult(memberInfo, boardInfo));
     }
@@ -97,7 +97,7 @@ public class MemberController {
             @AuthenticationMember Member member, @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        BoardInfo boardInfo = commentQueryService.findMyComments(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = commentQueryService.findMyComments(member, page);
 
         return ApiResponse.onSuccess(BoardResponse.toMyBoardResult(memberInfo, boardInfo));
     }
