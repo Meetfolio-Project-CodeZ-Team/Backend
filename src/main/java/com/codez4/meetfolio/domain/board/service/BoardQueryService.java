@@ -4,6 +4,8 @@ import com.codez4.meetfolio.domain.board.dto.BoardQueryItem;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse;
 import com.codez4.meetfolio.domain.board.repository.BoardRepository;
 import com.codez4.meetfolio.domain.board.repository.EmploymentBoardRepository;
+import com.codez4.meetfolio.domain.board.repository.GroupBoardRepository;
+import com.codez4.meetfolio.domain.enums.GroupCategory;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.like.repository.LikeRepository;
 import com.codez4.meetfolio.domain.member.Member;
@@ -23,6 +25,7 @@ public class BoardQueryService {
 
     private final BoardRepository boardRepository;
     private final EmploymentBoardRepository employmentBoardRepository;
+    private final GroupBoardRepository groupBoardRepository;
 
     public SliceResponse<BoardResponse.BoardItem> getEmploymentBoards(Member member, int page) {
         Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
@@ -37,6 +40,22 @@ public class BoardQueryService {
         Slice<BoardQueryItem> employmentBoards =
                 employmentBoardRepository.queryFindAllEmploymentBoardsByJobKeyword(member, jobKeyword,pageable);
         Slice<BoardResponse.BoardItem> boards = employmentBoards.map(BoardResponse::toBoardItem);
+        return new SliceResponse<>(boards);
+    }
+
+    public SliceResponse<BoardResponse.BoardItem> getGroupBoards(Member member, int page) {
+        Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
+        Slice<BoardQueryItem> groupBoards =
+                groupBoardRepository.queryFindAllGroupBoards(member, pageable);
+        Slice<BoardResponse.BoardItem> boards = groupBoards.map(BoardResponse::toBoardItem);
+        return new SliceResponse<>(boards);
+    }
+
+    public SliceResponse<BoardResponse.BoardItem> getGroupBoardsByGroupCategory(Member member, int page, GroupCategory groupCategory) {
+        Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
+        Slice<BoardQueryItem> groupBoards =
+                groupBoardRepository.queryFindAllGroupBoardsByGroupCategory(member, groupCategory,pageable);
+        Slice<BoardResponse.BoardItem> boards = groupBoards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(boards);
     }
 
