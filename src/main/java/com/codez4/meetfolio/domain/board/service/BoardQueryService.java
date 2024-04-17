@@ -7,7 +7,6 @@ import com.codez4.meetfolio.domain.board.repository.EmploymentBoardRepository;
 import com.codez4.meetfolio.domain.board.repository.GroupBoardRepository;
 import com.codez4.meetfolio.domain.enums.GroupCategory;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
-import com.codez4.meetfolio.domain.like.repository.LikeRepository;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.response.SliceResponse;
 import lombok.RequiredArgsConstructor;

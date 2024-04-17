@@ -22,15 +22,15 @@ public class BoardResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class MyBoardResult {
+    public static class BoardResult {
 
         private MemberResponse.MemberInfo memberInfo;
         private SliceResponse<BoardItem> boardInfo;
     }
 
-    public static MyBoardResult toMyBoardResult(MemberInfo memberInfo, SliceResponse<BoardItem> boardInfo) {
+    public static BoardResult toBoardResult(MemberInfo memberInfo, SliceResponse<BoardItem> boardInfo) {
 
-        return MyBoardResult.builder()
+        return BoardResult.builder()
             .memberInfo(memberInfo)
             .boardInfo(boardInfo)
             .build();
