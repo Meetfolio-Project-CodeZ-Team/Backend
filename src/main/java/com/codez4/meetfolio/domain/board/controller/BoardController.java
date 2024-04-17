@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.board.controller;
 
 import com.codez4.meetfolio.domain.board.dto.BoardResponse;
 import com.codez4.meetfolio.domain.board.service.BoardQueryService;
+import com.codez4.meetfolio.domain.enums.GroupCategory;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
@@ -36,6 +37,19 @@ public class BoardController {
             JobKeyword jobKeyword = JobKeyword.convert(category);
             return ApiResponse.onSuccess(boardQueryService.getEmploymentBoardsByJobKeyword(member, page, jobKeyword));
         } else return ApiResponse.onSuccess(boardQueryService.getEmploymentBoards(member, page));
+    }
+
+    @Operation(summary = "그룹원 모집 게시판 조회", description = "커뮤니티 메뉴에서 그룹원 모집 게시판을 조회합니다.")
+    @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
+    @Parameter(name = "category", description = "그룹 카테고리, Query String입니다. STUDY/CONTEST", example = "STUDY", in = ParameterIn.QUERY)
+    @GetMapping("/boards/group")
+    public ApiResponse<SliceResponse<BoardResponse.BoardItem>> getJobBoardList(@AuthenticationMember Member member,
+                                                                               @RequestParam(name = "page") Integer page,
+                                                                               @RequestParam(name = "category", required = false) String category) {
+        if (category != null) {
+            GroupCategory groupCategory = GroupCategory.convert(category);
+            return ApiResponse.onSuccess(boardQueryService.getGroupBoardsByGroupCategory(member, page, groupCategory));
+        } else return ApiResponse.onSuccess(boardQueryService.getGroupBoards(member, page));
     }
 
 }
