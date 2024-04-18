@@ -25,7 +25,7 @@ public class MemberResponse {
     @Getter
     public static class MemberInfo {
 
-        @Schema(description = "권한")
+        @Schema(description = "권한, MEMBER/ADMIN")
         private String authority;
         @Schema(description = "사용자 이름")
         private String memberName;
@@ -105,6 +105,7 @@ public class MemberResponse {
     public static MemberInfo toMemberInfo(Member member) {
         if (member.getAuthority() == Authority.MEMBER) {
             return MemberInfo.builder()
+                    .authority(member.getAuthority().name())
                     .memberName(member.getEmail().split("@")[0])
                     .profile(member.getProfile())
                     .major(member.getMajor().getDescription())
@@ -112,6 +113,7 @@ public class MemberResponse {
         }
         else if (member.getAuthority() == Authority.ADMIN){
             return MemberInfo.builder()
+                    .authority(member.getAuthority().name())
                     .memberName(member.getEmail())
                     .profile(member.getProfile())
                     .major(null)
