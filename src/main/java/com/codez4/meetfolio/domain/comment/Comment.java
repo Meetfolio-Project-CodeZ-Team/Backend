@@ -47,4 +47,11 @@ public class Comment {
 
     @OneToMany(mappedBy = "parentComment", orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
+
+    /**
+     * update
+     */
+    public void update(String content) {
+        this.content = content;
+    }
 }

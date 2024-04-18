@@ -54,4 +54,11 @@ public class CommentCommandService {
         }
         return parentComment;
     }
+
+    public CommentResponse.CommentResult update(String content, Long commentId) {
+
+        Comment comment = commentQueryService.findById(commentId);
+        comment.update(content);
+        return CommentResponse.toCommentResult(comment);
+    }
 }
