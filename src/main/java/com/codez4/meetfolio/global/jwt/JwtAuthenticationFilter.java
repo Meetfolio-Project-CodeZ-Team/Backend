@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -44,17 +46,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String jwt = extractToken(request);
-        Long userId = jwtTokenProvider.getUserId(jwt);
-        Member member = memberRepository.findById(userId)
-                .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
+        String accessToken = extractAccessToken(request);
+        String refreshToken = extractRefreshToken(request);
 
-        if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } else {
-            filterChain.doFilter(request, response);
-            return;
+        if (StringUtils.hasText(accessToken)){
+            if (jwtTokenProvider.validateToken(accessToken)) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+            else if (!jwtTokenProvider.validateToken(accessToken) && refreshToken != null){
+                boolean isValidated = jwtTokenProvider.validateToken(refreshToken);
+                boolean isRefreshToken = jwtTokenProvider.existsRefreshToken(refreshToken);
+                if( isRefreshToken && isValidated ) {
+                    Long memberId = jwtTokenProvider.getUserId(accessToken);
+                    Member member = memberRepository.findById(memberId)
+                            .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
+                    String newAccessToken = jwtTokenProvider.generateAccessToken(member.getEmail(), memberId, member.getAuthority());
+                    jwtTokenProvider.setHeaderAccessToken(response, newAccessToken);
+                    SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(newAccessToken));
+                }
+            }
+            else {
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,7 +77,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new JwtException("인증 정보가 Security Context에 존재하지 않습니다.");
         }
 
-        Claims claims = jwtTokenProvider.parseClaims(jwt);
+        Claims claims = jwtTokenProvider.parseClaims(accessToken);
+        Long memberId = jwtTokenProvider.getUserId(accessToken);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
         if (member == null || !member.getId().equals(claims.get("id", Long.class))) {
             throw new JwtException("토큰 값의 유저 정보가 올바르지 않습니다.");
         }
@@ -70,12 +88,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    public static String resolveToken(HttpServletRequest request) {
-        return extractToken(request);
+    public static String extractAccessToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtProperties.TOKEN_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 
-    private static String extractToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(JwtProperties.HEADER_STRING);
+    public static String extractRefreshToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(JwtProperties.REFRESH_HEADER_STRING);
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtProperties.TOKEN_PREFIX)) {
             return bearerToken.substring(7);
