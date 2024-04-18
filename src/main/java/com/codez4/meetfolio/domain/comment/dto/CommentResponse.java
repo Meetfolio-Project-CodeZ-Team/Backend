@@ -26,10 +26,10 @@ public class CommentResponse {
         private LocalDateTime createdAt;
     }
 
-    public static CommentResult toCommentResult(Comment comment) {
+    public static CommentResult toCommentResult(Long commentId) {
 
         return CommentResult.builder()
-            .commentId(comment.getId())
+            .commentId(commentId)
             .createdAt(LocalDateTime.now())
             .build();
     }

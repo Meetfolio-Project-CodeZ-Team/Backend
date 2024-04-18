@@ -28,7 +28,7 @@ public class CommentCommandService {
         Comment comment = commentRepository.save(createComment(commentVO));
         comment.getBoard().changeComment(true);
 
-        return CommentResponse.toCommentResult(comment);
+        return CommentResponse.toCommentResult(comment.getId());
     }
 
     private Comment createComment(CommentVO commentVO) {
@@ -59,6 +59,12 @@ public class CommentCommandService {
 
         Comment comment = commentQueryService.findById(commentId);
         comment.update(content);
-        return CommentResponse.toCommentResult(comment);
+        return CommentResponse.toCommentResult(comment.getId());
+    }
+
+    public CommentResponse.CommentResult delete(Long commentId) {
+
+        commentRepository.deleteById(commentId);
+        return CommentResponse.toCommentResult(commentId);
     }
 }
