@@ -31,40 +31,10 @@ public class BoardResponse {
     public static BoardResult toBoardResult(MemberInfo memberInfo, SliceResponse<BoardItem> boardInfo) {
 
         return BoardResult.builder()
-            .memberInfo(memberInfo)
-            .boardInfo(boardInfo)
-            .build();
+                .memberInfo(memberInfo)
+                .boardInfo(boardInfo)
+                .build();
     }
-//
-//    public static <T> S toBoardInfo(Slice<T> slice, List<Status> statusList) {
-//        List<BoardItem> boardItems;
-//        List<Board> boards;
-//
-//        boards = slice.getContent().stream()
-//            .map(item -> {
-//                if (item instanceof Board) {
-//                    return (Board) item;
-//                } else if (item instanceof Like) {
-//                    return ((Like) item).getBoard();
-//                } else {
-//                    throw new ApiException(ErrorStatus._BAD_REQUEST);
-//                }
-//            })
-//            .toList();
-//
-//        boardItems = IntStream.range(0, boards.size())
-//            .mapToObj(i -> toBoardItem(boards.get(i), statusList.get(i)))
-//            .toList();
-//
-//        return BoardInfo.builder()
-//            .boardItems(boardItems)
-//            .listSize(boardItems.size())
-//            .totalPage(page.getTotalPages())
-//            .totalElements(page.getTotalElements())
-//            .isFirst(page.isFirst())
-//            .isLast(page.isLast())
-//            .build();
-//    }
 
     @Schema(description = "커뮤니티 게시글 응답 DTO")
     @Builder
@@ -124,6 +94,7 @@ public class BoardResponse {
         }
 
     }
+
     public static BoardItem toBoardItem(BoardQueryItem board) {
         BoardItemBuilder boardItemBuilder = BoardItem.builder()
                 .memberName(board.getEmail().split("@")[0])
@@ -137,8 +108,7 @@ public class BoardResponse {
 
         if (board.getJobKeyword() != null) {
             boardItemBuilder
-                    .jobCategory(board.getJobKeyword().getDescription())
-                    .build();
+                    .jobCategory(board.getJobKeyword().getDescription());
         } else if (board.getGroupCategory() != null) {
             boardItemBuilder
                     .groupCategory(board.getGroupCategory().getDescription())
