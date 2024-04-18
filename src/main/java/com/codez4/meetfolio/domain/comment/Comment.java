@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.comment;
 
 import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.member.Member;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,7 +46,7 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
-    @OneToMany(mappedBy = "parentComment", orphanRemoval = true)
+    @OneToMany(mappedBy = "parentComment", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Comment> children = new ArrayList<>();
 
     /**
