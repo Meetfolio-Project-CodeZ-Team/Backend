@@ -4,7 +4,6 @@ import com.codez4.meetfolio.global.response.code.ErrorReasonDto;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

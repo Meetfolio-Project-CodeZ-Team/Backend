@@ -1,10 +1,10 @@
 package com.codez4.meetfolio.global.jwt;
 
 import com.codez4.meetfolio.domain.enums.Authority;
-import com.codez4.meetfolio.global.utils.RedisUtil;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.codez4.meetfolio.global.security.CustomUserDetailService;
+import com.codez4.meetfolio.global.utils.RedisUtil;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

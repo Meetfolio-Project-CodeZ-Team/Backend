@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthService {
 
-    private final MemberQueryService memberQueryService;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
 

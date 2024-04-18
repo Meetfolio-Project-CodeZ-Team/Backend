@@ -2,10 +2,10 @@ package com.codez4.meetfolio.domain.member.controller;
 
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.LoginRequest;
-import com.codez4.meetfolio.domain.member.dto.TokenResponse;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
-import com.codez4.meetfolio.domain.member.service.MemberQueryService;
+import com.codez4.meetfolio.domain.member.dto.TokenResponse;
 import com.codez4.meetfolio.domain.member.service.AuthService;
+import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.jwt.JwtAuthenticationFilter;
 import com.codez4.meetfolio.global.jwt.JwtProperties;
