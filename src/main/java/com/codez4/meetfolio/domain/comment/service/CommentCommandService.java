@@ -4,7 +4,7 @@ import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.board.service.BoardQueryService;
 import com.codez4.meetfolio.domain.comment.Comment;
 import com.codez4.meetfolio.domain.comment.dto.CommentResponse;
-import com.codez4.meetfolio.domain.comment.dto.CommentResponse.CommentResult;
+import com.codez4.meetfolio.domain.comment.dto.CommentResponse.CommentProc;
 import com.codez4.meetfolio.domain.comment.dto.CommentVO;
 import com.codez4.meetfolio.domain.comment.repository.CommentRepository;
 import com.codez4.meetfolio.domain.member.Member;
@@ -23,12 +23,12 @@ public class CommentCommandService {
     private final BoardQueryService boardQueryService;
     private final CommentQueryService commentQueryService;
 
-    public CommentResult write(CommentVO commentVO) {
+    public CommentProc write(CommentVO commentVO) {
 
         Comment comment = commentRepository.save(createComment(commentVO));
         comment.getBoard().changeComment(true);
 
-        return CommentResponse.toCommentResult(comment.getId());
+        return CommentResponse.toCommentProc(comment.getId());
     }
 
     private Comment createComment(CommentVO commentVO) {
@@ -55,16 +55,16 @@ public class CommentCommandService {
         return parentComment;
     }
 
-    public CommentResponse.CommentResult update(String content, Long commentId) {
+    public CommentResponse.CommentProc update(String content, Long commentId) {
 
         Comment comment = commentQueryService.findById(commentId);
         comment.update(content);
-        return CommentResponse.toCommentResult(comment.getId());
+        return CommentResponse.toCommentProc(comment.getId());
     }
 
-    public CommentResponse.CommentResult delete(Long commentId) {
+    public CommentResponse.CommentProc delete(Long commentId) {
 
         commentRepository.deleteById(commentId);
-        return CommentResponse.toCommentResult(commentId);
+        return CommentResponse.toCommentProc(commentId);
     }
 }

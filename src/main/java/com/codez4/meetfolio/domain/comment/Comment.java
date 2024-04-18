@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.comment;
 
 import com.codez4.meetfolio.domain.board.Board;
+import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.member.Member;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
