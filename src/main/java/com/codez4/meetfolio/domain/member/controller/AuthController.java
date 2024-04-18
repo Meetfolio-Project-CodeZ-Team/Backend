@@ -63,7 +63,7 @@ public class AuthController {
             authService.logout(accessToken, refreshToken);
             ;
         }
-        return "redirect:/main/index";
+        return "redirect:/main";
     }
 
 }
