@@ -62,16 +62,4 @@ public class AuthController {
         return "redirect:/main";
     }
 
-    @Operation(summary = "access 토큰 재발급", description = "access 토큰 만료 시 재발급 합니다.")
-    @PostMapping("/reissue")
-    public ResponseEntity<ApiResponse<MemberResponse.MemberInfo>> reissue(@AuthenticationMember Member member,
-                          HttpServletRequest request, HttpServletResponse response) {
-        String accessToken = JwtAuthenticationFilter.extractAccessToken(request);
-        String refreshToken = JwtAuthenticationFilter.extractRefreshToken(request);
-        TokenResponse tokenResponse =authService.reissue(accessToken, refreshToken);
-        jwtTokenProvider.setHeaderAccessToken(response, tokenResponse.getAccessToken());
-        jwtTokenProvider.setHeaderRefreshToken(response, tokenResponse.getRefreshToken());
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(toMemberInfo(member)));
-    }
-
 }
