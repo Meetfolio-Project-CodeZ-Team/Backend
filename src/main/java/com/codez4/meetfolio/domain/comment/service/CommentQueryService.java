@@ -4,6 +4,7 @@ import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse.BoardInfo;
 import com.codez4.meetfolio.domain.comment.Comment;
+import com.codez4.meetfolio.domain.comment.dto.CommentResponse;
 import com.codez4.meetfolio.domain.comment.repository.CommentRepository;
 import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.like.service.LikeQueryService;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,5 +60,15 @@ public class CommentQueryService {
         return commentRepository.findById(commentId).orElseThrow(
             () -> new ApiException(ErrorStatus._COMMENT_NOT_FOUND)
         );
+    }
+
+    public CommentResponse.CommentResult findCommentsByBoard(Long boardId, int page) {
+
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
+
+        Slice<Comment> comments = commentRepository.findByBoardFetchJoinMember(
+            boardId, pageRequest);
+
+        return CommentResponse.toCommentResult(comments);
     }
 }
