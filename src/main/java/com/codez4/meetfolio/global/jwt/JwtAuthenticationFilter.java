@@ -62,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     Member member = memberRepository.findById(memberId)
                             .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
                     String newAccessToken = jwtTokenProvider.generateAccessToken(member.getEmail(), memberId, member.getAuthority());
-                    jwtTokenProvider.setHeaderAccessToken(response, newAccessToken);
+                    jwtTokenProvider.setHeaderAccessToken(response, JwtProperties.TOKEN_PREFIX + newAccessToken);
                     SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(newAccessToken));
                 }
             }
