@@ -1,7 +1,6 @@
 package com.codez4.meetfolio.domain.member.controller;
 
 import com.codez4.meetfolio.domain.board.dto.BoardResponse;
-import com.codez4.meetfolio.domain.board.dto.BoardResponse.BoardInfo;
 import com.codez4.meetfolio.domain.board.service.BoardQueryService;
 import com.codez4.meetfolio.domain.comment.service.CommentQueryService;
 import com.codez4.meetfolio.domain.enums.Grade;
@@ -16,6 +15,7 @@ import com.codez4.meetfolio.domain.member.service.MemberCommandService;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.response.ApiResponse;
+import com.codez4.meetfolio.global.response.SliceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -69,37 +69,37 @@ public class MemberController {
     @Operation(summary = "내가 작성한 게시글 목록 조회", description = "내가 작성한 게시글 목록 조회 GET으로 보냅니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-boards")
-    public ApiResponse<BoardResponse.MyBoardResult> getMyBoards(@AuthenticationMember Member member,
-                                                                @RequestParam(name = "page") Integer page) {
+    public ApiResponse<BoardResponse.BoardResult> getMyBoards(@AuthenticationMember Member member,
+                                                              @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        BoardInfo boardInfo = boardQueryService.findMyBoards(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = boardQueryService.findMyBoards(member, page);
 
-        return ApiResponse.onSuccess(BoardResponse.toMyBoardResult(memberInfo, boardInfo));
+        return ApiResponse.onSuccess(BoardResponse.toBoardResult(memberInfo, boardInfo));
     }
 
     @Operation(summary = "내가 좋아요 한 게시글 목록 조회", description = "내가 좋아요 한 게시글 목록 조회 GET으로 보냅니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-likes")
-    public ApiResponse<BoardResponse.MyBoardResult> getMyLikes(@AuthenticationMember Member member,
-                                                               @RequestParam(name = "page") Integer page) {
+    public ApiResponse<BoardResponse.BoardResult> getMyLikes(@AuthenticationMember Member member,
+                                                             @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        BoardInfo boardInfo = likeQueryService.findMyLikedBoards(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = likeQueryService.findMyLikedBoards(member, page);
 
-        return ApiResponse.onSuccess(BoardResponse.toMyBoardResult(memberInfo, boardInfo));
+        return ApiResponse.onSuccess(BoardResponse.toBoardResult(memberInfo, boardInfo));
     }
 
     @Operation(summary = "내가 작성한 댓글의 게시글 목록 조회", description = "내가 작성한 댓글의 게시글 목록 조회 GET으로 보냅니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-comments")
-    public ApiResponse<BoardResponse.MyBoardResult> getMyComments(
+    public ApiResponse<BoardResponse.BoardResult> getMyComments(
             @AuthenticationMember Member member, @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        BoardInfo boardInfo = commentQueryService.findMyComments(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = commentQueryService.findMyComments(member, page);
 
-        return ApiResponse.onSuccess(BoardResponse.toMyBoardResult(memberInfo, boardInfo));
+        return ApiResponse.onSuccess(BoardResponse.toBoardResult(memberInfo, boardInfo));
     }
 
 }
