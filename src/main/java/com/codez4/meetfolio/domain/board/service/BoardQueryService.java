@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.board.service;
 
+import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.board.dto.BoardQueryItem;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse;
 import com.codez4.meetfolio.domain.board.repository.BoardRepository;
@@ -8,7 +9,9 @@ import com.codez4.meetfolio.domain.board.repository.GroupBoardRepository;
 import com.codez4.meetfolio.domain.enums.GroupCategory;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.member.Member;
+import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.SliceResponse;
+import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,15 +32,17 @@ public class BoardQueryService {
     public SliceResponse<BoardResponse.BoardItem> getEmploymentBoards(Member member, int page) {
         Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
         Slice<BoardQueryItem> employmentBoards =
-                employmentBoardRepository.queryFindAllEmploymentBoards(member, pageable);
+            employmentBoardRepository.queryFindAllEmploymentBoards(member, pageable);
         Slice<BoardResponse.BoardItem> boards = employmentBoards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(boards);
     }
 
-    public SliceResponse<BoardResponse.BoardItem> getEmploymentBoardsByJobKeyword(Member member, int page, JobKeyword jobKeyword) {
+    public SliceResponse<BoardResponse.BoardItem> getEmploymentBoardsByJobKeyword(Member member,
+        int page, JobKeyword jobKeyword) {
         Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
         Slice<BoardQueryItem> employmentBoards =
-                employmentBoardRepository.queryFindAllEmploymentBoardsByJobKeyword(member, jobKeyword,pageable);
+            employmentBoardRepository.queryFindAllEmploymentBoardsByJobKeyword(member, jobKeyword,
+                pageable);
         Slice<BoardResponse.BoardItem> boards = employmentBoards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(boards);
     }
@@ -45,15 +50,17 @@ public class BoardQueryService {
     public SliceResponse<BoardResponse.BoardItem> getGroupBoards(Member member, int page) {
         Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
         Slice<BoardQueryItem> groupBoards =
-                groupBoardRepository.queryFindAllGroupBoards(member, pageable);
+            groupBoardRepository.queryFindAllGroupBoards(member, pageable);
         Slice<BoardResponse.BoardItem> boards = groupBoards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(boards);
     }
 
-    public SliceResponse<BoardResponse.BoardItem> getGroupBoardsByGroupCategory(Member member, int page, GroupCategory groupCategory) {
+    public SliceResponse<BoardResponse.BoardItem> getGroupBoardsByGroupCategory(Member member,
+        int page, GroupCategory groupCategory) {
         Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
         Slice<BoardQueryItem> groupBoards =
-                groupBoardRepository.queryFindAllGroupBoardsByGroupCategory(member, groupCategory,pageable);
+            groupBoardRepository.queryFindAllGroupBoardsByGroupCategory(member, groupCategory,
+                pageable);
         Slice<BoardResponse.BoardItem> boards = groupBoards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(boards);
     }
@@ -63,5 +70,11 @@ public class BoardQueryService {
         Slice<BoardQueryItem> boards = boardRepository.queryFindAllMyBoards(member, pageRequest);
         Slice<BoardResponse.BoardItem> myBoards = boards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(myBoards);
+    }
+
+    public Board findById(Long boardId) {
+        return boardRepository.findById(boardId).orElseThrow(
+            () -> new ApiException(ErrorStatus._BOARD_NOT_FOUND)
+        );
     }
 }

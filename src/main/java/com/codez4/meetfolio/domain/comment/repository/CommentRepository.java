@@ -17,5 +17,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query(value = "SELECT NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(cb, cb.member.email,(SELECT l.status from Like l WHERE l.member = :member AND l.board = cb))  FROM Comment c JOIN FETCH Board cb ON cb = c.board WHERE c.member = :member ")
     Slice<BoardQueryItem> findByMemberFetchJoinBoard(@Param("member") Member member,
-                                                     PageRequest pageRequest);
+        PageRequest pageRequest);
+
+    @Query("SELECT c FROM Comment c JOIN FETCH c.member where c.board.id = :boardId")
+    Slice<Comment> findByBoardFetchJoinMember(@Param("boardId") Long boardId,
+        PageRequest pageRequest);
 }
