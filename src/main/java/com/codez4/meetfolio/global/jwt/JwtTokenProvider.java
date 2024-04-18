@@ -136,11 +136,11 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader(JwtProperties.ACCESS_HEADER_STRING, JwtProperties.TOKEN_PREFIX+ accessToken);
+        response.setHeader(JwtProperties.ACCESS_HEADER_STRING, accessToken);
     }
 
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_PREFIX+ refreshToken);
+        response.setHeader(JwtProperties.REFRESH_HEADER_STRING, refreshToken);
     }
 
     public boolean existsRefreshToken(String refreshToken) {

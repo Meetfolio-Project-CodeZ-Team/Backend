@@ -42,8 +42,8 @@ public class AuthController {
                                                                         HttpServletResponse response) {
         Member member = memberQueryService.checkEmailAndPassword(request);
         TokenResponse tokenResponse = authService.authorize(member);
-        jwtTokenProvider.setHeaderAccessToken(response, tokenResponse.getAccessToken());
-        jwtTokenProvider.setHeaderRefreshToken(response, tokenResponse.getRefreshToken());
+        jwtTokenProvider.setHeaderAccessToken(response, JwtProperties.TOKEN_PREFIX+tokenResponse.getAccessToken());
+        jwtTokenProvider.setHeaderRefreshToken(response, JwtProperties.TOKEN_PREFIX+tokenResponse.getRefreshToken());
         return ResponseEntity.ok().body(ApiResponse.onSuccess(toMemberInfo(member)));
     }
 
@@ -53,10 +53,11 @@ public class AuthController {
                          HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            response.setHeader(JwtProperties.ACCESS_HEADER_STRING, "");
             String accessToken = JwtAuthenticationFilter.extractAccessToken(request);
             String refreshToken = JwtAuthenticationFilter.extractRefreshToken(request);
             authService.logout(accessToken, refreshToken);
+            jwtTokenProvider.setHeaderAccessToken(response, "");
+            jwtTokenProvider.setHeaderRefreshToken(response,"");
             ;
         }
         return "redirect:/main";
