@@ -24,7 +24,7 @@ public class JwtTokenProvider {
     private static final String USER_ID_KEY = "id";
     private final Key key;
 
-    @Value("${application.jwt.token_expire}")
+    @Value("${application.jwt.access_token_expire}")
     private long TOKEN_EXPIRE_TIME;
     private final CustomUserDetailService customUserDetailService;
 

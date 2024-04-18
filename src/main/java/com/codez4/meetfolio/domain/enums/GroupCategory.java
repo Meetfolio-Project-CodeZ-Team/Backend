@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,4 +13,15 @@ public enum GroupCategory {
     ;
 
     private final String description;
+
+    @JsonCreator
+    public static GroupCategory convert(String source)
+    {
+        for (GroupCategory groupCategory : GroupCategory.values()) {
+            if (groupCategory.name().equals(source)) {
+                return groupCategory;
+            }
+        }
+        return null;
+    }
 }
