@@ -2,7 +2,7 @@ package com.codez4.meetfolio.domain.member.controller;
 
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.LoginRequest;
-import com.codez4.meetfolio.domain.member.dto.LoginTokenResponse;
+import com.codez4.meetfolio.domain.member.dto.TokenResponse;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.domain.member.service.AuthService;
@@ -18,14 +18,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo;
 
@@ -45,14 +41,14 @@ public class AuthController {
     public ResponseEntity<ApiResponse<MemberResponse.MemberInfo>> login(@Valid @RequestBody LoginRequest request,
                                                                         HttpServletResponse response) {
         Member member = memberQueryService.checkEmailAndPassword(request);
-        LoginTokenResponse tokenResponse = authService.authorize(member);
+        TokenResponse tokenResponse = authService.authorize(member);
         jwtTokenProvider.setHeaderAccessToken(response, tokenResponse.getAccessToken());
         jwtTokenProvider.setHeaderRefreshToken(response, tokenResponse.getRefreshToken());
         return ResponseEntity.ok().body(ApiResponse.onSuccess(toMemberInfo(member)));
     }
 
     @Operation(summary = "로그아웃", description = "로그아웃")
-    @PostMapping("/logout")
+    @DeleteMapping("/logout")
     public String logout(@AuthenticationMember Member member,
                          HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -64,6 +60,18 @@ public class AuthController {
             ;
         }
         return "redirect:/main";
+    }
+
+    @Operation(summary = "access 토큰 재발급", description = "access 토큰 만료 시 재발급 합니다.")
+    @PostMapping("/reissue")
+    public ResponseEntity<ApiResponse<MemberResponse.MemberInfo>> reissue(@AuthenticationMember Member member,
+                          HttpServletRequest request, HttpServletResponse response) {
+        String accessToken = JwtAuthenticationFilter.extractAccessToken(request);
+        String refreshToken = JwtAuthenticationFilter.extractRefreshToken(request);
+        TokenResponse tokenResponse =authService.reissue(accessToken, refreshToken);
+        jwtTokenProvider.setHeaderAccessToken(response, tokenResponse.getAccessToken());
+        jwtTokenProvider.setHeaderRefreshToken(response, tokenResponse.getRefreshToken());
+        return ResponseEntity.ok().body(ApiResponse.onSuccess(toMemberInfo(member)));
     }
 
 }
