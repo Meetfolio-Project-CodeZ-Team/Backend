@@ -3,7 +3,7 @@ package com.codez4.meetfolio.global.jwt;
 import com.codez4.meetfolio.global.response.code.ErrorReasonDto;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (JwtException jwtException) {
+        } catch (ExpiredJwtException jwtException) {
             setErrorResponse(ErrorStatus._INVALID_TOKEN, response, jwtException);
         } catch (UsernameNotFoundException usernameNotFoundException) {
             setErrorResponse(ErrorStatus._MEMBER_NOT_FOUND, response, usernameNotFoundException);
