@@ -1,18 +1,16 @@
 package com.codez4.meetfolio.domain.member;
 
-import static com.codez4.meetfolio.global.security.Password.ENCODER;
-
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.*;
 import com.codez4.meetfolio.domain.member.dto.MemberRequest;
 import com.codez4.meetfolio.global.security.Password;
+import com.codez4.meetfolio.global.utils.TimeUtils;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import static com.codez4.meetfolio.global.security.Password.ENCODER;
 
@@ -69,7 +67,7 @@ public class Member extends BaseTimeEntity {
 
     public void setInactive(){
         this.point = 0;
-        this.inactiveDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.inactiveDate = TimeUtils.getCurrentTime();
         this.status = Status.INACTIVE;
     }
 

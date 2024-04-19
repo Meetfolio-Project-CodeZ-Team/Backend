@@ -2,6 +2,7 @@ package com.codez4.meetfolio.global.utils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class TimeUtils {
 
@@ -10,6 +11,10 @@ public class TimeUtils {
         LocalDateTime currentTime = LocalDateTime.now();
         Duration duration = Duration.between(pastTime, currentTime);
         return Math.abs(duration.toMinutes());
+    }
+
+    public static LocalDateTime getCurrentTime(){
+        return LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 
 }
