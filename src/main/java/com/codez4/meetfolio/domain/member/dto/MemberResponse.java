@@ -103,23 +103,25 @@ public class MemberResponse {
 
 
     public static MemberInfo toMemberInfo(Member member) {
-        if (member.getAuthority() == Authority.MEMBER) {
-            return MemberInfo.builder()
-                    .authority(member.getAuthority().name())
-                    .memberName(member.getEmail().split("@")[0])
-                    .profile(member.getProfile())
-                    .major(member.getMajor().getDescription())
-                    .build();
+        if (member != null) {
+            if (member.getAuthority() == Authority.MEMBER) {
+                return MemberInfo.builder()
+                        .authority(member.getAuthority().name())
+                        .memberName(member.getEmail().split("@")[0])
+                        .profile(member.getProfile())
+                        .major(member.getMajor().getDescription())
+                        .build();
+            } else if (member.getAuthority() == Authority.ADMIN) {
+                return MemberInfo.builder()
+                        .authority(member.getAuthority().name())
+                        .memberName(member.getEmail())
+                        .profile(null)
+                        .major(null)
+                        .build();
+            }
+            else return null;
         }
-        else if (member.getAuthority() == Authority.ADMIN){
-            return MemberInfo.builder()
-                    .authority(member.getAuthority().name())
-                    .memberName(member.getEmail())
-                    .profile(member.getProfile())
-                    .major(null)
-                    .build();
-        }
-        else return  null;
+        else return null;
     }
 
     public static MemberListResult toMemberList(Page<Member> members) {
