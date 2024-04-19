@@ -30,8 +30,4 @@ public class MemberCommandService {
         return MemberResponse.toMemberProc(member);
     }
 
-    public MemberResponse.MemberProc update(Member member, MemberRequest.Patch patch) {
-        member.update(patch);
-        return MemberResponse.toMemberProc(member);
-    }
 }
