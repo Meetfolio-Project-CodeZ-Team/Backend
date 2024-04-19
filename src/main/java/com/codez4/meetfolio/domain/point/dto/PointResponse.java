@@ -70,7 +70,7 @@ public class PointResponse {
     public static class PointItem {
 
         @Schema(description = "사용/충전 일시")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
 
         @Schema(description = "사용/충전 포인트")

@@ -14,6 +14,8 @@ import org.hibernate.annotations.DynamicInsert;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import static com.codez4.meetfolio.global.security.Password.ENCODER;
+
 @DynamicInsert
 @Getter
 @Entity

@@ -1,8 +1,11 @@
 package com.codez4.meetfolio.domain.member.dto;
 
+import com.codez4.meetfolio.domain.enums.Authority;
 import com.codez4.meetfolio.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,12 +25,15 @@ public class MemberResponse {
     @Getter
     public static class MemberInfo {
 
+        @Schema(description = "권한, MEMBER/ADMIN")
+        private String authority;
         @Schema(description = "사용자 이름")
         private String memberName;
         @Schema(description = "사용자 프로필")
         private String profile;
         @Schema(description = "사용자 학과")
         private String major;
+
     }
 
     @Schema(description = "회원 가입 완료 응답 DTO")
@@ -86,8 +92,10 @@ public class MemberResponse {
         @Schema(description = "사용자 학년 및 학적")
         private String grade;
         @Schema(description = "사용자 학과")
+        @Enumerated(EnumType.STRING)
         private String major;
         @Schema(description = "희망 직무")
+        @Enumerated(EnumType.STRING)
         private String jobKeyword;
         @Schema(description = "포인트")
         private int point;
@@ -95,12 +103,23 @@ public class MemberResponse {
 
 
     public static MemberInfo toMemberInfo(Member member) {
-        return member == null ? null :
-                MemberInfo.builder()
-                        .memberName(member.getEmail().split("@")[0])
-                        .profile(member.getProfile())
-                        .major(member.getMajor().getDescription())
-                        .build();
+        if (member.getAuthority() == Authority.MEMBER) {
+            return MemberInfo.builder()
+                    .authority(member.getAuthority().name())
+                    .memberName(member.getEmail().split("@")[0])
+                    .profile(member.getProfile())
+                    .major(member.getMajor().getDescription())
+                    .build();
+        }
+        else if (member.getAuthority() == Authority.ADMIN){
+            return MemberInfo.builder()
+                    .authority(member.getAuthority().name())
+                    .memberName(member.getEmail())
+                    .profile(member.getProfile())
+                    .major(null)
+                    .build();
+        }
+        else return  null;
     }
 
     public static MemberListResult toMemberList(Page<Member> members) {

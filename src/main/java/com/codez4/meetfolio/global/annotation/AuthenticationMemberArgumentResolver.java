@@ -35,19 +35,19 @@ public class AuthenticationMemberArgumentResolver implements HandlerMethodArgume
 
         // 비로그인 / 로그인 경로 예외
         if (request.getServletPath().equals("/api")
-            && JwtAuthenticationFilter.resolveToken(request) == null) {
+            && JwtAuthenticationFilter.extractAccessToken(request) == null) {
             return null;
         }
 
-        String token = JwtAuthenticationFilter.resolveToken(request);
+        String accessToken = JwtAuthenticationFilter.extractAccessToken(request);
 
-        if (token.isEmpty() || token.isBlank()) {
+        if (accessToken.isEmpty() || accessToken.isBlank()) {
             throw new ApiException(ErrorStatus._FORBIDDEN);
         }
 
-        validateTokenIntegrity(token);
+        validateTokenIntegrity(accessToken);
 
-        Long memberId = jwtTokenProvider.getUserId(token);
+        Long memberId = jwtTokenProvider.getUserId(accessToken);
 
         return memberRepository.findById(memberId)
             .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));

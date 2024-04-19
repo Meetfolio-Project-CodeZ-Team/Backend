@@ -17,22 +17,10 @@ public class DashboardResponse {
     @NoArgsConstructor
     @Getter
     public static class DashboardResult {
-        private AISolutionInfo aiSolutionInfo;
+        private AIServiceResponse.AIServiceInfo aiServiceInfo;
         private MemberInfo memberInfo;
         private PointInfo pointInfo;
         private int paymentInfo;
-    }
-
-    @Schema(description = "사용자 - 충전 내역 목록 DTO")
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class AISolutionInfo {
-        private int feedbackCount;
-        private int analysisCount;
-        private int totalCount;
-        private double satisfaction;
     }
 
     @Schema(description = "대시보드 - 직무별 회원 수 통계 응답 DTO")
@@ -60,23 +48,15 @@ public class DashboardResponse {
         private int analysisPoint;
     }
 
-    public static DashboardResult toDashboardResult(AISolutionInfo aiSolutionInfo, MemberInfo memberInfo, PointInfo pointInfo, int paymentInfo) {
+    public static DashboardResult toDashboardResult(AIServiceResponse.AIServiceInfo aiSolutionInfo, MemberInfo memberInfo, PointInfo pointInfo, int paymentInfo) {
         return DashboardResult.builder()
-                .aiSolutionInfo(aiSolutionInfo)
+                .aiServiceInfo(aiSolutionInfo)
                 .memberInfo(memberInfo)
                 .pointInfo(pointInfo)
                 .paymentInfo(paymentInfo)
                 .build();
     }
 
-    public static AISolutionInfo toAISolutionInfo(int feedbackCount, int analysisCount, double satisfaction) {
-        return AISolutionInfo.builder()
-                .feedbackCount(feedbackCount)
-                .analysisCount(analysisCount)
-                .totalCount(feedbackCount + analysisCount)
-                .satisfaction(satisfaction)
-                .build();
-    }
 
     public static MemberInfo toMemberInfo(int totalCount, Map<JobKeyword, Integer> jobCount) {
         return MemberInfo.builder()
