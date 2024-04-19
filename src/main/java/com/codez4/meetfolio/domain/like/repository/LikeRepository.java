@@ -5,13 +5,14 @@ import com.codez4.meetfolio.domain.board.dto.BoardQueryItem;
 import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.like.Like;
 import com.codez4.meetfolio.domain.member.Member;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
