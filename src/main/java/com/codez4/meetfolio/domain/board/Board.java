@@ -5,34 +5,21 @@ import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.like.Like;
 import com.codez4.meetfolio.domain.member.Member;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.util.List;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
-@DynamicInsert
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "DTYPE")
+@DynamicInsert
 public class Board extends BaseTimeEntity {
 
     @Id
@@ -50,11 +37,11 @@ public class Board extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    @Column(name = "like_count", nullable = false)
+    @Column(name = "like_count")
     @ColumnDefault("'0'")
     private Integer likeCount;
 
-    @Column(name = "comment_count", nullable = false)
+    @Column(name = "comment_count")
     @ColumnDefault("'0'")
     private Integer commentCount;
 
@@ -63,6 +50,17 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+
+    public Board(String title, String content, Member member) {
+        this.title = title;
+        this.content = content;
+        this.member = member;
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
     /**
      * update
