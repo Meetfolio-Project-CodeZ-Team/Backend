@@ -1,5 +1,7 @@
 package com.codez4.meetfolio.domain.member.dto;
 
+import static com.codez4.meetfolio.global.security.Password.ENCODER;
+
 import com.codez4.meetfolio.domain.enums.Grade;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.enums.Major;
@@ -11,8 +13,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-import static com.codez4.meetfolio.global.security.Password.ENCODER;
 
 public class MemberRequest {
 
@@ -75,11 +75,11 @@ public class MemberRequest {
 
     public static Member toEntity(Post post) {
         return Member.builder()
-                .email(post.getEmail())
-                .password(Password.encrypt(post.getPassword(), ENCODER))
-                .grade(post.getGrade())
-                .jobKeyword(post.getJobKeyword())
-                .major(post.getMajor())
-                .build();
+            .email(post.getEmail())
+            .password(Password.encrypt(post.getPassword(), ENCODER))
+            .grade(post.getGrade())
+            .jobKeyword(post.getJobKeyword())
+            .major(post.getMajor())
+            .build();
     }
 }
