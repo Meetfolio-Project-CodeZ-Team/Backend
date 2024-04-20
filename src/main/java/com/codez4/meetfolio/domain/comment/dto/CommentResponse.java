@@ -5,15 +5,16 @@ import com.codez4.meetfolio.domain.comment.Comment;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.utils.TimeUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Slice;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class CommentResponse {
 

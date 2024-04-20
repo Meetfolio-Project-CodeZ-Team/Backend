@@ -11,7 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface EmploymentBoardRepository extends JpaRepository<EmploymentBoard, Long> {
 
-    Slice<EmploymentBoard> findSliceBy(Pageable pageable);
+    @Query("SELECT " +
+            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email,(SELECT l.status FROM Like l WHERE l.member = :member AND eb = l.board)) FROM EmploymentBoard eb WHERE eb.id = :boardId")
+    BoardQueryItem queryFindEmploymentBoard(Member member,Long boardId);
 
     @Query("SELECT " +
             "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email,(SELECT l.status FROM Like l WHERE l.member = :member AND eb = l.board)) FROM EmploymentBoard eb")

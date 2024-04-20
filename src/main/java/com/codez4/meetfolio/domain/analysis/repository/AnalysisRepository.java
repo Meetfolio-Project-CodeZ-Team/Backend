@@ -8,7 +8,7 @@ public interface AnalysisRepository extends JpaRepository<Analysis, Long> {
 
     long countAllBy();
 
-    @Query("SELECT avg(a.satisfaction) FROM Analysis a")
+    @Query("SELECT IFNULL(avg(a.satisfaction),0) FROM Analysis a")
     double queryGetAvgSatisfaction();
 
     Analysis findByCoverLetterId(Long coverLetterId);
