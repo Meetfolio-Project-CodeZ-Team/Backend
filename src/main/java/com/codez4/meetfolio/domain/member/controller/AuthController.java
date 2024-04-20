@@ -36,7 +36,7 @@ public class AuthController {
     private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Operation(summary = "로그인", description = "로그인, 성공 시 response header access token과 refresh 토큰을, body에  로그인한 사용자 정보를 반환합니다.")
+    @Operation(summary = "로그인", description = "로그인, 성공 시 response header에 access 토큰과 refresh 토큰을, body에  로그인한 사용자 정보를 반환합니다.")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<MemberResponse.MemberInfo>> login(@Valid @RequestBody LoginRequest request,
                                                                         HttpServletResponse response) {

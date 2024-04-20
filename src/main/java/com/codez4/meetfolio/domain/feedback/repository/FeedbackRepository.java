@@ -13,6 +13,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 
     void deleteByCoverLetter_Member(Member coverLetter_member);
 
-    @Query("SELECT avg(f.satisfaction) FROM Feedback f")
+    @Query("SELECT IFNULL(avg(f.satisfaction),0) FROM Feedback f")
     double queryGetAvgSatisfaction();
 }

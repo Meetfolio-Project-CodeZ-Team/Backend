@@ -76,7 +76,7 @@ public class AdminQueryService {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("createdAt").descending());
         String yearMonth = year + "년" + " " + month + "월";
 
-        Page<Payment> payments = paymentRepository.findByMember_AuthorityAndAndPaymentStatusIs(Authority.MEMBER, PaymentStatus.APPROVE, pageRequest);
+        Page<Payment> payments = paymentRepository.findByMember_AuthorityAndPaymentStatusIs(Authority.MEMBER, PaymentStatus.APPROVE, pageRequest);
         List<PaymentResponse.PaymentItem> paymentList = payments.stream().map(payment -> {
             Point point = pointRepository.getPointByPayment(payment).orElseThrow(() -> new ApiException(ErrorStatus._BAD_REQUEST));
             return toPaymentItem(payment, point);
@@ -101,8 +101,8 @@ public class AdminQueryService {
     public AIServiceResponse.AIServiceInfo getAIServiceInfo() {
         long feedbackCount = feedbackRepository.countAllBy();
         long analysisCount = analysisRepository.countAllBy();
-        double feedbackSatisfaction = feedbackRepository.queryGetAvgSatisfaction();
-        double analysisSatisfaction = analysisRepository.queryGetAvgSatisfaction();
+        double feedbackSatisfaction = feedbackRepository.queryGetAvgSatisfaction() ;
+        double analysisSatisfaction = analysisRepository.queryGetAvgSatisfaction() ;
         double avgSatisfaction = (feedbackSatisfaction + analysisSatisfaction) / 2;
         return toAIServiceInfo((int) feedbackCount, (int) analysisCount, avgSatisfaction);
     }

@@ -18,4 +18,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query(value = "SELECT " +
             "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(b, b.member.email, (SELECT l.status from Like l WHERE l.member = :member AND l.board = b)) FROM Board b WHERE b.member = :member")
     Slice<BoardQueryItem> queryFindAllMyBoards(Member member, Pageable pageable);
+
 }

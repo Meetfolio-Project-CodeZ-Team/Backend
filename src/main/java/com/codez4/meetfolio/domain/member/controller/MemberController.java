@@ -69,37 +69,37 @@ public class MemberController {
     @Operation(summary = "내가 작성한 게시글 목록 조회", description = "내가 작성한 게시글 목록 조회 GET으로 보냅니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-boards")
-    public ApiResponse<BoardResponse.BoardResult> getMyBoards(@AuthenticationMember Member member,
-                                                              @RequestParam(name = "page") Integer page) {
+    public ApiResponse<BoardResponse.BoardListResult> getMyBoards(@AuthenticationMember Member member,
+                                                                  @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         SliceResponse<BoardResponse.BoardItem> boardInfo = boardQueryService.findMyBoards(member, page);
 
-        return ApiResponse.onSuccess(BoardResponse.toBoardResult(memberInfo, boardInfo));
+        return ApiResponse.onSuccess(BoardResponse.toBoardListResult(memberInfo, boardInfo));
     }
 
     @Operation(summary = "내가 좋아요 한 게시글 목록 조회", description = "내가 좋아요 한 게시글 목록 조회 GET으로 보냅니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-likes")
-    public ApiResponse<BoardResponse.BoardResult> getMyLikes(@AuthenticationMember Member member,
-                                                             @RequestParam(name = "page") Integer page) {
+    public ApiResponse<BoardResponse.BoardListResult> getMyLikes(@AuthenticationMember Member member,
+                                                                 @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         SliceResponse<BoardResponse.BoardItem> boardInfo = likeQueryService.findMyLikedBoards(member, page);
 
-        return ApiResponse.onSuccess(BoardResponse.toBoardResult(memberInfo, boardInfo));
+        return ApiResponse.onSuccess(BoardResponse.toBoardListResult(memberInfo, boardInfo));
     }
 
     @Operation(summary = "내가 작성한 댓글의 게시글 목록 조회", description = "내가 작성한 댓글의 게시글 목록 조회 GET으로 보냅니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-comments")
-    public ApiResponse<BoardResponse.BoardResult> getMyComments(
+    public ApiResponse<BoardResponse.BoardListResult> getMyComments(
             @AuthenticationMember Member member, @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         SliceResponse<BoardResponse.BoardItem> boardInfo = commentQueryService.findMyComments(member, page);
 
-        return ApiResponse.onSuccess(BoardResponse.toBoardResult(memberInfo, boardInfo));
+        return ApiResponse.onSuccess(BoardResponse.toBoardListResult(memberInfo, boardInfo));
     }
 
 }

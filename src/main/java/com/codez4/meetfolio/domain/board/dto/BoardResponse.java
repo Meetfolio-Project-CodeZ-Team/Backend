@@ -1,38 +1,64 @@
 package com.codez4.meetfolio.domain.board.dto;
 
+import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse.BoardItem.BoardItemBuilder;
+import com.codez4.meetfolio.domain.enums.BoardType;
 import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import com.codez4.meetfolio.global.response.SliceResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class BoardResponse {
 
-    @Schema(description = "내가 작성한 게시글 목록 응답 DTO")
+    @Schema(description = "게시글 목록 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class BoardListResult {
+        @Schema(description = "로그인 사용자 정보")
+        private MemberResponse.MemberInfo memberInfo;
+        @Schema(description = "게시물 목록 정보")
+        private SliceResponse<BoardItem> boardListInfo;
+    }
+
+    @Schema(description = "게시글 1개 조회 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class BoardResult {
-
+        @Schema(description = "로그인 사용자 정보")
         private MemberResponse.MemberInfo memberInfo;
-        private SliceResponse<BoardItem> boardInfo;
+        @Schema(description = "게시물 1개 정보")
+        private BoardItem boardInfo;
     }
 
-    public static BoardResult toBoardResult(MemberInfo memberInfo, SliceResponse<BoardItem> boardInfo) {
+    public static BoardListResult toBoardListResult(MemberInfo memberInfo, SliceResponse<BoardItem> boardInfo) {
+
+        return BoardListResult.builder()
+                .memberInfo(memberInfo)
+                .boardListInfo(boardInfo)
+                .build();
+    }
+
+    public static BoardResult toBoardResult(MemberInfo memberInfo, BoardItem boardItem) {
 
         return BoardResult.builder()
                 .memberInfo(memberInfo)
-                .boardInfo(boardInfo)
+                .boardInfo(boardItem)
                 .build();
     }
 
@@ -45,6 +71,10 @@ public class BoardResponse {
 
         @Schema(description = "게시글 아이디")
         private Long boardId;
+
+        @Schema(description = "게시글 유형, EMPLOYMENT/GROUP")
+        @Enumerated(EnumType.STRING)
+        private BoardType boardType;
 
         @Schema(description = "게시글 작성자")
         private String memberName;
@@ -95,6 +125,20 @@ public class BoardResponse {
 
     }
 
+    @Schema(description = "게시물 작성/수정/삭제 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class BoardProc {
+
+        @Schema(description = "게시물 Id")
+        private Long boardId;
+
+        @Schema(description = "응답 DTO 생성 시간")
+        private LocalDateTime createdAt;
+    }
+
     public static BoardItem toBoardItem(BoardQueryItem board) {
         BoardItemBuilder boardItemBuilder = BoardItem.builder()
                 .memberName(board.getEmail().split("@")[0])
@@ -105,18 +149,26 @@ public class BoardResponse {
                 .likeStatus(board.getStatus())
                 .commentCount(board.getCommentCount())
                 .registrationDate(board.getCreatedAt().toLocalDate());
-
         if (board.getJobKeyword() != null) {
             boardItemBuilder
+                    .boardType(BoardType.EMPLOYMENT)
                     .jobCategory(board.getJobKeyword().getDescription());
         } else if (board.getGroupCategory() != null) {
             boardItemBuilder
+                    .boardType(BoardType.GROUP)
                     .groupCategory(board.getGroupCategory().getDescription())
                     .recruitment(board.getRecruitment())
                     .peopleNumber(board.getPeopleNumber())
                     .build();
         }
         return boardItemBuilder.build();
+    }
+
+    public static BoardProc toBoardProc(Board board, LocalDateTime createdAt){
+        return BoardProc.builder()
+                .boardId(board.getId())
+                .createdAt(createdAt)
+                .build();
     }
 
 }

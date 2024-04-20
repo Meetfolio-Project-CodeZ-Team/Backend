@@ -4,11 +4,12 @@ import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.like.Like;
 import com.codez4.meetfolio.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Schema(description = "좋아요 처리 응답 DTO")
 @Builder
