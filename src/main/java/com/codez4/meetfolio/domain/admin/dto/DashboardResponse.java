@@ -18,7 +18,7 @@ public class DashboardResponse {
     @Getter
     public static class DashboardResult {
         private AIServiceResponse.AIServiceInfo aiServiceInfo;
-        private MemberInfo memberInfo;
+        private MembersInfo membersInfo;
         private PointInfo pointInfo;
         private int paymentInfo;
     }
@@ -28,7 +28,7 @@ public class DashboardResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class MemberInfo {
+    public static class MembersInfo {
         private int totalCount;
         private int backend;
         private int web;
@@ -48,18 +48,18 @@ public class DashboardResponse {
         private int analysisPoint;
     }
 
-    public static DashboardResult toDashboardResult(AIServiceResponse.AIServiceInfo aiSolutionInfo, MemberInfo memberInfo, PointInfo pointInfo, int paymentInfo) {
+    public static DashboardResult toDashboardResult(AIServiceResponse.AIServiceInfo aiSolutionInfo, MembersInfo membersInfo, PointInfo pointInfo, int paymentInfo) {
         return DashboardResult.builder()
                 .aiServiceInfo(aiSolutionInfo)
-                .memberInfo(memberInfo)
+                .membersInfo(membersInfo)
                 .pointInfo(pointInfo)
                 .paymentInfo(paymentInfo)
                 .build();
     }
 
 
-    public static MemberInfo toMemberInfo(int totalCount, Map<JobKeyword, Integer> jobCount) {
-        return MemberInfo.builder()
+    public static MembersInfo toMemberInfo(int totalCount, Map<JobKeyword, Integer> jobCount) {
+        return MembersInfo.builder()
                 .totalCount(totalCount)
                 .backend(jobCount.get(JobKeyword.BACKEND))
                 .web(jobCount.get(JobKeyword.WEB))
