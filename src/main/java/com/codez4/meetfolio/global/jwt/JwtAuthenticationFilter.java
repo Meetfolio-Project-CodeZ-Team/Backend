@@ -4,6 +4,7 @@ import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.repository.MemberRepository;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
+import com.codez4.meetfolio.global.utils.RedisUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -28,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
+    private final RedisUtil redisUtil;
 
     @Override
     protected void doFilterInternal(
@@ -48,9 +50,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String accessToken = extractAccessToken(request);
         String refreshToken = extractRefreshToken(request);
-
         if (StringUtils.hasText(accessToken)){
-            if (jwtTokenProvider.validateToken(accessToken)) {
+            if(redisUtil.hasKeyBlackList(accessToken)){
+                throw new ApiException(ErrorStatus._LOGOUT_USER);
+            }
+            else if (jwtTokenProvider.validateToken(accessToken)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

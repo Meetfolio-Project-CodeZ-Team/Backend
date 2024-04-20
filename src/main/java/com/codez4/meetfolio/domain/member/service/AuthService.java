@@ -33,9 +33,9 @@ public class AuthService {
                 .build();
     }
 
-
     public void logout(String accessToken, String refreshToken){
         redisUtil.delete(refreshToken);
-        redisUtil.setBlackList(accessToken, "accessToken", 1800L);
+        Long expiration = jwtTokenProvider.getExpiration(accessToken);
+        redisUtil.setBlackList(accessToken, "accessToken", expiration);
     }
 }
