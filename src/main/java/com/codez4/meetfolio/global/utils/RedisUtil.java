@@ -32,7 +32,6 @@ public class RedisUtil {
     }
 
     public void setBlackList(String key, String value, Long milliSeconds) {
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisBlackListTemplate.setValueSerializer(new StringRedisSerializer());
         redisBlackListTemplate.opsForValue().set(key, value, milliSeconds, TimeUnit.MILLISECONDS);
     }

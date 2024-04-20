@@ -3,6 +3,10 @@ package com.codez4.meetfolio.domain.admin.controller;
 import com.codez4.meetfolio.domain.admin.dto.*;
 import com.codez4.meetfolio.domain.admin.service.AdminCommandService;
 import com.codez4.meetfolio.domain.admin.service.AdminQueryService;
+import com.codez4.meetfolio.domain.board.Board;
+import com.codez4.meetfolio.domain.board.dto.BoardResponse;
+import com.codez4.meetfolio.domain.board.service.BoardCommandService;
+import com.codez4.meetfolio.domain.board.service.BoardQueryService;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
@@ -11,6 +15,7 @@ import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.ApiResponse;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
+import com.codez4.meetfolio.global.utils.TimeUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -22,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import static com.codez4.meetfolio.domain.board.dto.BoardResponse.toBoardProc;
+
 @Tag(name = "관리자 API")
 @RestController
 @RequestMapping("/api/admins")
@@ -31,6 +38,8 @@ public class AdminController {
     private final AdminQueryService adminQueryService;
     private final AdminCommandService adminCommandService;
     private final MemberQueryService memberQueryService;
+    private final BoardQueryService boardQueryService;
+    private final BoardCommandService boardCommandService;
 
     @Operation(summary = "대시 보드 조회", description = "관리자 메인페이지의 대시보드를 조회합니다.")
     @GetMapping("/dashboard")
@@ -56,7 +65,7 @@ public class AdminController {
     @Parameter(name = "memberId", description = "회원 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @DeleteMapping("/members-management/{memberId}")
     public ApiResponse<String> inactivateMember(@AuthenticationMember Member admin,
-                                            @PathVariable(value = "memberId") Long memberId) {
+                                                @PathVariable(value = "memberId") Long memberId) {
         Member member = memberQueryService.findById(memberId);
         adminCommandService.inactivateMember(member);
         return ApiResponse.onSuccess("회원 비활성화 성공입니다.");
@@ -109,6 +118,16 @@ public class AdminController {
     public ApiResponse<DatasetResponse.DatasetProc> getAIServiceStatics(@AuthenticationMember Member admin,
                                                                         @Valid @RequestBody DatasetRequest request) {
         return ApiResponse.onSuccess(adminCommandService.saveDataset(request));
+    }
+
+    @Operation(summary = "커뮤니티 관리 - 게시물 삭제")
+    @Parameter(name = "boardId", description = "게시물 Id, Path Variable입니다.", in = ParameterIn.PATH)
+    @DeleteMapping("/board-management/{boardId}")
+    public ApiResponse<BoardResponse.BoardProc> deleteBoard(@AuthenticationMember Member admin,
+                                                            @PathVariable Long boardId) {
+        Board board = boardQueryService.findById(boardId);
+        boardCommandService.deleteBoard(board);
+        return ApiResponse.onSuccess(toBoardProc(board, TimeUtils.getCurrentTime()));
     }
 
 }
