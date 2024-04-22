@@ -1,7 +1,10 @@
 package com.codez4.meetfolio.domain.member;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
-import com.codez4.meetfolio.domain.enums.*;
+import com.codez4.meetfolio.domain.enums.Authority;
+import com.codez4.meetfolio.domain.enums.Grade;
+import com.codez4.meetfolio.domain.enums.JobKeyword;
+import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.dto.MemberRequest;
 import com.codez4.meetfolio.global.security.Password;
 import com.codez4.meetfolio.global.utils.TimeUtils;
@@ -34,8 +37,7 @@ public class Member extends BaseTimeEntity {
     private Password password;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Major major;
+    private String major;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -76,7 +78,7 @@ public class Member extends BaseTimeEntity {
      */
     public void update(MemberRequest.Patch request) {
         this.password = Password.encrypt(request.getPassword(), ENCODER);
-        this.major = Major.convert(request.getMajor());
+        this.major = request.getMajor();
         this.grade = Grade.convert(request.getGrade());
         this.jobKeyword = JobKeyword.convert(request.getJobKeyword());
     }
