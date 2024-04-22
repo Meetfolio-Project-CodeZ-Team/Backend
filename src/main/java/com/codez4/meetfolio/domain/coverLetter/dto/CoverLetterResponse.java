@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.coverLetter.dto;
 
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,9 @@ public class CoverLetterResponse {
     @NoArgsConstructor
     @Getter
     public static class CoverLetterInfo {
+
+        @Schema(description = "자기소개서 아이디")
+        private Long coverLetterId;
 
         @Schema(description = "자기소개서 문항")
         private String question;
@@ -44,13 +48,14 @@ public class CoverLetterResponse {
     public static CoverLetterInfo toCoverLetterInfo(CoverLetter coverLetter) {
 
         return CoverLetterInfo.builder()
-            .question(coverLetter.getQuestion())
-            .answer(coverLetter.getAnswer())
-            .shareType(coverLetter.getShareType().getDescription())
-            .keyword1(coverLetter.getKeyword1())
-            .keyword2(coverLetter.getKeyword2())
-            .jobKeyword(coverLetter.getJobKeyword().getDescription())
-            .build();
+                .coverLetterId(coverLetter.getId())
+                .question(coverLetter.getQuestion())
+                .answer(coverLetter.getAnswer())
+                .shareType(coverLetter.getShareType().getDescription())
+                .keyword1(coverLetter.getKeyword1())
+                .keyword2(coverLetter.getKeyword2())
+                .jobKeyword(coverLetter.getJobKeyword().getDescription())
+                .build();
 
     }
 
@@ -68,15 +73,46 @@ public class CoverLetterResponse {
     }
 
     public static CoverLetterResult toCoverLetterResult(MemberInfo memberInfo,
-        CoverLetterInfo coverLetterInfo,
-        FeedbackInfo feedbackInfo, AnalysisInfo analysisInfo) {
+                                                        CoverLetterInfo coverLetterInfo,
+                                                        FeedbackInfo feedbackInfo, AnalysisInfo analysisInfo) {
 
         return CoverLetterResult.builder()
-            .memberInfo(memberInfo)
-            .coverLetterInfo(coverLetterInfo)
-            .feedbackInfo(feedbackInfo)
-            .analysisInfo(analysisInfo)
-            .build();
+                .memberInfo(memberInfo)
+                .coverLetterInfo(coverLetterInfo)
+                .feedbackInfo(feedbackInfo)
+                .analysisInfo(analysisInfo)
+                .build();
+    }
+
+    @Schema(description = "자기소개서 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CoverLetterItem {
+
+        @Schema(description = "자기소개서 아이디")
+        private Long coverLetterId;
+
+        @Schema(description = "자기소개서 문항")
+        private String question;
+
+        @Schema(description = "자기소개서 문항 답변")
+        private String answer;
+
+        @Schema(description = "자소서 등록 날짜")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
+        private LocalDateTime createdAt;
+    }
+
+    public static CoverLetterItem toCoverLetterItem(CoverLetter coverLetter) {
+        return CoverLetterItem.builder()
+                .coverLetterId(coverLetter.getId())
+                .question(coverLetter.getQuestion())
+                .answer(coverLetter.getAnswer())
+                .createdAt(coverLetter.getCreatedAt())
+                .build();
+
     }
 
     @Schema(description = "자기소개서 작성 & 수정 & 삭제 응답 DTO")
@@ -95,8 +131,9 @@ public class CoverLetterResponse {
 
     public static CoverLetterProc toCoverLetterProc(Long coverLetterId) {
         return CoverLetterProc.builder()
-            .coverLetterId(coverLetterId)
-            .createdAt(LocalDateTime.now())
-            .build();
+                .coverLetterId(coverLetterId)
+                .createdAt(LocalDateTime.now())
+                .build();
     }
 }
+

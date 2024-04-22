@@ -4,9 +4,14 @@ import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLetterInfo;
 import com.codez4.meetfolio.domain.coverLetter.repository.CoverLetterRepository;
+import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.exception.ApiException;
+import com.codez4.meetfolio.global.response.SliceResponse;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +30,14 @@ public class CoverLetterQueryService {
 
     public CoverLetter findById(Long coverLetterId) {
         return coverLetterRepository.findById(coverLetterId).orElseThrow(
-            () -> new ApiException(ErrorStatus._COVERLETTER_NOT_FOUND)
+                () -> new ApiException(ErrorStatus._COVERLETTER_NOT_FOUND)
         );
+    }
+
+    public SliceResponse<CoverLetterResponse.CoverLetterItem> getMyCoverLetters(Member member, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("createdAt").descending());
+        Slice<CoverLetter> coverLetters = coverLetterRepository.findByMember(member, pageRequest);
+        Slice<CoverLetterResponse.CoverLetterItem> coverLetterInfo = coverLetters.map(CoverLetterResponse::toCoverLetterItem);
+        return new SliceResponse<>(coverLetterInfo);
     }
 }
