@@ -22,6 +22,8 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -118,6 +120,20 @@ public class AdminController {
     public ApiResponse<DatasetResponse.DatasetProc> getAIServiceStatics(@AuthenticationMember Member admin,
                                                                         @Valid @RequestBody DatasetRequest request) {
         return ApiResponse.onSuccess(adminCommandService.saveDataset(request));
+    }
+
+    @Operation(summary = "커뮤니티 관리 - 게시물 목록 조회", description = "전체 게시물 조회 및 keyword를 입력하여 게시물 검색을 합니다.")
+    @GetMapping("/board-management")
+    @Parameter(name = "keyword", description = "검색어, Query String입니다.", in = ParameterIn.QUERY)
+    public ApiResponse<com.codez4.meetfolio.domain.admin.dto.BoardResponse.BoardAdminResult> getBoards(@AuthenticationMember Member admin,
+                                                                                                       @RequestParam(name = "keyword", required = false) String keyword,
+                                                                                                       @RequestParam(value = "page", defaultValue = "0") int page) {
+        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
+        com.codez4.meetfolio.domain.admin.dto.BoardResponse.BoardAdminResult boards;
+        if (keyword != null) {
+            boards = adminQueryService.getBoardsByKeyword(keyword, pageRequest);
+        } else boards = adminQueryService.getBoards(pageRequest);
+        return ApiResponse.onSuccess(boards);
     }
 
     @Operation(summary = "커뮤니티 관리 - 게시물 삭제")

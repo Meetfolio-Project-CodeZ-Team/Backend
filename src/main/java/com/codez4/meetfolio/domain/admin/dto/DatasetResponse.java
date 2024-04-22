@@ -76,6 +76,7 @@ public class DatasetResponse {
 
     public static DatasetItem toDatasetItem(Dataset dataset){
         return DatasetItem.builder()
+                .createdAt(dataset.getCreatedAt())
                 .job(dataset.getJobKeyword().getDescription())
                 .domain(dataset.getDomain())
                 .url(dataset.getUrl())

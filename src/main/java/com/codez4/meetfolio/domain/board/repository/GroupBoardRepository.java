@@ -12,13 +12,17 @@ import org.springframework.data.jpa.repository.Query;
 public interface GroupBoardRepository extends JpaRepository<GroupBoard, Long> {
     @Query("SELECT " +
             "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(gb, gb.member.email,(SELECT l.status FROM Like l WHERE l.member = :member AND gb = l.board)) FROM GroupBoard gb WHERE gb.id = :boardId")
-    BoardQueryItem queryFindGroupBoard(Member member,Long boardId);
+    BoardQueryItem queryFindBoard(Member member, Long boardId);
 
     @Query("SELECT " +
             "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(gb, gb.member.email,(SELECT l.status FROM Like l WHERE l.member = :member AND gb = l.board)) FROM GroupBoard gb")
-    Slice<BoardQueryItem> queryFindAllGroupBoards(Member member, Pageable pageable);
+    Slice<BoardQueryItem> queryFindAllBoards(Member member, Pageable pageable);
 
     @Query("SELECT " +
             "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(gb, gb.member.email, (SELECT l.status FROM Like l WHERE l.member = :member AND gb = l.board)) FROM GroupBoard gb WHERE gb.groupCategory = :groupCategory ")
-    Slice<BoardQueryItem> queryFindAllGroupBoardsByGroupCategory(Member member, GroupCategory groupCategory, Pageable pageable);
+    Slice<BoardQueryItem> queryFindAllBoardsByGroupCategory(Member member, GroupCategory groupCategory, Pageable pageable);
+
+    @Query(value = "SELECT " +
+            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(gb, gb.member.email, (SELECT l.status from Like l WHERE l.member = :member AND l.board = gb)) FROM GroupBoard gb WHERE gb.title LIKE CONCAT('%', :keyword , '%') ")
+    Slice<BoardQueryItem> queryFindBoardsByKeyword(Member member, String keyword, Pageable pageable);
 }

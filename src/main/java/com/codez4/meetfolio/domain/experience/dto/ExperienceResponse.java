@@ -178,6 +178,9 @@ public class ExperienceResponse {
     @Getter
     public static class ExperienceCardItem {
 
+        @Schema(description = "경험 분해 아이디")
+        private Long experienceId;
+
         @Schema(description = "경험 제목")
         private String title;
 
@@ -200,6 +203,7 @@ public class ExperienceResponse {
     public static ExperienceCardItem toExperienceCardItem(Experience experience) {
 
         return ExperienceCardItem.builder()
+            .experienceId(experience.getId())
             .title(experience.getTitle())
             .startDate(experience.getStartDate().toString())
             .endDate(experience.getEndDate().toString())
