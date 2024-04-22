@@ -26,7 +26,7 @@ public class Feedback extends BaseTimeEntity {
     @Column(name = "spell_check", length = 1000, nullable = false)
     private String spellCheck;
 
-    @Column(nullable = false)
+    @Column(length = 1000, nullable = false)
     private String correction;
 
     @Column(name = "recommend_question_1", nullable = false)
