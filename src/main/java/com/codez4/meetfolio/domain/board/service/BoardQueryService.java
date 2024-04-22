@@ -106,7 +106,7 @@ public class BoardQueryService {
         Slice<BoardResponse.BoardItem> myBoards = boards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(myBoards);
     }
-
+  
     public SliceResponse<BoardResponse.BoardItem> getBoardsByKeyword(Member member, String keyword, BoardType type, int page) {
 
         Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
@@ -117,5 +117,4 @@ public class BoardQueryService {
         Slice<BoardResponse.BoardItem> findBoards = boards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(findBoards);
     }
-
 }

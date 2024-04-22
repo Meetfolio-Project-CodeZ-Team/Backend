@@ -106,7 +106,6 @@ public class BoardController {
         MemberResponse.MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         return ApiResponse.onSuccess(toBoardResult(memberInfo, boardItem));
     }
-
     @Operation(summary = "게시물 수정")
     @Parameter(name = "boardId", description = "게시물 Id, Path Variable입니다.", in = ParameterIn.PATH)
     @PatchMapping("/{boardId}")

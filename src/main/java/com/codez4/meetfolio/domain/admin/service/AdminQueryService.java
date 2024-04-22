@@ -107,8 +107,8 @@ public class AdminQueryService {
     public AIServiceResponse.AIServiceInfo getAIServiceInfo() {
         long feedbackCount = feedbackRepository.countAllBy();
         long analysisCount = analysisRepository.countAllBy();
-        double feedbackSatisfaction = feedbackRepository.queryGetAvgSatisfaction();
-        double analysisSatisfaction = analysisRepository.queryGetAvgSatisfaction();
+        double feedbackSatisfaction = feedbackRepository.queryGetAvgSatisfaction() ;
+        double analysisSatisfaction = analysisRepository.queryGetAvgSatisfaction() ;
         double avgSatisfaction = (feedbackSatisfaction + analysisSatisfaction) / 2;
         return toAIServiceInfo((int) feedbackCount, (int) analysisCount, avgSatisfaction);
     }
