@@ -2,7 +2,6 @@ package com.codez4.meetfolio.domain.member.dto;
 
 import com.codez4.meetfolio.domain.enums.Grade;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
-import com.codez4.meetfolio.domain.enums.Major;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.annotation.EnumValid;
 import com.codez4.meetfolio.global.security.Password;
@@ -38,7 +37,6 @@ public class MemberRequest {
 
         @Schema(description = "전공, COMPUTER_ENGINEERING", example = "COMPUTER_ENGINEERING")
         @NotBlank(message = "전공 입력은 필수입니다.")
-        @EnumValid(enumClass = Major.class)
         private String major;
     }
 
@@ -53,7 +51,7 @@ public class MemberRequest {
         private String password;
         private Grade grade;
         private JobKeyword jobKeyword;
-        private Major major;
+        private String major;
     }
 
     @Schema(description = "사용자 정보 수정 요청 DTO")

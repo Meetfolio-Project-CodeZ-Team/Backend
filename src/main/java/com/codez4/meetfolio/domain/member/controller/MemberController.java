@@ -5,7 +5,6 @@ import com.codez4.meetfolio.domain.board.service.BoardQueryService;
 import com.codez4.meetfolio.domain.comment.service.CommentQueryService;
 import com.codez4.meetfolio.domain.enums.Grade;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
-import com.codez4.meetfolio.domain.enums.Major;
 import com.codez4.meetfolio.domain.like.service.LikeQueryService;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberRequest;
@@ -45,7 +44,7 @@ public class MemberController {
                 .password(request.getPassword())
                 .grade(Grade.convert(request.getGrade()))
                 .jobKeyword(JobKeyword.convert(request.getJobKeyword()))
-                .major(Major.convert(request.getMajor()))
+                .major(request.getMajor())
                 .build();
         return ApiResponse.onSuccess(memberCommandService.post(post));
     }
