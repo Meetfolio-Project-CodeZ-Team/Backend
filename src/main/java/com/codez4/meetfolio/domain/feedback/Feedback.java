@@ -24,6 +24,7 @@ public class Feedback extends BaseTimeEntity {
     private CoverLetter coverLetter;
 
     // TODO : AI 기능 확정 후 수정 필요
+    @Lob
     @Column(name = "spell_check", nullable = false)
     private String spellCheck;
 

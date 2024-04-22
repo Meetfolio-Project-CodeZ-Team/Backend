@@ -73,7 +73,7 @@ public class MemberController {
                                                                   @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        SliceResponse<BoardResponse.BoardItem> boardInfo = boardQueryService.findMyBoards(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = boardQueryService.getMyBoards(member, page);
 
         return ApiResponse.onSuccess(BoardResponse.toBoardListResult(memberInfo, boardInfo));
     }

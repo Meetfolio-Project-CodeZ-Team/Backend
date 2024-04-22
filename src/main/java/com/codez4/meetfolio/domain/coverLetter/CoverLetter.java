@@ -25,6 +25,7 @@ public class CoverLetter extends BaseTimeEntity {
     @Column(nullable = false)
     private String question;
 
+    @Lob
     @Column(nullable = false)
     private String answer;
 

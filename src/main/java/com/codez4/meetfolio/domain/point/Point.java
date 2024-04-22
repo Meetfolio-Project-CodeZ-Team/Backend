@@ -28,7 +28,7 @@ public class Point extends BaseTimeEntity {
     @Column(name = "total_point", nullable = false)
     private Integer totalPoint;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id", nullable = true)
     private Payment payment;
 
