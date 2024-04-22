@@ -8,6 +8,7 @@ import com.codez4.meetfolio.domain.board.dto.BoardResponse;
 import com.codez4.meetfolio.domain.board.repository.BoardRepository;
 import com.codez4.meetfolio.domain.board.repository.EmploymentBoardRepository;
 import com.codez4.meetfolio.domain.board.repository.GroupBoardRepository;
+import com.codez4.meetfolio.domain.enums.BoardType;
 import com.codez4.meetfolio.domain.enums.GroupCategory;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.member.Member;
@@ -40,7 +41,7 @@ public class BoardQueryService {
     }
 
     public boolean isBoardMember(Long boardId, Member member) {
-        return findById(boardId).getMember() == member ;
+        return findById(boardId).getMember() == member;
     }
 
     public BoardResponse.BoardItem getEmploymentBoard(Member member, Long boardId) {
@@ -49,7 +50,7 @@ public class BoardQueryService {
     }
 
     public BoardResponse.BoardItem getGroupBoard(Member member, Long boardId) {
-        BoardQueryItem boardQueryItem = groupBoardRepository.queryFindGroupBoard(member, boardId);
+        BoardQueryItem boardQueryItem = groupBoardRepository.queryFindBoard(member, boardId);
         return toBoardItem(boardQueryItem);
     }
 
@@ -84,7 +85,7 @@ public class BoardQueryService {
     public SliceResponse<BoardResponse.BoardItem> getGroupBoards(Member member, int page) {
         Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
         Slice<BoardQueryItem> groupBoards =
-                groupBoardRepository.queryFindAllGroupBoards(member, pageable);
+                groupBoardRepository.queryFindAllBoards(member, pageable);
         Slice<BoardResponse.BoardItem> boards = groupBoards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(boards);
     }
@@ -93,17 +94,28 @@ public class BoardQueryService {
                                                                                 int page, GroupCategory groupCategory) {
         Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
         Slice<BoardQueryItem> groupBoards =
-                groupBoardRepository.queryFindAllGroupBoardsByGroupCategory(member, groupCategory,
+                groupBoardRepository.queryFindAllBoardsByGroupCategory(member, groupCategory,
                         pageable);
         Slice<BoardResponse.BoardItem> boards = groupBoards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(boards);
     }
 
-    public SliceResponse<BoardResponse.BoardItem> findMyBoards(Member member, Integer page) {
+    public SliceResponse<BoardResponse.BoardItem> getMyBoards(Member member, int page) {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         Slice<BoardQueryItem> boards = boardRepository.queryFindAllMyBoards(member, pageRequest);
         Slice<BoardResponse.BoardItem> myBoards = boards.map(BoardResponse::toBoardItem);
         return new SliceResponse<>(myBoards);
+    }
+
+    public SliceResponse<BoardResponse.BoardItem> getBoardsByKeyword(Member member, String keyword, BoardType type, int page) {
+
+        Pageable pageable = PageRequest.of(page, 6, Sort.by("id").descending());
+        Slice<BoardQueryItem> boards;
+        if (type == BoardType.EMPLOYMENT)
+            boards = employmentBoardRepository.queryFindBoardsByKeyword(member, keyword, pageable);
+        else boards = groupBoardRepository.queryFindBoardsByKeyword(member, keyword, pageable);
+        Slice<BoardResponse.BoardItem> findBoards = boards.map(BoardResponse::toBoardItem);
+        return new SliceResponse<>(findBoards);
     }
 
 }

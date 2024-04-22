@@ -22,4 +22,8 @@ public interface EmploymentBoardRepository extends JpaRepository<EmploymentBoard
     @Query("SELECT " +
             "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email, (SELECT l.status FROM Like l WHERE l.member = :member AND eb = l.board)) FROM EmploymentBoard eb WHERE eb.jobKeyword = :jobKeyword ")
     Slice<BoardQueryItem> queryFindAllEmploymentBoardsByJobKeyword(Member member, JobKeyword jobKeyword, Pageable pageable);
+
+    @Query(value = "SELECT " +
+            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email, (SELECT l.status from Like l WHERE l.member = :member AND l.board = eb)) FROM EmploymentBoard eb WHERE eb.title LIKE CONCAT('%', :keyword , '%') ")
+    Slice<BoardQueryItem> queryFindBoardsByKeyword(Member member, String keyword, Pageable pageable);
 }
