@@ -9,13 +9,5 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class MeetfolioApplicationTests {
-@Autowired
-public RedisUtil redisUtil;
-
-    @Test
-    public void setBlacklist(){
-        redisUtil.setBlackList("accesstoken", "test", );
-    }
-
 
 }
