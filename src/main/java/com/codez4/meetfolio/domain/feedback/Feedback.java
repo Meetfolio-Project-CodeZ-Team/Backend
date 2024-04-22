@@ -23,12 +23,10 @@ public class Feedback extends BaseTimeEntity {
     @JoinColumn(name = "cover_letter_id", nullable = false)
     private CoverLetter coverLetter;
 
-    // TODO : AI 기능 확정 후 수정 필요
-    @Lob
-    @Column(name = "spell_check", nullable = false)
+    @Column(name = "spell_check", length = 1000, nullable = false)
     private String spellCheck;
 
-    @Column(nullable = false)
+    @Column(length = 1000, nullable = false)
     private String correction;
 
     @Column(name = "recommend_question_1", nullable = false)
