@@ -1,7 +1,10 @@
 package com.codez4.meetfolio.domain.member;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
-import com.codez4.meetfolio.domain.enums.*;
+import com.codez4.meetfolio.domain.enums.Authority;
+import com.codez4.meetfolio.domain.enums.Grade;
+import com.codez4.meetfolio.domain.enums.JobKeyword;
+import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.dto.MemberRequest;
 import com.codez4.meetfolio.global.security.Password;
 import com.codez4.meetfolio.global.utils.TimeUtils;

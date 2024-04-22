@@ -114,7 +114,7 @@ public class AdminQueryService {
         return toPointInfo((int) totalPoint, (int) coverLetterPoint, (int) analysisPoint);
     }
 
-    private DashboardResponse.MemberInfo getMemberInfo() {
+    private DashboardResponse.MembersInfo getMemberInfo() {
         int totalMemberCount = memberRepository.countMemberByStatusAndAuthority(Status.ACTIVE, Authority.MEMBER);
 
         Map<JobKeyword, Integer> jobCount = new HashMap<>();

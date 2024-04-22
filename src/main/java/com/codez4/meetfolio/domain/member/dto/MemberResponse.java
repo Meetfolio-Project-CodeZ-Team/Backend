@@ -109,7 +109,7 @@ public class MemberResponse {
                         .authority(member.getAuthority().name())
                         .memberName(member.getEmail().split("@")[0])
                         .profile(member.getProfile())
-                        .major(member.getMajor().getDescription())
+                        .major(member.getMajor())
                         .build();
             } else if (member.getAuthority() == Authority.ADMIN) {
                 return MemberInfo.builder()
@@ -147,7 +147,7 @@ public class MemberResponse {
                         .registrationDate(member.getCreatedAt().toLocalDate())
                         .email(member.getEmail())
                         .grade(member.getGrade().getDescription())
-                        .major(member.getMajor().getDescription())
+                        .major(member.getMajor())
                         .jobKeyword(member.getJobKeyword().getDescription())
                         .point(member.getPoint())
                         .build();
