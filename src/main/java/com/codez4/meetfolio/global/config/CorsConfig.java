@@ -16,7 +16,7 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration cors = new CorsConfiguration();
         // TODO: 추후 Public IP로 변경
-        cors.setAllowedOrigins(List.of("https://localhost:3000", "http://localhost:8080"));
+        cors.setAllowedOrigins(List.of("https://localhost:3000", "http://localhost:8080", "http://34.64.177.41:3000"));
         cors.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE"));
         cors.setAllowCredentials(true); // cookie 활성화
         cors.addExposedHeader("Authorization"); // Authorization Header 노출
