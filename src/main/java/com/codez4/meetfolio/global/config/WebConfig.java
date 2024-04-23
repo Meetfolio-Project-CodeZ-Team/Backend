@@ -19,7 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
                 HttpMethod.DELETE.name(),
                 HttpMethod.PATCH.name())
             .allowCredentials(false)
-            .maxAge(3600);
+            .maxAge(3600)
+            .exposedHeaders("Authorization", "RefreshToken");
     }
 
 }
