@@ -22,7 +22,7 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final JwtExceptionFilter jwtExceptionFilter;
-    public static final String[] WHITE_LIST_URL = {
+    private static final String[] WHITE_LIST_URL = {
         // application
         "/api",
         "/api/login",
