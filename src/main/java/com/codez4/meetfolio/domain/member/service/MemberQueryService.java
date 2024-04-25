@@ -1,5 +1,8 @@
 package com.codez4.meetfolio.domain.member.service;
 
+import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo;
+import static com.codez4.meetfolio.global.security.Password.ENCODER;
+
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.LoginRequest;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
@@ -13,9 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo;
-import static com.codez4.meetfolio.global.security.Password.ENCODER;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,13 +26,24 @@ public class MemberQueryService {
 
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow(
-                () -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND)
+            () -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND)
         );
     }
 
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(
+            () -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND)
+        );
+    }
+
+    public Member findByMemberName(String name) {
+        return findByEmail(name.concat("@gachon.ac.kr"));
+    }
+
     public Member checkEmailAndPassword(LoginRequest request) {
-        log.debug("email {}" , request.getEmail());
-        Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
+        log.debug("email {}", request.getEmail());
+        Member member = memberRepository.findByEmail(request.getEmail())
+            .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
         comparePassword(request.getPassword(), member.getPassword());
         return member;
     }
