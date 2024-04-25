@@ -66,7 +66,7 @@ public class CoverLetterController {
     @Operation(summary = "자기소개서 작성 요청", description = "로그인 사용자는 자기소개서를 작성합니다.")
     @PostMapping
     public ApiResponse<CoverLetterProc> createCoverLetter(@AuthenticationMember Member member,
-        @Valid @RequestBody CoverLetterRequest request) {
+        @Valid @RequestBody CoverLetterRequest.Post request) {
 
         return ApiResponse.onSuccess(coverLetterCommandService.write(member, request));
     }
@@ -76,7 +76,7 @@ public class CoverLetterController {
     @PatchMapping("/{coverLetterId}")
     public ApiResponse<CoverLetterProc> updateCoverLetter(
         @PathVariable(name = "coverLetterId") Long coverLetterId,
-        @Valid @RequestBody CoverLetterRequest request) {
+        @Valid @RequestBody CoverLetterRequest.Patch request) {
 
         return ApiResponse.onSuccess(coverLetterCommandService.update(coverLetterId, request));
     }
