@@ -3,13 +3,11 @@ package com.codez4.meetfolio.domain.admin.service;
 import com.codez4.meetfolio.domain.admin.dto.*;
 import com.codez4.meetfolio.domain.analysis.repository.AnalysisRepository;
 import com.codez4.meetfolio.domain.board.Board;
-import com.codez4.meetfolio.domain.board.dto.BoardQueryItem;
 import com.codez4.meetfolio.domain.board.repository.BoardRepository;
 import com.codez4.meetfolio.domain.dataset.Dataset;
 import com.codez4.meetfolio.domain.dataset.repository.DatasetRepository;
 import com.codez4.meetfolio.domain.enums.*;
 import com.codez4.meetfolio.domain.feedback.repository.FeedbackRepository;
-import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.repository.MemberRepository;
 import com.codez4.meetfolio.domain.model.repository.ModelRepository;
@@ -18,20 +16,23 @@ import com.codez4.meetfolio.domain.payment.repository.PaymentRepository;
 import com.codez4.meetfolio.domain.point.Point;
 import com.codez4.meetfolio.domain.point.repository.PointRepository;
 import com.codez4.meetfolio.global.exception.ApiException;
-import com.codez4.meetfolio.global.response.SliceResponse;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.codez4.meetfolio.domain.admin.dto.AIServiceResponse.toAIServiceInfo;
 import static com.codez4.meetfolio.domain.admin.dto.AIServiceResponse.toAIServiceResult;
-import static com.codez4.meetfolio.domain.admin.dto.BoardResponse.toBoardAdminItem;
 import static com.codez4.meetfolio.domain.admin.dto.BoardResponse.toBoardAdminResult;
 import static com.codez4.meetfolio.domain.admin.dto.DashboardResponse.*;
 import static com.codez4.meetfolio.domain.admin.dto.DatasetResponse.toDatasetInfo;
@@ -55,7 +56,7 @@ public class AdminQueryService {
     public DashboardResponse.DashboardResult getDashboard() {
         return toDashboardResult(getAIServiceInfo(),
                 getMemberInfo(),
-                getPointInfo(),
+                getPointStatics(LocalDate.now(ZoneId.of("Asia/Seoul")).getYear(), LocalDate.now(ZoneId.of("Asia/Seoul")).getMonthValue()),
                 (int) paymentRepository.queryGetTotalSales());
     }
 
@@ -69,11 +70,10 @@ public class AdminQueryService {
 
     public PointResponse.PointStatics getPointStatics(int year, int month) {
         String requestMonth = Integer.toString(year) + '-' + month;
-        long totalPoint = pointRepository.countAllByPointTypeIsNot(PointType.CHARGE);
+        long totalPoint = pointRepository.queryGetAllPointSum(PointType.CHARGE, requestMonth);
         long coverLetterPoint = pointRepository.queryGetPointSum(PointType.USE_COVER_LETTER, requestMonth);
         long analysisPoint = pointRepository.queryGetPointSum(PointType.USE_AI_ANALYSIS, requestMonth);
-        String yearMonth = year + "년" + " " + month + "월";
-        return toPointStatics(yearMonth, (int) coverLetterPoint, (int) analysisPoint, (int) totalPoint);
+        return toPointStatics( year + "년" + " " + month + "월", (int) coverLetterPoint, (int) analysisPoint, (int) totalPoint);
     }
 
     public PaymentResponse.PaymentResult getPaymentList(int page, int year, int month) {
@@ -121,13 +121,6 @@ public class AdminQueryService {
     public BoardResponse.BoardAdminResult getBoardsByKeyword(String keyword, Pageable page) {
         Page<Board> boards = boardRepository.queryFindBoardsByKeyword(keyword, page);
         return toBoardAdminResult(boards);
-    }
-
-    public DashboardResponse.PointInfo getPointInfo() {
-        long totalPoint = pointRepository.countAllByPointTypeIsNot(PointType.CHARGE);
-        long coverLetterPoint = pointRepository.countPointByPointTypeIs(PointType.USE_COVER_LETTER);
-        long analysisPoint = pointRepository.countPointByPointTypeIs(PointType.USE_AI_ANALYSIS);
-        return toPointInfo((int) totalPoint, (int) coverLetterPoint, (int) analysisPoint);
     }
 
     private DashboardResponse.MembersInfo getMemberInfo() {
