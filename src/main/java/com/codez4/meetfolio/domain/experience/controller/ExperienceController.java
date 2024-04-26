@@ -1,5 +1,16 @@
 package com.codez4.meetfolio.domain.experience.controller;
 
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.ExperienceCardInfo;
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.ExperienceCardItem;
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.ExperienceCardResult;
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.ExperienceInfo;
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.ExperienceProc;
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.ExperienceResult;
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.RecommendCard;
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.toExperienceCardResult;
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.toExperienceResult;
+import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.toRecommendCard;
+
 import com.codez4.meetfolio.domain.experience.dto.ExperienceRequest;
 import com.codez4.meetfolio.domain.experience.service.ExperienceCommandService;
 import com.codez4.meetfolio.domain.experience.service.ExperienceQueryService;
@@ -12,12 +23,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
-import static com.codez4.meetfolio.domain.experience.dto.ExperienceResponse.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "경험 분해 API")
 @RestController
@@ -61,7 +77,7 @@ public class ExperienceController {
 
     @Operation(summary = "경험 분해 수정", description = "경험 분해 수정 요청을 PATCH로 보냅니다.")
     @Parameter(name = "experienceId", description = "경험 분해 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
-    @PatchMapping("/experiences{experienceId}")
+    @PatchMapping("/experiences/{experienceId}")
     public ApiResponse<ExperienceProc> patch(@RequestBody ExperienceRequest patch,
         @PathVariable(name = "experienceId") Long experienceId) {
 
@@ -70,7 +86,7 @@ public class ExperienceController {
 
     @Operation(summary = "경험 분해 삭제", description = "경험 분해 삭제 요청을 DELETE로 보냅니다.")
     @Parameter(name = "experienceId", description = "경험 분해 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
-    @DeleteMapping("/experiences{experienceId}")
+    @DeleteMapping("/experiences/{experienceId}")
     public ApiResponse<ExperienceProc> delete(
         @PathVariable(name = "experienceId") Long experienceId) {
 

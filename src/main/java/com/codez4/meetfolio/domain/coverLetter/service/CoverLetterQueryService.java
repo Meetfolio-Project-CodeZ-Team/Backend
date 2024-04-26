@@ -30,14 +30,24 @@ public class CoverLetterQueryService {
 
     public CoverLetter findById(Long coverLetterId) {
         return coverLetterRepository.findById(coverLetterId).orElseThrow(
-                () -> new ApiException(ErrorStatus._COVERLETTER_NOT_FOUND)
+            () -> new ApiException(ErrorStatus._COVERLETTER_NOT_FOUND)
         );
     }
 
-    public SliceResponse<CoverLetterResponse.CoverLetterItem> getMyCoverLetters(Member member, int page) {
+    public SliceResponse<CoverLetterResponse.CoverLetterItem> getMyCoverLetters(Member member,
+        int page) {
         PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("createdAt").descending());
         Slice<CoverLetter> coverLetters = coverLetterRepository.findByMember(member, pageRequest);
-        Slice<CoverLetterResponse.CoverLetterItem> coverLetterInfo = coverLetters.map(CoverLetterResponse::toCoverLetterItem);
-        return new SliceResponse<>(coverLetterInfo);
+        return CoverLetterResponse.toSliceCoverLetterItem(coverLetters);
+    }
+
+    public SliceResponse<CoverLetterResponse.CoverLetterItem> getOtherCoverLetters(Member other,
+        int page) {
+        PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("createdAt").descending());
+
+        Slice<CoverLetter> otherCoverLetters = coverLetterRepository.findPublicAndActiveCoverLetterByMember(
+            other,
+            pageRequest);
+        return CoverLetterResponse.toSliceCoverLetterItem(otherCoverLetters);
     }
 }

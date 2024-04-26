@@ -11,6 +11,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -19,8 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
 
 @Slf4j
 @Component
@@ -33,16 +32,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
+        @NonNull HttpServletRequest request,
+        @NonNull HttpServletResponse response,
+        @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         if (request.getServletPath().contains("/api/login")
-                || request.getServletPath().contains("/api/signup")
-                || request.getServletPath().contains("/swagger-ui")
-                || request.getServletPath().contains("/swagger-resources")
-                || request.getServletPath().contains("v3/api-docs")
-                || request.getServletPath().equals("/api")
+            || request.getServletPath().contains("/api/signup")
+            || request.getServletPath().contains("/swagger-ui")
+            || request.getServletPath().contains("/swagger-resources")
+            || request.getServletPath().contains("v3/api-docs")
+            || request.getServletPath().equals("/api")
+            || request.getMethod().equals("GET") && request.getServletPath()
+            .contains("/api/experiences")
         ) {
             filterChain.doFilter(request, response);
             return;
@@ -50,27 +51,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String accessToken = extractAccessToken(request);
         String refreshToken = extractRefreshToken(request);
-        if (StringUtils.hasText(accessToken)){
-            if(redisUtil.hasKeyBlackList(accessToken)){
+        if (StringUtils.hasText(accessToken)) {
+            if (redisUtil.hasKeyBlackList(accessToken)) {
                 throw new ApiException(ErrorStatus._LOGOUT_USER);
-            }
-            else if (jwtTokenProvider.validateToken(accessToken)) {
+            } else if (jwtTokenProvider.validateToken(accessToken)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-            else if (!jwtTokenProvider.validateToken(accessToken) && refreshToken != null){
+            } else if (!jwtTokenProvider.validateToken(accessToken) && refreshToken != null) {
                 boolean isValidated = jwtTokenProvider.validateToken(refreshToken);
                 boolean isRefreshToken = jwtTokenProvider.existsRefreshToken(refreshToken);
-                if( isRefreshToken && isValidated ) {
+                if (isRefreshToken && isValidated) {
                     Long memberId = jwtTokenProvider.getUserId(accessToken);
                     Member member = memberRepository.findById(memberId)
-                            .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
-                    String newAccessToken = jwtTokenProvider.generateAccessToken(member.getEmail(), memberId, member.getAuthority());
-                    jwtTokenProvider.setHeaderAccessToken(response, JwtProperties.TOKEN_PREFIX + newAccessToken);
-                    SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(newAccessToken));
+                        .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
+                    String newAccessToken = jwtTokenProvider.generateAccessToken(member.getEmail(),
+                        memberId, member.getAuthority());
+                    jwtTokenProvider.setHeaderAccessToken(response,
+                        JwtProperties.TOKEN_PREFIX + newAccessToken);
+                    SecurityContextHolder.getContext()
+                        .setAuthentication(jwtTokenProvider.getAuthentication(newAccessToken));
                 }
-            }
-            else {
+            } else {
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -84,7 +85,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Claims claims = jwtTokenProvider.parseClaims(accessToken);
         Long memberId = jwtTokenProvider.getUserId(accessToken);
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
         if (member == null || !member.getId().equals(claims.get("id", Long.class))) {
             throw new JwtException("토큰 값의 유저 정보가 올바르지 않습니다.");
         }
@@ -95,7 +96,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static String extractAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtProperties.TOKEN_PREFIX)) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(
+            JwtProperties.TOKEN_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
@@ -104,7 +106,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static String extractRefreshToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(JwtProperties.REFRESH_HEADER_STRING);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtProperties.TOKEN_PREFIX)) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(
+            JwtProperties.TOKEN_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;

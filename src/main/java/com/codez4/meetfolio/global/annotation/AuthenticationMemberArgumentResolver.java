@@ -32,14 +32,14 @@ public class AuthenticationMemberArgumentResolver implements HandlerMethodArgume
         WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+        String accessToken = JwtAuthenticationFilter.extractAccessToken(request);
 
         // 비로그인 / 로그인 경로 예외
-        if (request.getServletPath().equals("/api")
-            && JwtAuthenticationFilter.extractAccessToken(request) == null) {
+        if ((request.getServletPath().equals("/api") || request.getServletPath()
+            .contains("/api/experiences"))
+            && accessToken == null) {
             return null;
         }
-
-        String accessToken = JwtAuthenticationFilter.extractAccessToken(request);
 
         if (accessToken.isEmpty() || accessToken.isBlank()) {
             throw new ApiException(ErrorStatus._FORBIDDEN);
