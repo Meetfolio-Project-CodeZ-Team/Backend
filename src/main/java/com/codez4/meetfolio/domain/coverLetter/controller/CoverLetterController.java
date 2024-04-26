@@ -3,6 +3,7 @@ package com.codez4.meetfolio.domain.coverLetter.controller;
 import com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse.AnalysisInfo;
 import com.codez4.meetfolio.domain.analysis.service.AnalysisQueryService;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterRequest;
+import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterRequest.CoverLetterOther;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLetterInfo;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLetterProc;
@@ -102,10 +103,10 @@ public class CoverLetterController {
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @PostMapping("/members")
     public ApiResponse<SliceResponse<CoverLetterResponse.CoverLetterItem>> getOtherCoverLetters(
-        @RequestBody String memberName,
+        @RequestBody CoverLetterOther otherMember,
         @RequestParam(value = "page", defaultValue = "0") int page) {
 
-        Member other = memberQueryService.findByMemberName(memberName);
+        Member other = memberQueryService.findByMemberName(otherMember.getMemberName());
 
         return ApiResponse.onSuccess(coverLetterQueryService.getOtherCoverLetters(other, page));
     }

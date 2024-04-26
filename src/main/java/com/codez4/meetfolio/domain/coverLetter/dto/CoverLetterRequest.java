@@ -59,4 +59,11 @@ public class CoverLetterRequest {
             .member(member)
             .build();
     }
+
+    @Getter
+    public static class CoverLetterOther {
+
+        @Schema(description = "다른 사용자의 이름 (이메일 정보는 백엔드에서 처리)")
+        private String memberName;
+    }
 }
