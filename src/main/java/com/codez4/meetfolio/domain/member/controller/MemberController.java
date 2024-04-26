@@ -21,7 +21,13 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "사용자 API")
 @RestController
@@ -38,21 +44,21 @@ public class MemberController {
     @Operation(summary = "회원 가입", description = "회원 가입")
     @PostMapping("/signup")
     public ApiResponse<MemberResponse.MemberProc> signUp(
-            @Valid @RequestBody MemberRequest.SignUpRequest request) {
+        @Valid @RequestBody MemberRequest.SignUpRequest request) {
         MemberRequest.Post post = MemberRequest.Post.builder()
-                .email(request.getEmail())
-                .password(request.getPassword())
-                .grade(Grade.convert(request.getGrade()))
-                .jobKeyword(JobKeyword.convert(request.getJobKeyword()))
-                .major(request.getMajor())
-                .build();
+            .email(request.getEmail())
+            .password(request.getPassword())
+            .grade(Grade.convert(request.getGrade()))
+            .jobKeyword(JobKeyword.convert(request.getJobKeyword()))
+            .major(request.getMajor())
+            .build();
         return ApiResponse.onSuccess(memberCommandService.post(post));
     }
 
     @Operation(summary = "마이페이지 수정 정보 조회", description = "사용자의 개인 정보를 조회합니다.")
     @GetMapping("/mypage")
     public ApiResponse<MemberResponse.MemberDetailInfo> myPage(
-            @AuthenticationMember Member member) {
+        @AuthenticationMember Member member) {
 
         return ApiResponse.onSuccess(memberQueryService.getMyPage(member));
     }
@@ -60,7 +66,7 @@ public class MemberController {
     @Operation(summary = "마이페이지 수정 요청", description = "사용자의 개인 정보를 수정합니다.")
     @PatchMapping("/mypage")
     public ApiResponse<MemberResponse.MemberProc> editMyPage(@AuthenticationMember Member member,
-                                                             @RequestBody MemberRequest.Patch patch) {
+        @RequestBody MemberRequest.Patch patch) {
 
         return ApiResponse.onSuccess(memberCommandService.update(member, patch));
     }
@@ -68,11 +74,13 @@ public class MemberController {
     @Operation(summary = "내가 작성한 게시글 목록 조회", description = "내가 작성한 게시글 목록 조회 GET으로 보냅니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-boards")
-    public ApiResponse<BoardResponse.BoardListResult> getMyBoards(@AuthenticationMember Member member,
-                                                                  @RequestParam(name = "page") Integer page) {
+    public ApiResponse<BoardResponse.BoardListResult> getMyBoards(
+        @AuthenticationMember Member member,
+        @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        SliceResponse<BoardResponse.BoardItem> boardInfo = boardQueryService.getMyBoards(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = boardQueryService.getMyBoards(member,
+            page);
 
         return ApiResponse.onSuccess(BoardResponse.toBoardListResult(memberInfo, boardInfo));
     }
@@ -80,11 +88,13 @@ public class MemberController {
     @Operation(summary = "내가 좋아요 한 게시글 목록 조회", description = "내가 좋아요 한 게시글 목록 조회 GET으로 보냅니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-likes")
-    public ApiResponse<BoardResponse.BoardListResult> getMyLikes(@AuthenticationMember Member member,
-                                                                 @RequestParam(name = "page") Integer page) {
+    public ApiResponse<BoardResponse.BoardListResult> getMyLikes(
+        @AuthenticationMember Member member,
+        @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        SliceResponse<BoardResponse.BoardItem> boardInfo = likeQueryService.findMyLikedBoards(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = likeQueryService.findMyLikedBoards(
+            member, page);
 
         return ApiResponse.onSuccess(BoardResponse.toBoardListResult(memberInfo, boardInfo));
     }
@@ -93,12 +103,21 @@ public class MemberController {
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-comments")
     public ApiResponse<BoardResponse.BoardListResult> getMyComments(
-            @AuthenticationMember Member member, @RequestParam(name = "page") Integer page) {
+        @AuthenticationMember Member member, @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        SliceResponse<BoardResponse.BoardItem> boardInfo = commentQueryService.findMyComments(member, page);
+        SliceResponse<BoardResponse.BoardItem> boardInfo = commentQueryService.findMyComments(
+            member, page);
 
         return ApiResponse.onSuccess(BoardResponse.toBoardListResult(memberInfo, boardInfo));
+    }
+
+    @Operation(summary = "Header에 필요한 로그인한 사용자의 정보 조회", description = "로그인한 사용자의 정보 조회 GET으로 보냅니다.")
+    @GetMapping("/members")
+    public ApiResponse<MemberResponse.MemberInfo> getMemberInfo(
+        @AuthenticationMember Member member) {
+
+        return ApiResponse.onSuccess(MemberResponse.toMemberInfo(member));
     }
 
 }

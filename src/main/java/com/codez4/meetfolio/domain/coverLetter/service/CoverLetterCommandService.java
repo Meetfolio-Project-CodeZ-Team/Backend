@@ -22,7 +22,7 @@ public class CoverLetterCommandService {
     private final AnalysisCommandService analysisCommandService;
     private final FeedbackCommandService feedbackCommandService;
 
-    public CoverLetterProc write(Member member, CoverLetterRequest request) {
+    public CoverLetterProc write(Member member, CoverLetterRequest.Post request) {
 
         CoverLetter coverLetter = save(CoverLetterRequest.toEntity(member, request));
 
@@ -34,7 +34,7 @@ public class CoverLetterCommandService {
         return coverLetterRepository.save(coverLetter);
     }
 
-    public CoverLetterProc update(Long coverLetterId, CoverLetterRequest request) {
+    public CoverLetterProc update(Long coverLetterId, CoverLetterRequest.Patch request) {
         CoverLetter coverLetter = coverLetterQueryService.findById(coverLetterId);
         coverLetter.update(request);
         return CoverLetterResponse.toCoverLetterProc(coverLetterId);

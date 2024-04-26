@@ -23,19 +23,20 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final JwtExceptionFilter jwtExceptionFilter;
     private static final String[] WHITE_LIST_URL = {
-            // application
-            "/api",
-            "/api/login",
-            "/api/signup",
-            "/api/signup/email",
-            "/api/signup/email/authentication",
+        // application
+        "/api",
+        "/api/login",
+        "/api/signup",
+        "/api/signup/email",
+        "/api/signup/email/authentication",
+        "/api/experiences/**",
 
-            // swagger
-            "v3/api-docs/**",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html",
+        // swagger
+        "v3/api-docs/**",
+        "/swagger-resources",
+        "/swagger-resources/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
     };
 
     @Bean
@@ -46,20 +47,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling(exceptionHandlingConfigurer ->
-                        exceptionHandlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-                        authorizationManagerRequestMatcherRegistry
-                                .requestMatchers("/api/admins/**").hasRole("ADMIN")
-                                .anyRequest()
-                                .authenticated()
-                )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
+            .csrf(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            .sessionManagement(
+                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .exceptionHandling(exceptionHandlingConfigurer ->
+                exceptionHandlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+            .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
+                authorizationManagerRequestMatcherRegistry
+                    .requestMatchers("/api/admins/**").hasRole("ADMIN")
+                    .anyRequest()
+                    .authenticated()
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }
