@@ -25,6 +25,9 @@ public class EmailAuthCommandService {
     }
 
     public void sendEmail(String email) {
+        if(redisUtil.hasEmailAuthKey(email)){
+            redisUtil.deleteEmailAuth(email);
+        }
         String title = "Meetfolio 이메일 인증 번호";
         String authCode = this.createCode();
         mailService.sendEmail(email, title, authCode);
