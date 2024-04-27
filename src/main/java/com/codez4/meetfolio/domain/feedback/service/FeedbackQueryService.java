@@ -4,6 +4,7 @@ import com.codez4.meetfolio.domain.feedback.Feedback;
 import com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse;
 import com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
 import com.codez4.meetfolio.domain.feedback.repository.FeedbackRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +18,12 @@ public class FeedbackQueryService {
 
     public FeedbackInfo getFeedbackInfo(Long coverLetterId) {
 
-        return FeedbackResponse.toFeedbackInfo(findByCoverLetterId(coverLetterId));
+        return findByCoverLetterId(coverLetterId)
+            .map(FeedbackResponse::toFeedbackInfo)
+            .orElse(null);
     }
-    public Feedback findByCoverLetterId(Long coverLetterId) {
+
+    public Optional<Feedback> findByCoverLetterId(Long coverLetterId) {
         return feedbackRepository.findByCoverLetterId(coverLetterId);
     }
 }

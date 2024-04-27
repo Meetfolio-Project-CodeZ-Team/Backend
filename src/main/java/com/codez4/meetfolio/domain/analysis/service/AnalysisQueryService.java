@@ -4,6 +4,7 @@ import com.codez4.meetfolio.domain.analysis.Analysis;
 import com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse;
 import com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse.AnalysisInfo;
 import com.codez4.meetfolio.domain.analysis.repository.AnalysisRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +18,12 @@ public class AnalysisQueryService {
 
     public AnalysisInfo getAnalysisInfo(Long coverLetterId) {
 
-        return AnalysisResponse.toAnalysisInfo(findByCoverLetterId(coverLetterId));
+        return findByCoverLetterId(coverLetterId)
+            .map(AnalysisResponse::toAnalysisInfo)
+            .orElse(null);
     }
 
-    public Analysis findByCoverLetterId(Long coverLetterId) {
+    public Optional<Analysis> findByCoverLetterId(Long coverLetterId) {
         return analysisRepository.findByCoverLetterId(coverLetterId);
     }
 }

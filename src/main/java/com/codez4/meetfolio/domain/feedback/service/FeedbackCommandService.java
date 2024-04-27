@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.feedback.service;
 
+import com.codez4.meetfolio.domain.feedback.Feedback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,6 @@ public class FeedbackCommandService {
     private final FeedbackQueryService feedbackQueryService;
 
     public void softDelete(Long coverLetterId) {
-        feedbackQueryService.findByCoverLetterId(coverLetterId).delete();
+        feedbackQueryService.findByCoverLetterId(coverLetterId).ifPresent(Feedback::delete);
     }
 }
