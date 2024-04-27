@@ -1,6 +1,5 @@
 package com.codez4.meetfolio.domain.emailAuth.dto;
 
-import com.codez4.meetfolio.domain.emailAuth.EmailAuth;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -19,11 +18,4 @@ public class EmailAuthRequest {
     @Schema(description = "인증 코드", example = "123456")
     private String authCode;
 
-    public static EmailAuth toEntity(String email, String authCode) {
-        return EmailAuth.builder()
-                .email(email)
-                .code(authCode)
-                .build();
-
-    }
 }

@@ -1,10 +1,8 @@
 package com.codez4.meetfolio.domain.emailAuth.service;
 
-import com.codez4.meetfolio.domain.emailAuth.EmailAuth;
-import com.codez4.meetfolio.domain.emailAuth.dto.EmailAuthRequest;
-import com.codez4.meetfolio.domain.emailAuth.repository.EmailAuthRepository;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
+import com.codez4.meetfolio.global.utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,18 +17,18 @@ import java.util.Random;
 @RequiredArgsConstructor
 @Transactional
 public class EmailAuthCommandService {
-    private final EmailAuthRepository emailAuthRepository;
     private final MailService mailService;
+    private final RedisUtil redisUtil;
 
-    public void save(EmailAuth emailAuth) {
-        emailAuthRepository.save(emailAuth);
+    public void save(String email, String authCode) {
+        redisUtil.setRedisEmailAuth(email, authCode, 1);
     }
 
     public void sendEmail(String email) {
         String title = "Meetfolio 이메일 인증 번호";
         String authCode = this.createCode();
         mailService.sendEmail(email, title, authCode);
-        save(EmailAuthRequest.toEntity(email, authCode));
+        save(email, authCode);
     }
 
     private String createCode() {
