@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.analysis.service;
 
+import com.codez4.meetfolio.domain.analysis.Analysis;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,6 @@ public class AnalysisCommandService {
     private final AnalysisQueryService analysisQueryService;
 
     public void softDelete(Long coverLetterId) {
-        analysisQueryService.findByCoverLetterId(coverLetterId).delete();
+        analysisQueryService.findByCoverLetterId(coverLetterId).ifPresent(Analysis::delete);
     }
 }
