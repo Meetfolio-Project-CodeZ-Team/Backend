@@ -63,9 +63,14 @@ public class AdminQueryService {
     public MemberResponse.MemberListResult getMemberList(int page, JobKeyword jobKeyword) {
         PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
         if (jobKeyword == null) {
-            return toMemberList(memberRepository.findMemberByStatusAndAuthority(Status.ACTIVE, Authority.MEMBER, pageRequest));
+            return toMemberList(memberRepository.findMemberByAuthority(Authority.MEMBER, pageRequest));
         } else
-            return toMemberList(memberRepository.findMemberByStatusAndAuthorityAndJobKeyword(Status.ACTIVE, Authority.MEMBER, jobKeyword, pageRequest));
+            return toMemberList(memberRepository.findMemberByAuthorityAndJobKeyword(Authority.MEMBER, jobKeyword, pageRequest));
+    }
+
+    public MemberResponse.MemberListResult getMemberListByKeyword(int page, String keyword) {
+        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
+        return toMemberList(memberRepository.queryFindMemberByAuthorityAndKeyword(Authority.MEMBER, keyword, pageRequest));
     }
 
     public PointResponse.PointStatics getPointStatics(int year, int month) {
@@ -73,7 +78,7 @@ public class AdminQueryService {
         long totalPoint = pointRepository.queryGetAllPointSum(PointType.CHARGE, requestMonth);
         long coverLetterPoint = pointRepository.queryGetPointSum(PointType.USE_COVER_LETTER, requestMonth);
         long analysisPoint = pointRepository.queryGetPointSum(PointType.USE_AI_ANALYSIS, requestMonth);
-        return toPointStatics( year + "년" + " " + month + "월", (int) coverLetterPoint, (int) analysisPoint, (int) totalPoint);
+        return toPointStatics(year + "년" + " " + month + "월", (int) coverLetterPoint, (int) analysisPoint, (int) totalPoint);
     }
 
     public PaymentResponse.PaymentResult getPaymentList(int page, int year, int month) {
@@ -107,8 +112,8 @@ public class AdminQueryService {
     public AIServiceResponse.AIServiceInfo getAIServiceInfo() {
         long feedbackCount = feedbackRepository.countAllBy();
         long analysisCount = analysisRepository.countAllBy();
-        double feedbackSatisfaction = feedbackRepository.queryGetAvgSatisfaction() ;
-        double analysisSatisfaction = analysisRepository.queryGetAvgSatisfaction() ;
+        double feedbackSatisfaction = feedbackRepository.queryGetAvgSatisfaction();
+        double analysisSatisfaction = analysisRepository.queryGetAvgSatisfaction();
         double avgSatisfaction = (feedbackSatisfaction + analysisSatisfaction) / 2;
         return toAIServiceInfo((int) feedbackCount, (int) analysisCount, avgSatisfaction);
     }
@@ -132,7 +137,6 @@ public class AdminQueryService {
         }
         return toMemberInfo(totalMemberCount, jobCount);
     }
-
 
     private int getMemberCountByJobKeyword(JobKeyword jobKeyword) {
         return memberRepository.countMemberByStatusAndAuthorityAndJobKeyword(Status.ACTIVE, Authority.MEMBER, jobKeyword);
