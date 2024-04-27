@@ -21,7 +21,7 @@ public class EmailAuthCommandService {
     private final RedisUtil redisUtil;
 
     public void save(String email, String authCode) {
-        redisUtil.setRedisEmailAuth(email, authCode, 1);
+        redisUtil.setRedisEmailAuth(email, authCode, 5);
     }
 
     public void sendEmail(String email) {
