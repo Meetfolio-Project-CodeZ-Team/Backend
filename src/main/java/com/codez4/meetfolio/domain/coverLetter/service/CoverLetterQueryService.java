@@ -37,7 +37,8 @@ public class CoverLetterQueryService {
     public SliceResponse<CoverLetterResponse.CoverLetterItem> getMyCoverLetters(Member member,
         int page) {
         PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("createdAt").descending());
-        Slice<CoverLetter> coverLetters = coverLetterRepository.findByMember(member, pageRequest);
+        Slice<CoverLetter> coverLetters = coverLetterRepository.findActiveByMember(member,
+            pageRequest);
         return CoverLetterResponse.toSliceCoverLetterItem(coverLetters);
     }
 

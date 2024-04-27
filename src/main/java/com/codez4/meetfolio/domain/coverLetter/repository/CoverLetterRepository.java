@@ -12,7 +12,8 @@ public interface CoverLetterRepository extends JpaRepository<CoverLetter, Long> 
 
     List<CoverLetter> findByMember(Member member);
 
-    Slice<CoverLetter> findByMember(Member member, Pageable pageable);
+    @Query("SELECT c FROM CoverLetter c WHERE c.member = :member and c.status = 'ACTIVE'")
+    Slice<CoverLetter> findActiveByMember(Member member, Pageable pageable);
 
     @Query("SELECT c FROM CoverLetter c WHERE c.member = :member and c.shareType = 'PUBLIC' and c.status = 'ACTIVE'")
     Slice<CoverLetter> findPublicAndActiveCoverLetterByMember(Member member, Pageable pageable);
