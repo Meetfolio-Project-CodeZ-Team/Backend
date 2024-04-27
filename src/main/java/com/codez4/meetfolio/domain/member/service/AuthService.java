@@ -4,10 +4,14 @@ import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.TokenResponse;
 import com.codez4.meetfolio.global.jwt.JwtTokenProvider;
 import com.codez4.meetfolio.global.utils.RedisUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 @Slf4j
 @Service
@@ -37,5 +41,17 @@ public class AuthService {
         redisUtil.delete(refreshToken);
         Long expiration = jwtTokenProvider.getExpiration(accessToken);
         redisUtil.setBlackList(accessToken, "accessToken", expiration);
+    }
+
+    private Cookie findCookie(HttpServletRequest request, String cookieName){
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null){
+            return null;
+        }
+
+        return Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals(cookieName))
+                .findFirst()
+                .orElse(null);
     }
 }
