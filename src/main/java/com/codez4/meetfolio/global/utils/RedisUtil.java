@@ -11,7 +11,8 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RedisUtil {
     private final RedisTemplate<String, String> redisTemplate;
-    private final RedisTemplate<String,String> redisBlackListTemplate;
+    private final RedisTemplate<String, String> redisBlackListTemplate;
+    private final RedisTemplate<String, String> redisEmailAuthTemplate;
 
     public void set(String key, String value, int minutes) {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
@@ -46,5 +47,23 @@ public class RedisUtil {
 
     public boolean hasKeyBlackList(String key) {
         return redisBlackListTemplate.hasKey(key);
+    }
+
+    public void setRedisEmailAuth(String key, String value, int minutes) {
+        redisEmailAuthTemplate.setKeySerializer(new StringRedisSerializer());
+        redisEmailAuthTemplate.setValueSerializer(new StringRedisSerializer());
+        redisEmailAuthTemplate.opsForValue().set(key, value, minutes, TimeUnit.MINUTES);
+    }
+
+    public String getEmailAuth(String key) {
+        return (String) redisEmailAuthTemplate.opsForValue().get(key);
+    }
+
+    public boolean deleteEmailAuth(String key) {
+        return Boolean.TRUE.equals(redisEmailAuthTemplate.delete(key));
+    }
+
+    public boolean hasEmailAuthKey(String key) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 }
