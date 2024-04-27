@@ -73,6 +73,17 @@ public class AdminController {
         return ApiResponse.onSuccess("회원 비활성화 성공입니다.");
     }
 
+    @Operation(summary = "회원 관리 - 회원 검색", description = "회원 관리 메뉴에서 회원을 검색합니다.")
+    @Parameter(name = "keyword", description = "검색어, Query String입니다.", required = true, example = "BACKEND", in = ParameterIn.QUERY)
+    @GetMapping("/members-management/search")
+    public ApiResponse<MemberResponse.MemberListResult> getMemberListByKeyword(@AuthenticationMember Member admin,
+                                                                      @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                      @RequestParam(value = "keyword") String keyword) {
+
+        return ApiResponse.onSuccess(adminQueryService.getMemberListByKeyword(page, keyword));
+    }
+
+
     @Operation(summary = "매출 관리 - 포인트 사용 통계", description = "매출 관리 메뉴에서 포인트 사용 통계를 조회합니다. year, month 모두 입력 안 할 시 현재 달의 통계를 전송합니다. year, month 중 하나만 입력 시 에러를 반환합니다.")
     @Parameter(name = "year", description = "년도", required = false, example = "2024", in = ParameterIn.QUERY)
     @Parameter(name = "month", description = "월", required = false, example = "4", in = ParameterIn.QUERY)
