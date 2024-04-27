@@ -100,7 +100,7 @@ public class AdminQueryService {
 
     public DatasetResponse.DatasetInfo getDatasetList(int page) {
         PageRequest pageRequest = PageRequest.of(page, 7, Sort.by("createdAt").descending());
-        Page<Dataset> datasets = datasetRepository.getDatasetByOrderByCreatedAt(pageRequest);
+        Page<Dataset> datasets = datasetRepository.getAllBy(pageRequest);
         return toDatasetInfo(datasets);
     }
 
