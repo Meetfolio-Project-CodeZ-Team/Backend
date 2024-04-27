@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.member.dto;
 
 import com.codez4.meetfolio.domain.enums.Authority;
+import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -95,10 +96,12 @@ public class MemberResponse {
         @Enumerated(EnumType.STRING)
         private String major;
         @Schema(description = "희망 직무")
-        @Enumerated(EnumType.STRING)
         private String jobKeyword;
         @Schema(description = "포인트")
         private int point;
+        @Schema(description = "활성 상태, ACTIVE/INACTIVE")
+        @Enumerated(EnumType.STRING)
+        private Status status;
     }
 
 
@@ -150,6 +153,7 @@ public class MemberResponse {
                         .major(member.getMajor())
                         .jobKeyword(member.getJobKeyword().getDescription())
                         .point(member.getPoint())
+                        .status(member.getStatus())
                         .build();
     }
 

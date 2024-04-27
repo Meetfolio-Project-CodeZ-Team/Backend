@@ -110,9 +110,6 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            if(redisUtil.hasKeyBlackList(token)){
-                throw new RuntimeException("이미 탈퇴한 회원입니다.");
-            }
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             throw new JwtException("잘못된 JWT 서명입니다.");
