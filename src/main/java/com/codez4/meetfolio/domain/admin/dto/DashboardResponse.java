@@ -19,7 +19,7 @@ public class DashboardResponse {
     public static class DashboardResult {
         private AIServiceResponse.AIServiceInfo aiServiceInfo;
         private MembersInfo membersInfo;
-        private PointInfo pointInfo;
+        private PointResponse.PointStatics pointInfo;
         private int paymentInfo;
     }
 
@@ -48,7 +48,7 @@ public class DashboardResponse {
         private int analysisPoint;
     }
 
-    public static DashboardResult toDashboardResult(AIServiceResponse.AIServiceInfo aiSolutionInfo, MembersInfo membersInfo, PointInfo pointInfo, int paymentInfo) {
+    public static DashboardResult toDashboardResult(AIServiceResponse.AIServiceInfo aiSolutionInfo, MembersInfo membersInfo, PointResponse.PointStatics pointInfo, int paymentInfo) {
         return DashboardResult.builder()
                 .aiServiceInfo(aiSolutionInfo)
                 .membersInfo(membersInfo)

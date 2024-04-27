@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DatasetRepository extends JpaRepository<Dataset, Long> {
-    Page<Dataset> getDatasetByOrderByCreatedAt(PageRequest pageRequest);
+    Page<Dataset> getAllBy(PageRequest pageRequest);
 }
