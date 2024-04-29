@@ -5,6 +5,7 @@ import com.codez4.meetfolio.domain.member.dto.LoginRequest;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.dto.TokenResponse;
 import com.codez4.meetfolio.domain.member.service.AuthService;
+import com.codez4.meetfolio.domain.member.service.MemberCommandService;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.jwt.JwtAuthenticationFilter;
@@ -33,6 +34,7 @@ import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo
 public class AuthController {
 
     private final MemberQueryService memberQueryService;
+    private final MemberCommandService memberCommandService;
     private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -42,8 +44,8 @@ public class AuthController {
                                                                         HttpServletResponse response) {
         Member member = memberQueryService.checkEmailAndPassword(request);
         TokenResponse tokenResponse = authService.authorize(member);
-        jwtTokenProvider.setHeaderAccessToken(response, JwtProperties.TOKEN_PREFIX+tokenResponse.getAccessToken());
-        jwtTokenProvider.setHeaderRefreshToken(response, JwtProperties.TOKEN_PREFIX+tokenResponse.getRefreshToken());
+        jwtTokenProvider.setHeaderAccessToken(response, JwtProperties.TOKEN_PREFIX + tokenResponse.getAccessToken());
+        jwtTokenProvider.setHeaderRefreshToken(response, JwtProperties.TOKEN_PREFIX + tokenResponse.getRefreshToken());
         return ResponseEntity.ok().body(ApiResponse.onSuccess(toMemberInfo(member)));
     }
 
@@ -57,10 +59,19 @@ public class AuthController {
             String refreshToken = JwtAuthenticationFilter.extractRefreshToken(request);
             authService.logout(accessToken, refreshToken);
             jwtTokenProvider.setHeaderAccessToken(response, "");
-            jwtTokenProvider.setHeaderRefreshToken(response,"");
+            jwtTokenProvider.setHeaderRefreshToken(response, "");
             ;
         }
         return "redirect:/main";
+    }
+
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴")
+    @DeleteMapping("/withdrawl")
+    public ResponseEntity withDrawl(@AuthenticationMember Member member, HttpServletRequest request) {
+        String accessToken = JwtAuthenticationFilter.extractAccessToken(request);
+        String refreshToken = JwtAuthenticationFilter.extractRefreshToken(request);
+        authService.withdraw(member, accessToken, refreshToken);
+        return ResponseEntity.ok().body("회원탈퇴가 완료되었습니다.");
     }
 
 }
