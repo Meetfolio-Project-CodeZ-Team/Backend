@@ -10,6 +10,7 @@ import com.codez4.meetfolio.domain.board.service.BoardQueryService;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
+import com.codez4.meetfolio.domain.member.service.MemberCommandService;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.exception.ApiException;
@@ -40,6 +41,7 @@ public class AdminController {
     private final AdminQueryService adminQueryService;
     private final AdminCommandService adminCommandService;
     private final MemberQueryService memberQueryService;
+    private final MemberCommandService memberCommandService;
     private final BoardQueryService boardQueryService;
     private final BoardCommandService boardCommandService;
 
@@ -69,7 +71,7 @@ public class AdminController {
     public ApiResponse<String> inactivateMember(@AuthenticationMember Member admin,
                                                 @PathVariable(value = "memberId") Long memberId) {
         Member member = memberQueryService.findById(memberId);
-        adminCommandService.inactivateMember(member);
+        memberCommandService.deleteData(member);
         return ApiResponse.onSuccess("회원 비활성화 성공입니다.");
     }
 

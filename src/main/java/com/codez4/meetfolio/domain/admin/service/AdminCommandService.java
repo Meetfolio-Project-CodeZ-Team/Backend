@@ -22,20 +22,6 @@ import static com.codez4.meetfolio.domain.admin.dto.DatasetResponse.toDatasetPro
 @Transactional
 public class AdminCommandService {
     private final DatasetRepository datasetRepository;
-    private final ExperienceRepository experienceRepository;
-    private final CoverLetterRepository coverLetterRepository;
-    private final BoardRepository boardRepository;
-    private final LikeRepository likeRepository;
-    private final CommentRepository commentRepository;
-
-    public void inactivateMember(Member member) {
-        commentRepository.deleteByMember(member);
-        likeRepository.deleteByMember(member);
-        boardRepository.deleteByMember(member);
-        experienceRepository.deleteByMember(member);
-        coverLetterRepository.findByMember(member).forEach(CoverLetter::delete);
-        member.setInactive();
-    }
 
     public DatasetResponse.DatasetProc saveDataset(DatasetRequest request) {
         return toDatasetProc(datasetRepository.save(toEntity(request)));
