@@ -15,7 +15,7 @@ public class PointRequest {
     @Getter
     public static class PointUseRequest{
 
-        @Schema(description = "포인트 사용 타입, USE_COVER_LETTER/USE_ANALYSIS")
+        @Schema(description = "포인트 사용 타입, USE_COVER_LETTER/USE_AI_ANALYSIS")
         @EnumValid(enumClass = PointType.class)
         String type;
 
