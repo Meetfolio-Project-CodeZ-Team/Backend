@@ -33,7 +33,7 @@ public class KakaoPayRequest {
 
         map.add("tax_free_amount", "0");
 
-        map.add("approval_url", MEETFOLIO_HOST + "/api/payments/" +  paymentId + "/success") ; // 성공 시 redirect url
+        map.add("approval_url", MEETFOLIO_HOST + "/api/payments/success?paymentId=" + paymentId ) ; // 성공 시 redirect url
         map.add("cancel_url", MEETFOLIO_HOST + "/api/payments/cancel"); // 취소 시 redirect url
         map.add("fail_url", MEETFOLIO_HOST + "/api/payments/fail"); // 실패 시 redirect url
 

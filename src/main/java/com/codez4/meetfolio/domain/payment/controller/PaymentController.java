@@ -14,7 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "결제 API")
+@Tag(name = "충전 API")
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -31,9 +31,8 @@ public class PaymentController {
     }
 
     @Operation(summary = "포인트 충전 - 카카오 페이 승인", description = "카카오 페이 결제를 완료합니다.")
-    @GetMapping("/payments/{paymentId}/success")
-    public ApiResponse<PaymentResponse.PaymentApprove> successPayment(@AuthenticationMember Member member,
-                                                                      @PathVariable("paymentId") Long paymentId,
+    @GetMapping("/payments/success")
+    public ApiResponse<PaymentResponse.PaymentApprove> successPayment(@RequestParam("paymentId") Long paymentId,
                                                                       @RequestParam("pg_token") String pgToken) throws Exception {
         Payment payment = paymentQueryService.findById(paymentId);
         return ApiResponse.onSuccess(paymentCommandService.approvePayment(pgToken, payment.getKakaoPayId(), paymentId));
