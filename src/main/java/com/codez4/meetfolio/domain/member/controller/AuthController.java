@@ -5,7 +5,6 @@ import com.codez4.meetfolio.domain.member.dto.LoginRequest;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.dto.TokenResponse;
 import com.codez4.meetfolio.domain.member.service.AuthService;
-import com.codez4.meetfolio.domain.member.service.MemberCommandService;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.jwt.JwtAuthenticationFilter;
@@ -27,14 +26,13 @@ import org.springframework.web.bind.annotation.*;
 import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberInfo;
 
 @Slf4j
-@Tag(name = "로그인/로그아웃 API")
+@Tag(name = "로그인/로그아웃/탈퇴 API")
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final MemberQueryService memberQueryService;
-    private final MemberCommandService memberCommandService;
     private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
 
