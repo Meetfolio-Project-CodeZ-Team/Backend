@@ -43,15 +43,8 @@ public class AuthService {
         redisUtil.setBlackList(accessToken, "accessToken", expiration);
     }
 
-    private Cookie findCookie(HttpServletRequest request, String cookieName){
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null){
-            return null;
-        }
-
-        return Arrays.stream(cookies)
-                .filter(cookie -> cookie.getName().equals(cookieName))
-                .findFirst()
-                .orElse(null);
+    public void withdraw(Member member, String accessToken, String refreshToken){
+        member.withdraw();
+        logout(accessToken, refreshToken);
     }
 }
