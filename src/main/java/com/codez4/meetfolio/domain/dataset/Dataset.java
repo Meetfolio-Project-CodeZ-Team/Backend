@@ -16,14 +16,14 @@ public class Dataset extends BaseTimeEntity {
     @Column(name = "dataset_id",nullable = false)
     private Long id;
 
-    @Column(name = "job")
+    @Column(name = "job", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private JobKeyword jobKeyword;
 
-    @Column(nullable = false)
+    @Column
     private String url;
 
-    @Column(nullable = false)
+    @Column
     private String domain;
   
     @Column(length = 1000, nullable = false)
