@@ -73,6 +73,13 @@ public class Member extends BaseTimeEntity {
         this.status = Status.INACTIVE;
     }
 
+    public void withdraw(){
+        setInactive();
+        this.email = "";
+        this.major = "";
+        this.profile = "";
+    }
+
     /**
      * update
      */
