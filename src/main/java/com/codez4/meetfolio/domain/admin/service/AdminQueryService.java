@@ -10,6 +10,8 @@ import com.codez4.meetfolio.domain.enums.*;
 import com.codez4.meetfolio.domain.feedback.repository.FeedbackRepository;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.repository.MemberRepository;
+import com.codez4.meetfolio.domain.model.Model;
+import com.codez4.meetfolio.domain.admin.dto.ModelResponse;
 import com.codez4.meetfolio.domain.model.repository.ModelRepository;
 import com.codez4.meetfolio.domain.payment.Payment;
 import com.codez4.meetfolio.domain.payment.repository.PaymentRepository;
@@ -36,9 +38,11 @@ import static com.codez4.meetfolio.domain.admin.dto.AIServiceResponse.toAIServic
 import static com.codez4.meetfolio.domain.admin.dto.BoardResponse.toBoardAdminResult;
 import static com.codez4.meetfolio.domain.admin.dto.DashboardResponse.*;
 import static com.codez4.meetfolio.domain.admin.dto.DatasetResponse.toDatasetInfo;
+import static com.codez4.meetfolio.domain.admin.dto.ModelResponse.toModelListResult;
 import static com.codez4.meetfolio.domain.admin.dto.PaymentResponse.toPaymentItem;
 import static com.codez4.meetfolio.domain.admin.dto.PointResponse.toPointStatics;
 import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberList;
+import static com.codez4.meetfolio.domain.admin.dto.ModelResponse.toModelResult;
 
 @RequiredArgsConstructor
 @Service
@@ -126,6 +130,16 @@ public class AdminQueryService {
     public BoardResponse.BoardAdminResult getBoardsByKeyword(String keyword, Pageable page) {
         Page<Board> boards = boardRepository.queryFindBoardsByKeyword(keyword, page);
         return toBoardAdminResult(boards);
+    }
+
+    public ModelResponse.ModelListResult getModelsInfo(int page){
+        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
+        Page<Model> models = modelRepository.findAllBy(pageRequest);
+        return toModelListResult(models);
+    }
+
+    public ModelResponse.ModelResult getModelInfo(Model model){
+        return toModelResult(model);
     }
 
     private DashboardResponse.MembersInfo getMemberInfo() {

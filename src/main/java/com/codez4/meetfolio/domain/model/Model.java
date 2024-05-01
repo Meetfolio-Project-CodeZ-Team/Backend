@@ -26,7 +26,7 @@ public class Model extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
-    private BigDecimal version;
+    private Double version;
 
     @Column(nullable = false)
     private String fileName;
@@ -50,4 +50,13 @@ public class Model extends BaseTimeEntity {
 
     @Column(nullable = false)
     private LocalDateTime activatedDate;
+
+    public void activate() {
+        this.status = Status.ACTIVE;
+        this.activatedDate = LocalDateTime.now();
+    }
+
+    public void inactivate(){
+        this.status = Status.INACTIVE;
+    }
 }
