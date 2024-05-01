@@ -12,6 +12,7 @@ import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.service.MemberCommandService;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
+import com.codez4.meetfolio.domain.model.service.ModelQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.ApiResponse;
@@ -44,6 +45,7 @@ public class AdminController {
     private final MemberCommandService memberCommandService;
     private final BoardQueryService boardQueryService;
     private final BoardCommandService boardCommandService;
+    private final ModelQueryService modelQueryService;
 
     @Operation(summary = "대시 보드 조회", description = "관리자 메인페이지의 대시보드를 조회합니다.")
     @GetMapping("/dashboard")
@@ -79,8 +81,8 @@ public class AdminController {
     @Parameter(name = "keyword", description = "검색어, Query String입니다.", required = true, example = "BACKEND", in = ParameterIn.QUERY)
     @GetMapping("/members-management/search")
     public ApiResponse<MemberResponse.MemberListResult> getMemberListByKeyword(@AuthenticationMember Member admin,
-                                                                      @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                      @RequestParam(value = "keyword") String keyword) {
+                                                                               @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                               @RequestParam(value = "keyword") String keyword) {
 
         return ApiResponse.onSuccess(adminQueryService.getMemberListByKeyword(page, keyword));
     }
@@ -133,6 +135,37 @@ public class AdminController {
     public ApiResponse<DatasetResponse.DatasetProc> getAIServiceStatics(@AuthenticationMember Member admin,
                                                                         @Valid @RequestBody DatasetRequest request) {
         return ApiResponse.onSuccess(adminCommandService.saveDataset(request));
+    }
+
+    @Operation(summary = "AI 관리 - 모델 리스트 조회 ", description = "AI 관리 메뉴에서 AI 모델 목록을 조회합니다.")
+    @PostMapping("/data-management/version")
+    public ApiResponse<ModelResponse.ModelListResult> getModelList(@AuthenticationMember Member admin,
+                                                                   @RequestParam(value = "page", defaultValue = "0") int page) {
+        return ApiResponse.onSuccess(adminQueryService.getModelsInfo(page));
+    }
+
+    @Operation(summary = "AI 관리 - 모델 상세 정보 조회 ", description = "AI 관리 메뉴에서 AI 모델 상세 정보를 조회합니다.")
+    @PostMapping("/data-management/version/{modelId}")
+    @Parameter(name = "modelId", required = true, in = ParameterIn.PATH)
+    public ApiResponse<ModelResponse.ModelResult> getModelList(@AuthenticationMember Member admin,
+                                                               @PathVariable(value = "modelId") Long modelId) {
+        return ApiResponse.onSuccess(adminQueryService.getModelInfo(modelQueryService.findById(modelId)));
+    }
+
+    @Operation(summary = "AI 관리 - 모델 활성화", description = "AI 관리 메뉴에서 새로운 모델을 활성화 시킵니다.")
+    @PatchMapping("/data-management/version/{modelId}")
+    @Parameter(name = "modelId", required = true, in = ParameterIn.PATH)
+    public ApiResponse<ModelResponse.ModelProc> changeActiveModel(@AuthenticationMember Member admin,
+                                                                  @PathVariable(value = "modelId") Long modelId) {
+        return ApiResponse.onSuccess(adminCommandService.changeActiveModel(modelQueryService.findById(modelId)));
+    }
+
+    @Operation(summary = "AI 관리 - 모델 삭제", description = "AI 관리 메뉴에서 모델을 삭제합니다.")
+    @DeleteMapping("/data-management/version/{modelId}")
+    @Parameter(name = "modelId", required = true, in = ParameterIn.PATH)
+    public ApiResponse<ModelResponse.ModelProc> deleteModel(@AuthenticationMember Member admin,
+                                                                  @PathVariable(value = "modelId") Long modelId) {
+        return ApiResponse.onSuccess(adminCommandService.deleteModel(modelQueryService.findById(modelId)));
     }
 
     @Operation(summary = "커뮤니티 관리 - 게시물 목록 조회", description = "전체 게시물 조회 및 keyword를 입력하여 게시물 검색을 합니다.")
