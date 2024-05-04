@@ -3,7 +3,10 @@ package com.codez4.meetfolio.domain.comment.dto;
 import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.comment.Comment;
 import com.codez4.meetfolio.domain.member.Member;
+import com.codez4.meetfolio.domain.member.dto.MemberResponse;
+import com.codez4.meetfolio.global.response.SliceResponse;
 import com.codez4.meetfolio.global.utils.TimeUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +41,20 @@ public class CommentResponse {
         private boolean isLast;
     }
 
+    @Schema(description = "내 댓글 목록 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class MyCommentResult {
+
+        @Schema(description = "로그인 사용자 정보")
+        private MemberResponse.MemberInfo memberInfo;
+
+        @Schema(description = "댓글 데이터 목록")
+        SliceResponse<MyCommentItem> commentInfo;
+    }
+
     public static CommentResult toCommentResult(Slice<Comment> comments) {
 
         // 부모 댓글만 반환하기 (자식 댓글은 부모 댓글 안에 담아서 전달)
@@ -52,6 +69,13 @@ public class CommentResponse {
             .isFirst(comments.isFirst())
             .isLast(comments.isLast())
             .build();
+    }
+
+    public static MyCommentResult toMyCommentResult(MemberResponse.MemberInfo memberInfo,SliceResponse<MyCommentItem> comments) {
+        return MyCommentResult.builder()
+                .memberInfo(memberInfo)
+                .commentInfo(comments)
+                .build();
     }
 
     @Schema(description = "댓글 데이터 DTO")
@@ -78,6 +102,42 @@ public class CommentResponse {
 
         @Schema(description = "자식 댓글 데이터 목록")
         private List<CommentItem> childComments;
+    }
+
+    @Schema(description = "댓글 데이터 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class MyCommentItem {
+
+        @Schema(description = "댓글 아이디")
+        private Long commentId;
+
+        @Schema(description = "댓글 내용")
+        private String content;
+
+        @Schema(description = "게시글 아이디")
+        private Long boardId;
+
+        @Schema(description = "게시글 제목")
+        private String boardTitle;
+
+        @Schema(description = "게시글 작성 시간")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
+        private LocalDateTime boardCreatedAt;
+
+    }
+
+    public static MyCommentItem toMyCommentItem(Comment comment){
+        Board board = comment.getBoard();
+        return MyCommentItem.builder()
+                .commentId(comment.getId())
+                .content(comment.getContent())
+                .boardId(board.getId())
+                .boardTitle(board.getTitle())
+                .boardCreatedAt(board.getCreatedAt())
+                .build();
     }
 
     public static CommentItem toCommentItem(Comment comment) {
