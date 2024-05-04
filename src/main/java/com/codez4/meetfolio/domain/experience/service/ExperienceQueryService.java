@@ -40,7 +40,7 @@ public class ExperienceQueryService {
 
     public ExperienceCardInfo getExperienceCardInfo(Member member, int page) {
 
-        PageRequest pageRequest = PageRequest.of(page, 6, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 6, Sort.by("id").descending());
 
         return toExperienceCardInfo(experienceRepository.findAllByMember(member, pageRequest));
     }

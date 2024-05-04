@@ -31,7 +31,7 @@ public class PaymentQueryService {
     }
 
     public PaymentResponse.PaymentResult getMyPaymentList(int page, Member member) {
-        PageRequest pageRequest = PageRequest.of(page, 9, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 9, Sort.by("id").descending());
         Page<Point> points = pointRepository.findByMemberAndPointType(member, PointType.CHARGE, pageRequest);
         List<PaymentResponse.PaymentItem> paymentList = points.stream().map(point -> {
             if (point.getPayment() == null) throw new ApiException(ErrorStatus._BAD_REQUEST);

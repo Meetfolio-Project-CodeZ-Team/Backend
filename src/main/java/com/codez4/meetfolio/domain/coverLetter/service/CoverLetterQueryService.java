@@ -36,7 +36,7 @@ public class CoverLetterQueryService {
 
     public SliceResponse<CoverLetterResponse.CoverLetterItem> getMyCoverLetters(Member member,
         int page) {
-        PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("id").descending());
         Slice<CoverLetter> coverLetters = coverLetterRepository.findActiveByMember(member,
             pageRequest);
         return CoverLetterResponse.toSliceCoverLetterItem(coverLetters);
@@ -44,7 +44,7 @@ public class CoverLetterQueryService {
 
     public SliceResponse<CoverLetterResponse.CoverLetterItem> getOtherCoverLetters(Member other,
         int page) {
-        PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("id").descending());
 
         Slice<CoverLetter> otherCoverLetters = coverLetterRepository.findPublicAndActiveCoverLetterByMember(
             other,

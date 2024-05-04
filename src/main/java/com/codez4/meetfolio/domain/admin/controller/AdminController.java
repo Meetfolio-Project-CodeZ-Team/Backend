@@ -141,7 +141,7 @@ public class AdminController {
     public ApiResponse<com.codez4.meetfolio.domain.admin.dto.BoardResponse.BoardAdminResult> getBoards(@AuthenticationMember Member admin,
                                                                                                        @RequestParam(name = "keyword", required = false) String keyword,
                                                                                                        @RequestParam(value = "page", defaultValue = "0") int page) {
-        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("id").descending());
         com.codez4.meetfolio.domain.admin.dto.BoardResponse.BoardAdminResult boards;
         if (keyword != null) {
             boards = adminQueryService.getBoardsByKeyword(keyword, pageRequest);
