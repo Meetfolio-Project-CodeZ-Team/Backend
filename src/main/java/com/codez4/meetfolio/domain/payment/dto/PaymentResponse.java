@@ -116,10 +116,26 @@ public class PaymentResponse {
         @Schema(description = "상품명")
         private String itemName;
         @Schema(description = "결제 요청 시간")
-        private String createdAt;
+        private String readyAt;
         @Schema(description = "결제 응답 시간")
         private String approveAt;
 
+    }
+
+    @Schema(description = "카카오 페이 정보 완료 응답 dto")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class  PaymentProc{
+        @Schema(description = "결제 내역 ID")
+        private Long paymentId;
+        @Schema(description = "카카오 페이 결제 ID")
+        private String tid;
+        @Schema(description = "결제 요청 시간")
+        private LocalDateTime readyAt;
+        @Schema(description = "결제 응답 시간")
+        private LocalDateTime approveAt;
     }
 
     public static PaymentResult toPaymentResult(Member member , Page<Point> points, List<PaymentItem> paymentList ){
@@ -164,8 +180,17 @@ public class PaymentResponse {
                 .paymentId(paymentId)
                 .itemName(response.getItem_name())
                 .amount(response.getAmount())
-                .createdAt(response.getCreated_at())
+                .readyAt(response.getCreated_at())
                 .approveAt(response.getApproved_at())
+                .build();
+    }
+
+    public static PaymentProc toPaymentProc(Payment payment){
+        return PaymentProc.builder()
+                .paymentId(payment.getId())
+                .tid(payment.getKakaoPayId())
+                .readyAt(payment.getCreatedAt())
+                .approveAt(payment.getUpdatedAt())
                 .build();
     }
 

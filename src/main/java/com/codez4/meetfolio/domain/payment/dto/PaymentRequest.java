@@ -10,6 +10,20 @@ import lombok.Getter;
 
 public class PaymentRequest {
 
+    @Schema(description = "카카오 페이 연결 정보 저장 dto")
+    @Getter
+    public static class ReadyRequest {
+
+        @Schema(description = "충전할 포인트")
+        private int point;
+
+        @Schema(description = "결제할 금액")
+        private int payment;
+
+        @Schema(description = "카카오 페이 결제 id")
+        private String tid;
+    }
+
     @Schema(description = "포인트 충전 요청 dto")
     @Getter
     public static class ChargeRequest {
