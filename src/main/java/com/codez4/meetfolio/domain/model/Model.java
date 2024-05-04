@@ -35,7 +35,7 @@ public class Model extends BaseTimeEntity {
     private String filePath;
 
     @Column(nullable = false)
-    @ColumnDefault("'ACTIVE'")
+    @ColumnDefault("'INACTIVE'")
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -44,9 +44,6 @@ public class Model extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Double loss;
-
-    @Column(nullable = false)
-    private LocalDateTime learnedDate;
 
     @Column(nullable = false)
     private LocalDateTime activatedDate;

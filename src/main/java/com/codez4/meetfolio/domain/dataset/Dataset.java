@@ -2,8 +2,10 @@ package com.codez4.meetfolio.domain.dataset;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
+import com.codez4.meetfolio.domain.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Entity
@@ -28,4 +30,9 @@ public class Dataset extends BaseTimeEntity {
   
     @Column(length = 1000, nullable = false)
     private String data;
+
+    @Column(nullable = false)
+    @ColumnDefault("'INACTIVE'")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }
