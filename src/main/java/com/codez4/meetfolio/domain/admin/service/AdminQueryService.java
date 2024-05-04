@@ -61,7 +61,7 @@ public class AdminQueryService {
     }
 
     public MemberResponse.MemberListResult getMemberList(int page, JobKeyword jobKeyword) {
-        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("id").descending());
         if (jobKeyword == null) {
             return toMemberList(memberRepository.findMemberByAuthority(Authority.MEMBER, pageRequest));
         } else
@@ -69,7 +69,7 @@ public class AdminQueryService {
     }
 
     public MemberResponse.MemberListResult getMemberListByKeyword(int page, String keyword) {
-        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("id").descending());
         return toMemberList(memberRepository.queryFindMemberByAuthorityAndKeyword(Authority.MEMBER, keyword, pageRequest));
     }
 
@@ -84,7 +84,7 @@ public class AdminQueryService {
     public PaymentResponse.PaymentResult getPaymentList(int page, int year, int month) {
         String requestMonth = Integer.toString(year) + '-' + month;
         long totalSales = paymentRepository.queryGetTotalSalesByMonth(requestMonth);
-        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         String yearMonth = year + "년" + " " + month + "월";
 
         Page<Payment> payments = paymentRepository.findByMember_AuthorityAndPaymentStatusIs(Authority.MEMBER, PaymentStatus.APPROVE, pageRequest);
@@ -104,7 +104,7 @@ public class AdminQueryService {
     }
 
     public DatasetResponse.DatasetInfo getDatasetList(int page) {
-        PageRequest pageRequest = PageRequest.of(page, 7, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 7, Sort.by("id").descending());
         Page<Dataset> datasets = datasetRepository.getAllBy(pageRequest);
         return toDatasetInfo(datasets);
     }

@@ -21,35 +21,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.codez4.meetfolio.domain.comment.dto.CommentResponse.toMyCommentItem;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CommentQueryService {
 
     private final CommentRepository commentRepository;
-    private final LikeQueryService likeQueryService;
 
-    public SliceResponse<BoardResponse.BoardItem> findMyComments(Member member, Integer page) {
+    public SliceResponse<CommentResponse.MyCommentItem> findMyComments(Member member, Integer page) {
 
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
-        Slice<BoardQueryItem> commentBoards = commentRepository.findByMemberFetchJoinBoard(member,
-            pageRequest);
-        // 중복된 게시글 제거하기
-        List<BoardResponse.BoardItem> distinctBoards = getDistinctBoards(
-            commentBoards.getContent());
-
-        SliceImpl<BoardResponse.BoardItem> boards = new SliceImpl<>(distinctBoards, pageRequest,
-            commentBoards.hasNext());
-
-        return new SliceResponse<>(boards);
-    }
-
-    private List<BoardResponse.BoardItem> getDistinctBoards(List<BoardQueryItem> boards) {
-        return boards.stream()
-            .map(BoardResponse::toBoardItem)
-            .distinct()
-            .collect(Collectors.toList());
-
+        Slice<Comment> comments = commentRepository.findByMemberFetchJoinBoard(member, pageRequest);
+        Slice<CommentResponse.MyCommentItem> myCommentItems = comments.map(CommentResponse::toMyCommentItem);
+        return new SliceResponse<>(myCommentItems);
     }
 
     public Comment findById(Long commentId) {

@@ -52,14 +52,14 @@ public class CoverLetterController {
     @Parameter(name = "coverLetterId", description = "자기소개서 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @GetMapping("/{coverLetterId}")
     public ApiResponse<CoverLetterResult> getCoverLetter(@AuthenticationMember Member member,
-        @PathVariable(name = "coverLetterId") Long coverLetterId) {
+                                                         @PathVariable(name = "coverLetterId") Long coverLetterId) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         CoverLetterInfo coverLetterInfo = coverLetterQueryService.getCoverLetterInfo(coverLetterId);
         FeedbackInfo feedbackInfo = feedbackQueryService.getFeedbackInfo(coverLetterId);
         AnalysisInfo analysisInfo = analysisQueryService.getAnalysisInfo(coverLetterId);
         CoverLetterResult coverLetterResult = CoverLetterResponse.toCoverLetterResult(memberInfo,
-            coverLetterInfo, feedbackInfo, analysisInfo);
+                coverLetterInfo, feedbackInfo, analysisInfo);
 
         return ApiResponse.onSuccess(coverLetterResult);
     }
@@ -67,7 +67,7 @@ public class CoverLetterController {
     @Operation(summary = "자기소개서 작성 요청", description = "로그인 사용자는 자기소개서를 작성합니다.")
     @PostMapping
     public ApiResponse<CoverLetterProc> createCoverLetter(@AuthenticationMember Member member,
-        @Valid @RequestBody CoverLetterRequest.Post request) {
+                                                          @Valid @RequestBody CoverLetterRequest.Post request) {
 
         return ApiResponse.onSuccess(coverLetterCommandService.write(member, request));
     }
@@ -76,8 +76,8 @@ public class CoverLetterController {
     @Parameter(name = "coverLetterId", description = "자기소개서 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @PatchMapping("/{coverLetterId}")
     public ApiResponse<CoverLetterProc> updateCoverLetter(
-        @PathVariable(name = "coverLetterId") Long coverLetterId,
-        @Valid @RequestBody CoverLetterRequest.Patch request) {
+            @PathVariable(name = "coverLetterId") Long coverLetterId,
+            @Valid @RequestBody CoverLetterRequest.Patch request) {
 
         return ApiResponse.onSuccess(coverLetterCommandService.update(coverLetterId, request));
     }
@@ -86,7 +86,7 @@ public class CoverLetterController {
     @Parameter(name = "coverLetterId", description = "자기소개서 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @DeleteMapping("/{coverLetterId}")
     public ApiResponse<CoverLetterProc> deleteCoverLetter(
-        @PathVariable(name = "coverLetterId") Long coverLetterId) {
+            @PathVariable(name = "coverLetterId") Long coverLetterId) {
 
         return ApiResponse.onSuccess(coverLetterCommandService.softDelete(coverLetterId));
     }
@@ -94,8 +94,8 @@ public class CoverLetterController {
     @Operation(summary = "내 자기소개서 목록 조회", description = "내 자기소개서 목록 정보를 조회합니다.")
     @GetMapping
     public ApiResponse<SliceResponse<CoverLetterResponse.CoverLetterItem>> getMyCoverLetters(
-        @AuthenticationMember Member member,
-        @RequestParam(value = "page", defaultValue = "0") int page) {
+            @AuthenticationMember Member member,
+            @RequestParam(value = "page", defaultValue = "0") int page) {
         return ApiResponse.onSuccess(coverLetterQueryService.getMyCoverLetters(member, page));
     }
 
@@ -103,10 +103,9 @@ public class CoverLetterController {
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @PostMapping("/members")
     public ApiResponse<SliceResponse<CoverLetterResponse.CoverLetterItem>> getOtherCoverLetters(
-        @RequestBody CoverLetterOther otherMember,
-        @RequestParam(value = "page", defaultValue = "0") int page) {
-
-        Member other = memberQueryService.findByMemberName(otherMember.getMemberName());
+            @RequestParam String memberName,
+            @RequestParam(value = "page", defaultValue = "0") int page) {
+        Member other = memberQueryService.findByMemberName(memberName);
 
         return ApiResponse.onSuccess(coverLetterQueryService.getOtherCoverLetters(other, page));
     }

@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.member.controller;
 
 import com.codez4.meetfolio.domain.board.dto.BoardResponse;
 import com.codez4.meetfolio.domain.board.service.BoardQueryService;
+import com.codez4.meetfolio.domain.comment.dto.CommentResponse;
 import com.codez4.meetfolio.domain.comment.service.CommentQueryService;
 import com.codez4.meetfolio.domain.enums.Grade;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
@@ -99,17 +100,17 @@ public class MemberController {
         return ApiResponse.onSuccess(BoardResponse.toBoardListResult(memberInfo, boardInfo));
     }
 
-    @Operation(summary = "내가 작성한 댓글의 게시글 목록 조회", description = "내가 작성한 댓글의 게시글 목록 조회 GET으로 보냅니다.")
+    @Operation(summary = "내가 작성한 댓글 목록 조회", description = "내가 작성한 댓글 목록 조회 GET으로 보냅니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @GetMapping("/my-comments")
-    public ApiResponse<BoardResponse.BoardListResult> getMyComments(
+    public ApiResponse<CommentResponse.MyCommentResult> getMyComments(
         @AuthenticationMember Member member, @RequestParam(name = "page") Integer page) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        SliceResponse<BoardResponse.BoardItem> boardInfo = commentQueryService.findMyComments(
+        SliceResponse<CommentResponse.MyCommentItem> commentInfo = commentQueryService.findMyComments(
             member, page);
 
-        return ApiResponse.onSuccess(BoardResponse.toBoardListResult(memberInfo, boardInfo));
+        return ApiResponse.onSuccess(CommentResponse.toMyCommentResult(memberInfo, commentInfo));
     }
 
     @Operation(summary = "Header에 필요한 로그인한 사용자의 정보 조회", description = "로그인한 사용자의 정보 조회 GET으로 보냅니다.")

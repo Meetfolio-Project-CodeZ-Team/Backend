@@ -11,6 +11,7 @@ public class KakaoPayRequest {
         private String url;
         private LinkedMultiValueMap<String, String> map;
 
+
     public static KakaoPayRequest toReadyRequest(Long paymentId, PaymentRequest.ChargeRequest chargeRequest) {
         String MEETFOLIO_HOST = "http://34.64.177.41:9090";
         String KAKAO_PAY_READY_URL = "https://kapi.kakao.com/v1/payment/ready";

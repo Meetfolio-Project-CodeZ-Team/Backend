@@ -23,7 +23,7 @@ public class Feedback extends BaseTimeEntity {
     @JoinColumn(name = "cover_letter_id", nullable = false)
     private CoverLetter coverLetter;
 
-    @Column(name = "spell_check", length = 1000, nullable = false)
+    @Column(name = "spell_check", length = 1000)
     private String spellCheck;
 
     @Column(length = 1000, nullable = false)
@@ -38,7 +38,7 @@ public class Feedback extends BaseTimeEntity {
     @Column(name = "recommend_question_3", nullable = false)
     private String recommendQuestion3;
 
-    @Column(nullable = false)
+    @Column
     private Integer satisfaction;
 
     @Column(nullable = false)

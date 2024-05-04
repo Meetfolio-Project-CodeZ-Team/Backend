@@ -109,7 +109,7 @@ public class ExperienceResponse {
             .build();
     }
 
-    @Schema(description = "나의 경험 카드 목록 응답 DTO")
+    @Schema(description = "경험 카드 목록 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
