@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.codez4.meetfolio.domain.payment.dto.PaymentRequest.toEntity;
-import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentApprove;
-import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentReady;
+import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.*;
 import static com.codez4.meetfolio.domain.point.dto.PointRequest.toEntity;
 
 @Service
@@ -33,6 +32,33 @@ public class PaymentCommandService {
         return paymentRepository.save(toEntity(paymentPost));
     }
 
+    public PaymentProc saveReadyPayment(Member member, PaymentRequest.ReadyRequest request) {
+        PaymentRequest.Post paymentPost = PaymentRequest.Post.builder()
+                .point(request.getPoint())
+                .payment(request.getPayment())
+                .member(member)
+                .kakaoPayId(request.getTid())
+                .paymentStatus(PaymentStatus.READY)
+                .build();
+        Payment payment = post(paymentPost);
+        return toPaymentProc(payment);
+    }
+
+    public PaymentProc saveApprovePayment(Member member, Payment payment) {
+        payment.updateStatus(PaymentStatus.APPROVE);
+        int totalPoint = member.getPoint() - payment.getPoint();
+        PointRequest.Post pointPost = PointRequest.Post.builder()
+                .payment(payment)
+                .point(payment.getPoint())
+                .pointType(PointType.CHARGE)
+                .member(payment.getMember())
+                .totalPoint(totalPoint)
+                .build();
+        pointRepository.save(toEntity(pointPost));
+        member.setPoint(totalPoint);
+        return toPaymentProc(payment);
+    }
+
     public PaymentResponse.PaymentReady readyPayment(Member member, PaymentRequest.ChargeRequest request) throws Exception {
         PaymentRequest.Post paymentPost = PaymentRequest.Post.builder()
                 .point(request.getPoint())
@@ -41,7 +67,7 @@ public class PaymentCommandService {
                 .kakaoPayId(null)
                 .paymentStatus(null)
                 .build();
-        Payment payment = paymentRepository.save(toEntity(paymentPost));
+        Payment payment = post(paymentPost);
         KakaoPayResponse.Ready response = kakaoPayService.getRedirectUrl(payment.getId(), request);
 
         payment.updateKakaoPayId(response.getTid());
@@ -53,6 +79,8 @@ public class PaymentCommandService {
         KakaoPayResponse.Approve response = kakaoPayService.getApprove(pgToken, tid, paymentId);
         Payment payment = paymentRepository.findById(paymentId).get();
         payment.updateStatus(PaymentStatus.APPROVE);
+        Member member = payment.getMember();
+        int totalPoint = member.getPoint() - payment.getPoint();
 
         PointRequest.Post pointPost = PointRequest.Post.builder()
                 .payment(payment)
@@ -62,6 +90,7 @@ public class PaymentCommandService {
                 .totalPoint(payment.getMember().getPoint() - payment.getPoint())
                 .build();
         pointRepository.save(toEntity(pointPost));
+        member.setPoint(totalPoint);
         return toPaymentApprove(paymentId, response);
     }
 
