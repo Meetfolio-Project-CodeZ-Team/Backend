@@ -7,6 +7,7 @@ import com.codez4.meetfolio.domain.board.dto.BoardRequest;
 import com.codez4.meetfolio.domain.board.repository.BoardRepository;
 import com.codez4.meetfolio.domain.board.repository.EmploymentBoardRepository;
 import com.codez4.meetfolio.domain.board.repository.GroupBoardRepository;
+import com.codez4.meetfolio.domain.enums.GroupCategory;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.exception.ApiException;
@@ -40,7 +41,7 @@ public class BoardCommandService {
             } else throw new ApiException(ErrorStatus._BAD_REQUEST);
 
         } else if (board instanceof GroupBoard groupBoard) {
-            if (JobKeyword.convert(request.getGroupCategory()) != null) {
+            if (GroupCategory.convert(request.getGroupCategory()) != null) {
                 groupBoard.update(toGroupBoardPatch(request));
             } else throw new ApiException(ErrorStatus._BAD_REQUEST);
         }

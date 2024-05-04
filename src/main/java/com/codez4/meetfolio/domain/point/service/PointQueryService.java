@@ -21,7 +21,7 @@ public class PointQueryService {
     private final PointRepository pointRepository;
 
     public com.codez4.meetfolio.domain.point.dto.PointResponse.PointResult getMyPointList(int page, Member member) {
-        PageRequest pageRequest = PageRequest.of(page, 9, Sort.by("createdAt").descending());
+        PageRequest pageRequest = PageRequest.of(page, 9, Sort.by("id").descending());
         Page<Point> points = pointRepository.getPointByMember(member, pageRequest);
         return toPointResult(member, points);
     }
