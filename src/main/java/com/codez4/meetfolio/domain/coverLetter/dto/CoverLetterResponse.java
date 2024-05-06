@@ -125,7 +125,7 @@ public class CoverLetterResponse {
     public static SliceResponse<CoverLetterItem> toSliceCoverLetterItem(Slice<CoverLetter> coverLetters) {
 
         Slice<CoverLetterItem> coverLetterItems = coverLetters.map(coverLetter -> {
-            long index = coverLetters.getNumberOfElements() - coverLetters.getContent().indexOf(coverLetter) + 1;
+            long index = coverLetters.getNumberOfElements() - coverLetters.getContent().indexOf(coverLetter);
             return toCoverLetterItem(coverLetter, index);
         });
 
