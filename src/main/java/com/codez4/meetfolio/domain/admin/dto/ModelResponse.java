@@ -62,9 +62,6 @@ public class ModelResponse {
         @Schema(description = "생성일")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
         private LocalDateTime createdDate;
-        @Schema(description = "학습일")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
-        private LocalDateTime learnedDate;
         @Schema(description = "활성일")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
         private LocalDateTime activatedDate;
@@ -104,7 +101,6 @@ public class ModelResponse {
                 .filePath(model.getFilePath())
                 .status(model.getStatus())
                 .createdDate(model.getCreatedAt())
-                .learnedDate(model.getLearnedDate())
                 .activatedDate(model.getActivatedDate())
                 .build();
     }
