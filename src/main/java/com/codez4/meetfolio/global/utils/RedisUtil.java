@@ -56,7 +56,7 @@ public class RedisUtil {
     }
 
     public String getEmailAuth(String key) {
-        return (String) redisEmailAuthTemplate.opsForValue().get(key);
+        return redisEmailAuthTemplate.opsForValue().get(key);
     }
 
     public boolean deleteEmailAuth(String key) {
