@@ -8,7 +8,9 @@ import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import com.codez4.meetfolio.global.response.SliceResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,14 +51,14 @@ public class CoverLetterResponse {
     public static CoverLetterInfo toCoverLetterInfo(CoverLetter coverLetter) {
 
         return CoverLetterInfo.builder()
-            .coverLetterId(coverLetter.getId())
-            .question(coverLetter.getQuestion())
-            .answer(coverLetter.getAnswer())
-            .shareType(coverLetter.getShareType().getDescription())
-            .keyword1(coverLetter.getKeyword1())
-            .keyword2(coverLetter.getKeyword2())
-            .jobKeyword(coverLetter.getJobKeyword().getDescription())
-            .build();
+                .coverLetterId(coverLetter.getId())
+                .question(coverLetter.getQuestion())
+                .answer(coverLetter.getAnswer())
+                .shareType(coverLetter.getShareType().getDescription())
+                .keyword1(coverLetter.getKeyword1())
+                .keyword2(coverLetter.getKeyword2())
+                .jobKeyword(coverLetter.getJobKeyword().getDescription())
+                .build();
 
     }
 
@@ -74,15 +76,15 @@ public class CoverLetterResponse {
     }
 
     public static CoverLetterResult toCoverLetterResult(MemberInfo memberInfo,
-        CoverLetterInfo coverLetterInfo,
-        FeedbackInfo feedbackInfo, AnalysisInfo analysisInfo) {
+                                                        CoverLetterInfo coverLetterInfo,
+                                                        FeedbackInfo feedbackInfo, AnalysisInfo analysisInfo) {
 
         return CoverLetterResult.builder()
-            .memberInfo(memberInfo)
-            .coverLetterInfo(coverLetterInfo)
-            .feedbackInfo(feedbackInfo)
-            .analysisInfo(analysisInfo)
-            .build();
+                .memberInfo(memberInfo)
+                .coverLetterInfo(coverLetterInfo)
+                .feedbackInfo(feedbackInfo)
+                .analysisInfo(analysisInfo)
+                .build();
     }
 
     @Schema(description = "자기소개서 응답 DTO")
@@ -95,6 +97,8 @@ public class CoverLetterResponse {
         @Schema(description = "자기소개서 아이디")
         private Long coverLetterId;
 
+        private Long index;
+
         @Schema(description = "자기소개서 문항")
         private String question;
 
@@ -106,21 +110,23 @@ public class CoverLetterResponse {
         private LocalDateTime createdAt;
     }
 
-    public static CoverLetterItem toCoverLetterItem(CoverLetter coverLetter) {
+    public static CoverLetterItem toCoverLetterItem(CoverLetter coverLetter, long index) {
         return CoverLetterItem.builder()
-            .coverLetterId(coverLetter.getId())
-            .question(coverLetter.getQuestion())
-            .answer(coverLetter.getAnswer())
-            .createdAt(coverLetter.getCreatedAt())
-            .build();
+                .coverLetterId(coverLetter.getId())
+                .index(index)
+                .question(coverLetter.getQuestion())
+                .answer(coverLetter.getAnswer())
+                .createdAt(coverLetter.getCreatedAt())
+                .build();
 
     }
 
-    public static SliceResponse<CoverLetterItem> toSliceCoverLetterItem(
-        Slice<CoverLetter> coverLetters) {
+    public static SliceResponse<CoverLetterItem> toSliceCoverLetterItem(Slice<CoverLetter> coverLetters) {
 
-        Slice<CoverLetterItem> coverLetterItems = coverLetters.map(
-            CoverLetterResponse::toCoverLetterItem);
+        Slice<CoverLetterItem> coverLetterItems = coverLetters.map(coverLetter -> {
+            long index = coverLetters.getNumberOfElements() - coverLetters.getContent().indexOf(coverLetter) + 1;
+            return toCoverLetterItem(coverLetter, index);
+        });
 
         return new SliceResponse<>(coverLetterItems);
     }
@@ -142,9 +148,9 @@ public class CoverLetterResponse {
 
     public static CoverLetterProc toCoverLetterProc(Long coverLetterId) {
         return CoverLetterProc.builder()
-            .coverLetterId(coverLetterId)
-            .createdAt(LocalDateTime.now())
-            .build();
+                .coverLetterId(coverLetterId)
+                .createdAt(LocalDateTime.now())
+                .build();
     }
 }
 
