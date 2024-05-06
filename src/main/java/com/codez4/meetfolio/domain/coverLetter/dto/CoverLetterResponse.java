@@ -97,6 +97,7 @@ public class CoverLetterResponse {
         @Schema(description = "자기소개서 아이디")
         private Long coverLetterId;
 
+        @Schema(description = "자기소개서 인덱스")
         private Long index;
 
         @Schema(description = "자기소개서 문항")
