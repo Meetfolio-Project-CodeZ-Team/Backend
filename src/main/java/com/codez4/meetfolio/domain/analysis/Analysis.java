@@ -31,7 +31,7 @@ public class Analysis extends BaseTimeEntity {
     @Column(name = "keyword_3",nullable =false)
     private String keyword3;
 
-    @Column(nullable = false)
+    @Column
     private Integer satisfaction;
 
     @OneToOne(fetch = FetchType.LAZY)
