@@ -32,7 +32,7 @@ public class PaymentQueryService {
     }
 
     public PaymentResponse.PaymentProc getReadyPayment(Member member){
-        Payment payment = paymentRepository.findTop1ByMember(member);
+        Payment payment = paymentRepository.findTop1ByMemberOrderByIdDesc(member);
         return toPaymentProc(payment);
     }
 

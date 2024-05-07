@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     Page<Payment> findByMember_AuthorityAndPaymentStatusIs(Authority authority, PaymentStatus paymentStatus, Pageable pageable);
 
-    Payment findTop1ByMember(Member member);
+    Payment findTop1ByMemberOrderByIdDesc(Member member);
 
     @Query("SELECT IFNULL(SUM(p.payment),0) FROM Payment p WHERE p.paymentStatus = 'APPROVE'")
     long queryGetTotalSales();
