@@ -45,7 +45,7 @@ public class Model extends BaseTimeEntity {
     @Column(nullable = false)
     private Double loss;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime activatedDate;
 
     public void activate() {
