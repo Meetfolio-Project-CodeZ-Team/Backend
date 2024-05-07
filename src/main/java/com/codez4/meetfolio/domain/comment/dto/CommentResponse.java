@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 
 import java.time.LocalDateTime;
@@ -52,8 +53,33 @@ public class CommentResponse {
         private MemberResponse.MemberInfo memberInfo;
 
         @Schema(description = "댓글 데이터 목록")
-        SliceResponse<MyCommentItem> commentInfo;
+        MyCommentList commentInfo;
     }
+
+    @Schema(description = "내 댓글 목록 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class MyCommentList {
+
+        List<MyCommentItem> commentInfo;
+        @Schema(description = "페이징된 리스트의 항목 개수")
+        private Integer listSize;
+
+        @Schema(description = "총 페이징 수 ")
+        private Integer totalPage;
+
+        @Schema(description = "전체 데이터의 개수")
+        private Long totalElements;
+
+        @Schema(description = "첫 페이지의 여부")
+        private Boolean isFirst;
+
+        @Schema(description = "마지막 페이지의 여부")
+        private Boolean isLast;
+    }
+
 
     public static CommentResult toCommentResult(Slice<Comment> comments) {
 
@@ -71,10 +97,22 @@ public class CommentResponse {
             .build();
     }
 
-    public static MyCommentResult toMyCommentResult(MemberResponse.MemberInfo memberInfo,SliceResponse<MyCommentItem> comments) {
+    public static MyCommentResult toMyCommentResult(MemberResponse.MemberInfo memberInfo, Page<MyCommentItem> comments) {
         return MyCommentResult.builder()
                 .memberInfo(memberInfo)
-                .commentInfo(comments)
+                .commentInfo(toMyCommentList(comments))
+                .build();
+    }
+
+    public static MyCommentList toMyCommentList(Page<MyCommentItem> comments){
+        List<MyCommentItem> commentItems = comments.stream().toList();
+        return MyCommentList.builder()
+                .commentInfo(commentItems)
+                .listSize(commentItems.size())
+                .isFirst(comments.isFirst())
+                .isLast(comments.isLast())
+                .totalElements(comments.getTotalElements())
+                .totalPage(comments.getTotalPages())
                 .build();
     }
 

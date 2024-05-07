@@ -3,7 +3,6 @@ package com.codez4.meetfolio.domain.coverLetter.controller;
 import com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse.AnalysisInfo;
 import com.codez4.meetfolio.domain.analysis.service.AnalysisQueryService;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterRequest;
-import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterRequest.CoverLetterOther;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLetterInfo;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLetterProc;
@@ -25,15 +24,9 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.toCoverLetterListResult;
 
 @Tag(name = "자기소개서 API")
 @RestController
@@ -93,20 +86,22 @@ public class CoverLetterController {
 
     @Operation(summary = "내 자기소개서 목록 조회", description = "내 자기소개서 목록 정보를 조회합니다.")
     @GetMapping
-    public ApiResponse<SliceResponse<CoverLetterResponse.CoverLetterItem>> getMyCoverLetters(
+    public ApiResponse<CoverLetterResponse.CoverLetterListResult> getMyCoverLetters(
             @AuthenticationMember Member member,
             @RequestParam(value = "page", defaultValue = "0") int page) {
-        return ApiResponse.onSuccess(coverLetterQueryService.getMyCoverLetters(member, page));
+        MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
+        return ApiResponse.onSuccess(toCoverLetterListResult(memberInfo,coverLetterQueryService.getMyCoverLetters(member, page)));
     }
 
     @Operation(summary = "다른 사용자의 자기소개서 목록 조회", description = "타 사용자의 자기소개서 목록 정보를 조회합니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @PostMapping("/members")
-    public ApiResponse<SliceResponse<CoverLetterResponse.CoverLetterItem>> getOtherCoverLetters(
+    public ApiResponse<CoverLetterResponse.CoverLetterListResult> getOtherCoverLetters(
+            @AuthenticationMember Member member,
             @RequestParam String memberName,
             @RequestParam(value = "page", defaultValue = "0") int page) {
+        MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         Member other = memberQueryService.findByMemberName(memberName);
-
-        return ApiResponse.onSuccess(coverLetterQueryService.getOtherCoverLetters(other, page));
+        return ApiResponse.onSuccess(toCoverLetterListResult(memberInfo,coverLetterQueryService.getOtherCoverLetters(other, page)));
     }
 }
