@@ -20,6 +20,7 @@ import com.codez4.meetfolio.domain.point.repository.PointRepository;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +45,7 @@ import static com.codez4.meetfolio.domain.admin.dto.PointResponse.toPointStatics
 import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberList;
 import static com.codez4.meetfolio.domain.admin.dto.ModelResponse.toModelResult;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
@@ -87,11 +89,12 @@ public class AdminQueryService {
 
     public PaymentResponse.PaymentResult getPaymentList(int page, int year, int month) {
         String requestMonth = Integer.toString(year) + '-' + month;
+        log.info("연월 {}",requestMonth);
         long totalSales = paymentRepository.queryGetTotalSalesByMonth(requestMonth);
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         String yearMonth = year + "년" + " " + month + "월";
 
-        Page<Payment> payments = paymentRepository.findByMember_AuthorityAndPaymentStatusIs(Authority.MEMBER, PaymentStatus.APPROVE, pageRequest);
+        Page<Payment> payments = paymentRepository.queryGetSalesByMonth(yearMonth, pageRequest);
         List<PaymentResponse.PaymentItem> paymentList = payments.stream().map(payment -> {
             Point point = pointRepository.getPointByPayment(payment).orElseThrow(() -> new ApiException(ErrorStatus._BAD_REQUEST));
             return toPaymentItem(payment, point);
