@@ -37,14 +37,15 @@ public class PaymentCommandService {
                 .point(request.getPoint())
                 .payment(request.getPayment())
                 .member(member)
-                .kakaoPayId(request.getTid())
                 .paymentStatus(PaymentStatus.READY)
+                .kakaoPayId(request.getTid())
                 .build();
         Payment payment = post(paymentPost);
         return toPaymentProc(payment);
     }
 
-    public PaymentProc saveApprovePayment(Member member, Payment payment) {
+    public PaymentProc saveApprovePayment(Member member) {
+        Payment payment = paymentRepository.findTop1ByMemberOrderByIdDesc(member);
         payment.updateStatus(PaymentStatus.APPROVE);
         int totalPoint = member.getPoint() - payment.getPoint();
         PointRequest.Post pointPost = PointRequest.Post.builder()
