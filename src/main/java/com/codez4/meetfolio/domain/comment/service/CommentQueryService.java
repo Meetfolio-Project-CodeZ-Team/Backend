@@ -5,7 +5,6 @@ import com.codez4.meetfolio.domain.comment.dto.CommentResponse;
 import com.codez4.meetfolio.domain.comment.repository.CommentRepository;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.exception.ApiException;
-import com.codez4.meetfolio.global.response.SliceResponse;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

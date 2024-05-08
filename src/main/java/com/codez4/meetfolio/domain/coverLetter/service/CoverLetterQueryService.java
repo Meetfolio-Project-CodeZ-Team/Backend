@@ -6,12 +6,10 @@ import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLett
 import com.codez4.meetfolio.domain.coverLetter.repository.CoverLetterRepository;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.exception.ApiException;
-import com.codez4.meetfolio.global.response.SliceResponse;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

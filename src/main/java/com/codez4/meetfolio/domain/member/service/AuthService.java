@@ -4,14 +4,10 @@ import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.TokenResponse;
 import com.codez4.meetfolio.global.jwt.JwtTokenProvider;
 import com.codez4.meetfolio.global.utils.RedisUtil;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
 
 @Slf4j
 @Service

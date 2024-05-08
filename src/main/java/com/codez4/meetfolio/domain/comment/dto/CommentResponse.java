@@ -4,7 +4,6 @@ import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.comment.Comment;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
-import com.codez4.meetfolio.global.response.SliceResponse;
 import com.codez4.meetfolio.global.utils.TimeUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
