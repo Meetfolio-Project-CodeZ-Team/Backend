@@ -11,6 +11,8 @@ import com.codez4.meetfolio.domain.payment.dto.PaymentResponse;
 import com.codez4.meetfolio.domain.payment.repository.PaymentRepository;
 import com.codez4.meetfolio.domain.point.dto.PointRequest;
 import com.codez4.meetfolio.domain.point.repository.PointRepository;
+import com.codez4.meetfolio.global.exception.ApiException;
+import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,8 +46,7 @@ public class PaymentCommandService {
         return toPaymentProc(payment);
     }
 
-    public PaymentProc saveApprovePayment(Member member) {
-        Payment payment = paymentRepository.findTop1ByMemberOrderByIdDesc(member);
+    public PaymentProc saveApprovePayment(Member member, Payment payment) {
         payment.updateStatus(PaymentStatus.APPROVE);
         int totalPoint = member.getPoint() + payment.getPoint();
         PointRequest.Post pointPost = PointRequest.Post.builder()
