@@ -46,7 +46,7 @@ public class PaymentCommandService {
 
     public PaymentProc saveApprovePayment(Member member, Payment payment) {
         payment.updateStatus(PaymentStatus.APPROVE);
-        int totalPoint = member.getPoint() - payment.getPoint();
+        int totalPoint = member.getPoint() + payment.getPoint();
         PointRequest.Post pointPost = PointRequest.Post.builder()
                 .payment(payment)
                 .point(payment.getPoint())
