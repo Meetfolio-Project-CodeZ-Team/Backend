@@ -16,7 +16,7 @@ public class Feedback extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "solution_id", nullable = false)
+    @Column(name = "feedback_id", nullable = false)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
