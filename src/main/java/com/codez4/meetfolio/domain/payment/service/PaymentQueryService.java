@@ -43,7 +43,6 @@ public class PaymentQueryService {
         return payment;
     }
 
-
     public PaymentResponse.PaymentResult getMyPaymentList(int page, Member member) {
         PageRequest pageRequest = PageRequest.of(page, 9, Sort.by("id").descending());
         Page<Point> points = pointRepository.findByMemberAndPointType(member, PointType.CHARGE, pageRequest);
