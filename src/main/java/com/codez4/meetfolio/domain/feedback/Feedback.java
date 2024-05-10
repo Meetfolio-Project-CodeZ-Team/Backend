@@ -52,4 +52,8 @@ public class Feedback extends BaseTimeEntity {
     public void delete() {
         this.status = Status.INACTIVE;
     }
+
+    public void setSatisfaction(int satisfaction) {
+        this.satisfaction = satisfaction;
+    }
 }

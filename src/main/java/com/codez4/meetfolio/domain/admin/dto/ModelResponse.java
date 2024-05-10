@@ -22,7 +22,7 @@ public class ModelResponse {
     @Getter
     public static class ModelListResult {
 
-        List<ModelResult> modelInfo;
+        List<ModelItem> modelInfo;
 
         @Schema(description = "페이징된 리스트의 항목 개수")
         private Integer listSize;
@@ -39,6 +39,27 @@ public class ModelResponse {
         @Schema(description = "마지막 페이지의 여부")
         private Boolean isLast;
 
+    }
+
+    @Schema(description = "모델 목록 - 정보 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+        public static class ModelItem {
+        @Schema(description = "모델 id")
+        private Long modelId;
+        @Schema(description = "모델 버전")
+        private double version;
+        @Schema(description = "모델명")
+        private String modelName;
+        @Schema(description = "성능")
+        private double accuracy;
+        @Schema(description = "모델 배포 여부")
+        private Status status;
+        @Schema(description = "모델 학습일")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
+        private LocalDateTime learnedDate;
     }
 
     @Schema(description = "모델 정보 응답 DTO")
@@ -81,7 +102,7 @@ public class ModelResponse {
     }
 
     public static ModelListResult toModelListResult(Page<Model> models) {
-        List<ModelResult> modelResults = models.stream().map(ModelResponse::toModelResult).toList();
+        List<ModelItem> modelResults = models.stream().map(ModelResponse::toModelItem).toList();
         return ModelListResult.builder()
                 .modelInfo(modelResults)
                 .listSize(models.getSize())
@@ -89,6 +110,17 @@ public class ModelResponse {
                 .totalPage(models.getTotalPages())
                 .isFirst(models.isFirst())
                 .isLast(models.isLast())
+                .build();
+    }
+
+    public static ModelItem toModelItem(Model model){
+        return ModelItem.builder()
+                .modelId(model.getId())
+                .version(model.getVersion())
+                .modelName(model.getName())
+                .accuracy(model.getAccuracy())
+                .learnedDate(model.getCreatedAt())
+                .status(model.getStatus())
                 .build();
     }
 

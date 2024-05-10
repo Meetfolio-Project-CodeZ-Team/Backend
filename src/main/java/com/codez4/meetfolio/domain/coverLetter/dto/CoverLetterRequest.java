@@ -6,6 +6,8 @@ import com.codez4.meetfolio.domain.enums.ShareType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.annotation.EnumValid;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 
 public class CoverLetterRequest {
@@ -48,6 +50,15 @@ public class CoverLetterRequest {
         @Schema(description = "자기소개서 지원 직무, BACKEND/WEB/APP/DESIGN/AI", example = "BACKEND")
         @EnumValid(enumClass = JobKeyword.class)
         private String jobKeyword;
+    }
+
+    @Schema( description = "만족도 DTO")
+    @Getter
+    public static class SatisfactionRequest{
+        @Schema(description = "만족도, 0부터 5까지의 정수만 입력 가능합니다." )
+        @Max(value = 5)
+        @Min(value = 0)
+        private int satisfaction;
     }
 
     public static CoverLetter toEntity(Member member, CoverLetterRequest.Post request) {
