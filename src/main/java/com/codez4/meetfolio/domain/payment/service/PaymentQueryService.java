@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.payment.service;
 
+import com.codez4.meetfolio.domain.enums.PaymentStatus;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.payment.Payment;
@@ -31,10 +32,17 @@ public class PaymentQueryService {
         return paymentRepository.findById(paymentId).orElseThrow(() -> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));
     }
 
-    public PaymentResponse.PaymentProc getReadyPayment(Member member){
-        Payment payment = paymentRepository.findTop1ByMemberOrderByIdDesc(member);
-        return toPaymentProc(payment);
+    public Payment getReadyPayment(Member member){
+        Payment payment = paymentRepository.findTop1ByMemberAndPaymentStatusOrderByIdDesc(member,PaymentStatus.READY).orElseThrow(() -> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));;
+        return payment;
+
     }
+
+    public Payment getApprovePayment(Member member, String tid){
+        Payment payment = paymentRepository.findByMemberAndTidAndPaymentStatus(member, tid, PaymentStatus.READY).orElseThrow(() -> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));
+        return payment;
+    }
+
 
     public PaymentResponse.PaymentResult getMyPaymentList(int page, Member member) {
         PageRequest pageRequest = PageRequest.of(page, 9, Sort.by("id").descending());
