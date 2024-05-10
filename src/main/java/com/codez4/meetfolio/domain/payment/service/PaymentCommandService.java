@@ -38,7 +38,7 @@ public class PaymentCommandService {
                 .payment(request.getPayment())
                 .member(member)
                 .paymentStatus(PaymentStatus.READY)
-                .kakaoPayId(request.getTid())
+                .tid(request.getTid())
                 .build();
         Payment payment = post(paymentPost);
         return toPaymentProc(payment);
@@ -47,7 +47,7 @@ public class PaymentCommandService {
     public PaymentProc saveApprovePayment(Member member) {
         Payment payment = paymentRepository.findTop1ByMemberOrderByIdDesc(member);
         payment.updateStatus(PaymentStatus.APPROVE);
-        int totalPoint = member.getPoint() - payment.getPoint();
+        int totalPoint = member.getPoint() + payment.getPoint();
         PointRequest.Post pointPost = PointRequest.Post.builder()
                 .payment(payment)
                 .point(payment.getPoint())
@@ -65,13 +65,13 @@ public class PaymentCommandService {
                 .point(request.getPoint())
                 .payment(request.getPayment())
                 .member(member)
-                .kakaoPayId(null)
+                .tid(null)
                 .paymentStatus(null)
                 .build();
         Payment payment = post(paymentPost);
         KakaoPayResponse.Ready response = kakaoPayService.getRedirectUrl(payment.getId(), request);
 
-        payment.updateKakaoPayId(response.getTid());
+        payment.updateTid(response.getTid());
         payment.updateStatus(PaymentStatus.READY);
         return toPaymentReady(payment.getId(), response);
     }

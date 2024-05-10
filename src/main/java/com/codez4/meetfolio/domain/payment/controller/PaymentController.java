@@ -16,6 +16,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentProc;
+
 @Tag(name = "충전 API")
 @RestController
 @RequestMapping("/api")
@@ -35,32 +37,18 @@ public class PaymentController {
     @Operation(summary = "카카오페이 tid 요청", description = "결제 대기중인 카카오페이 tid 값을 응답합니다.")
     @GetMapping("/payments/ready")
     public ApiResponse<PaymentResponse.PaymentProc> getReadyPayment(@AuthenticationMember Member member){
-        return ApiResponse.onSuccess(paymentQueryService.getReadyPayment(member));
+        return ApiResponse.onSuccess(toPaymentProc(paymentQueryService.getReadyPayment(member)));
 
     }
 
     @Operation(summary = "카카오 페이 승인 정보 등록", description = "카카오 페이 승인 정보 저장 및 포인트를 충전합니다.")
     @PostMapping("/payments/approve")
     @Parameter(name = "paymentId", description = "결제 id, Path Variable 입니다.", required = true, in = ParameterIn.PATH)
-    public ApiResponse<PaymentResponse.PaymentProc> saveApprovePayment(@AuthenticationMember Member member) {
-        return ApiResponse.onSuccess(paymentCommandService.saveApprovePayment(member));
+    public ApiResponse<PaymentResponse.PaymentProc> saveApprovePayment(@AuthenticationMember Member member,
+                                                                       @RequestBody PaymentRequest.ApproveRequest request) {
+        Payment payment = paymentQueryService.getApprovePayment(member,request.getTid());
+        return ApiResponse.onSuccess(paymentCommandService.saveApprovePayment(member, payment));
 
-    }
-
-    @Operation(summary = "포인트 충전 - 카카오 페이 연결", description = "포인트 충전 요청 시 카카오 페이 redirect url을 반환합니다.")
-    @PostMapping("/payments/request")
-    public ApiResponse<PaymentResponse.PaymentReady> requestPayment(@AuthenticationMember Member member,
-                                                                    @Valid @RequestBody PaymentRequest.ChargeRequest request) throws Exception {
-        return ApiResponse.onSuccess(paymentCommandService.readyPayment(member, request));
-
-    }
-
-    @Operation(summary = "포인트 충전 - 카카오 페이 승인", description = "카카오 페이 결제를 완료합니다.")
-    @GetMapping("/payments/success")
-    public ApiResponse<PaymentResponse.PaymentApprove> successPayment(@RequestParam("paymentId") Long paymentId,
-                                                                      @RequestParam("pg_token") String pgToken) throws Exception {
-        Payment payment = paymentQueryService.findById(paymentId);
-        return ApiResponse.onSuccess(paymentCommandService.approvePayment(pgToken, payment.getKakaoPayId(), paymentId));
     }
 
     @Operation(summary = "마이페이지 - 포인트 충전 내역 조회", description = "마이페이지의 포인트 충전 내역을 조회합니다.")

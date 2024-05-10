@@ -10,11 +10,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     Page<Payment> findByMember_AuthorityAndPaymentStatusIs(Authority authority, PaymentStatus paymentStatus, Pageable pageable);
 
-    Payment findTop1ByMemberOrderByIdDesc(Member member);
+    Optional<Payment> findTop1ByMemberAndPaymentStatusOrderByIdDesc(Member member, PaymentStatus paymentStatus);
+
+    Optional<Payment> findByMemberAndTidAndPaymentStatus(Member member, String tid, PaymentStatus paymentStatus);
 
     @Query("SELECT IFNULL(SUM(p.payment),0) FROM Payment p WHERE p.paymentStatus = 'APPROVE'")
     long queryGetTotalSales();
