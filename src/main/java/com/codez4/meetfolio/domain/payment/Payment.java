@@ -31,11 +31,11 @@ public class Payment extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-    @Column(name = "kakao_pay_id")
-    private String kakaoPayId;
+    @Column(name = "tid")
+    private String tid;
 
-    public void updateKakaoPayId(String kakaoPayId){
-        this.kakaoPayId = kakaoPayId;
+    public void updateTid(String tid){
+        this.tid = tid;
     }
 
     public void updateStatus (PaymentStatus paymentStatus){
