@@ -188,7 +188,7 @@ public class PaymentResponse {
     public static PaymentProc toPaymentProc(Payment payment){
         return PaymentProc.builder()
                 .paymentId(payment.getId())
-                .tid(payment.getKakaoPayId())
+                .tid(payment.getTid())
                 .readyAt(payment.getCreatedAt())
                 .approveAt(payment.getUpdatedAt())
                 .build();
