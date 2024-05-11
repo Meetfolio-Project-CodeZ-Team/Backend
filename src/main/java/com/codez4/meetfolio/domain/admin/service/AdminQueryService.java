@@ -41,7 +41,7 @@ import static com.codez4.meetfolio.domain.admin.dto.AIServiceResponse.toAIServic
 import static com.codez4.meetfolio.domain.admin.dto.BoardResponse.toBoardAdminResult;
 import static com.codez4.meetfolio.domain.admin.dto.DashboardResponse.toDashboardResult;
 import static com.codez4.meetfolio.domain.admin.dto.DashboardResponse.toMemberInfo;
-import static com.codez4.meetfolio.domain.admin.dto.DatasetResponse.toDatasetInfo;
+import static com.codez4.meetfolio.domain.admin.dto.DatasetResponse.toDatasetWithModel;
 import static com.codez4.meetfolio.domain.admin.dto.ModelResponse.toModelListResult;
 import static com.codez4.meetfolio.domain.admin.dto.ModelResponse.toModelResult;
 import static com.codez4.meetfolio.domain.admin.dto.PaymentResponse.toPaymentItem;
@@ -113,10 +113,17 @@ public class AdminQueryService {
         return toAIServiceResult(getAIServiceInfo(), models);
     }
 
-    public DatasetResponse.DatasetInfo getDatasetList(int page) {
+    public DatasetResponse.DatasetWithModel getDatasetWithModel(int page) {
         PageRequest pageRequest = PageRequest.of(page, 7, Sort.by("id").descending());
         Page<Dataset> datasets = datasetRepository.getAllBy(pageRequest);
-        return toDatasetInfo(datasets);
+
+        Integer trainableNumber = datasetRepository.countByStatus(Status.INACTIVE);
+
+        Model model = modelRepository.findModelByStatus(Status.ACTIVE).orElseThrow(
+            () -> new ApiException(ErrorStatus._MODEL_NOT_FOUND)
+        );
+
+        return toDatasetWithModel(datasets, trainableNumber, model);
     }
 
     public AIServiceResponse.AIServiceInfo getAIServiceInfo() {
