@@ -152,14 +152,6 @@ public class AdminController {
         return ApiResponse.onSuccess(adminQueryService.getModelInfo(modelQueryService.findById(modelId)));
     }
 
-    @Operation(summary = "AI 관리 - 모델 활성화", description = "AI 관리 메뉴에서 새로운 모델을 활성화 시킵니다.")
-    @PatchMapping("/data-management/version/{modelId}")
-    @Parameter(name = "modelId", required = true, in = ParameterIn.PATH)
-    public ApiResponse<ModelResponse.ModelProc> changeActiveModel(@AuthenticationMember Member admin,
-                                                                  @PathVariable(value = "modelId") Long modelId) {
-        return ApiResponse.onSuccess(adminCommandService.changeActiveModel(modelQueryService.findById(modelId)));
-    }
-
     @Operation(summary = "AI 관리 - 모델 삭제", description = "AI 관리 메뉴에서 모델을 삭제합니다.")
     @DeleteMapping("/data-management/version/{modelId}")
     @Parameter(name = "modelId", required = true, in = ParameterIn.PATH)
@@ -176,10 +168,7 @@ public class AdminController {
                                                                                                        @RequestParam(value = "page", defaultValue = "0") int page) {
         PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("id").descending());
         com.codez4.meetfolio.domain.admin.dto.BoardResponse.BoardAdminResult boards;
-        if (keyword != null) {
-            boards = adminQueryService.getBoardsByKeyword(keyword, pageRequest);
-        } else boards = adminQueryService.getBoards(pageRequest);
-        return ApiResponse.onSuccess(boards);
+        return ApiResponse.onSuccess(adminQueryService.getBoardsByKeyword(keyword, pageRequest));
     }
 
     @Operation(summary = "커뮤니티 관리 - 게시물 삭제")

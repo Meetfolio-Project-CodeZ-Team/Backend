@@ -55,7 +55,7 @@ public class MemberQueryService {
         return member;
     }
 
-    private void comparePassword(String password, Password savedPassword) {
+    public void comparePassword(String password, Password savedPassword) {
         if (!savedPassword.isSamePassword(password, ENCODER)) {
             throw new ApiException(ErrorStatus._INVALID_PASSWORD);
         }

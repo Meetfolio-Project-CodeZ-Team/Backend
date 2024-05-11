@@ -4,14 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
-@Schema(description = "로그인 요청 dto")
+@Schema(description = "비밀번호 요청 dto")
 @Getter
-public class LoginRequest {
-
-    @NotBlank
-    @Schema(description = "가천대 이메일", example = "meetfolio@gachon.ac.kr")
-    private String email;
-
+public class PasswordRequest {
     @NotBlank
     @Schema(description = "비밀번호")
     private String password;

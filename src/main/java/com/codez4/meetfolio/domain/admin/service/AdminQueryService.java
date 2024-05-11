@@ -131,7 +131,8 @@ public class AdminQueryService {
     }
 
     public BoardResponse.BoardAdminResult getBoardsByKeyword(String keyword, Pageable page) {
-        Page<Board> boards = boardRepository.queryFindBoardsByKeyword(keyword, page);
+        String search = keyword == null ? "" : keyword;
+        Page<Board> boards = boardRepository.queryFindBoardsByKeyword(search, page);
         return toBoardAdminResult(boards);
     }
 
