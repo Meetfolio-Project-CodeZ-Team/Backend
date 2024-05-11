@@ -6,12 +6,14 @@ import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.board.repository.BoardRepository;
 import com.codez4.meetfolio.domain.dataset.Dataset;
 import com.codez4.meetfolio.domain.dataset.repository.DatasetRepository;
-import com.codez4.meetfolio.domain.enums.*;
+import com.codez4.meetfolio.domain.enums.Authority;
+import com.codez4.meetfolio.domain.enums.JobKeyword;
+import com.codez4.meetfolio.domain.enums.PointType;
+import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.feedback.repository.FeedbackRepository;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.repository.MemberRepository;
 import com.codez4.meetfolio.domain.model.Model;
-import com.codez4.meetfolio.domain.admin.dto.ModelResponse;
 import com.codez4.meetfolio.domain.model.repository.ModelRepository;
 import com.codez4.meetfolio.domain.payment.Payment;
 import com.codez4.meetfolio.domain.payment.repository.PaymentRepository;
@@ -37,13 +39,14 @@ import java.util.Map;
 import static com.codez4.meetfolio.domain.admin.dto.AIServiceResponse.toAIServiceInfo;
 import static com.codez4.meetfolio.domain.admin.dto.AIServiceResponse.toAIServiceResult;
 import static com.codez4.meetfolio.domain.admin.dto.BoardResponse.toBoardAdminResult;
-import static com.codez4.meetfolio.domain.admin.dto.DashboardResponse.*;
+import static com.codez4.meetfolio.domain.admin.dto.DashboardResponse.toDashboardResult;
+import static com.codez4.meetfolio.domain.admin.dto.DashboardResponse.toMemberInfo;
 import static com.codez4.meetfolio.domain.admin.dto.DatasetResponse.toDatasetInfo;
 import static com.codez4.meetfolio.domain.admin.dto.ModelResponse.toModelListResult;
+import static com.codez4.meetfolio.domain.admin.dto.ModelResponse.toModelResult;
 import static com.codez4.meetfolio.domain.admin.dto.PaymentResponse.toPaymentItem;
 import static com.codez4.meetfolio.domain.admin.dto.PointResponse.toPointStatics;
 import static com.codez4.meetfolio.domain.member.dto.MemberResponse.toMemberList;
-import static com.codez4.meetfolio.domain.admin.dto.ModelResponse.toModelResult;
 
 @Slf4j
 @RequiredArgsConstructor

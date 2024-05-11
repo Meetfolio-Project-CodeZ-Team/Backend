@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @DynamicInsert
