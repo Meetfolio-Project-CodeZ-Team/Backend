@@ -11,6 +11,7 @@ import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberRequest;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
+import com.codez4.meetfolio.domain.member.dto.PasswordRequest;
 import com.codez4.meetfolio.domain.member.service.MemberCommandService;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
@@ -54,6 +55,14 @@ public class MemberController {
             .major(request.getMajor())
             .build();
         return ApiResponse.onSuccess(memberCommandService.post(post));
+    }
+
+    @Operation(summary = "비밀번호 검증 요청", description = "개인정보 수정 단계에서 사용자의 비밀번호를 검증합니다.")
+    @GetMapping("/mypage/check-password")
+    public ApiResponse<String> checkPassword(
+            @AuthenticationMember Member member, @Valid@RequestBody PasswordRequest request) {
+        memberQueryService.comparePassword(request.getPassword(), member.getPassword());
+        return ApiResponse.onSuccess("비밀번호 검증이 성공하였습니다.");
     }
 
     @Operation(summary = "마이페이지 수정 정보 조회", description = "사용자의 개인 정보를 조회합니다.")
