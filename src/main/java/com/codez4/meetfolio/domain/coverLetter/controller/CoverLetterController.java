@@ -10,7 +10,6 @@ import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLett
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLetterResult;
 import com.codez4.meetfolio.domain.coverLetter.service.CoverLetterCommandService;
 import com.codez4.meetfolio.domain.coverLetter.service.CoverLetterQueryService;
-import com.codez4.meetfolio.domain.feedback.Feedback;
 import com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
 import com.codez4.meetfolio.domain.feedback.service.FeedbackCommandService;
 import com.codez4.meetfolio.domain.feedback.service.FeedbackQueryService;
@@ -21,6 +20,7 @@ import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.ApiResponse;
+import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

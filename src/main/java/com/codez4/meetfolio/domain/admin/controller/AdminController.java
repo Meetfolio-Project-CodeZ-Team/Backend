@@ -125,9 +125,9 @@ public class AdminController {
 
     @Operation(summary = "AI 관리 - 학습 데이터 리스트 조회", description = "AI 관리 메뉴에서 AI 학습 데이터 리스트를 조회합니다.")
     @GetMapping("/data-management")
-    public ApiResponse<DatasetResponse.DatasetInfo> getAIServiceStatics(@AuthenticationMember Member admin,
+    public ApiResponse<DatasetResponse.DatasetWithModel> getAIServiceStatics(@AuthenticationMember Member admin,
                                                                         @RequestParam(value = "page", defaultValue = "0") int page) {
-        return ApiResponse.onSuccess(adminQueryService.getDatasetList(page));
+        return ApiResponse.onSuccess(adminQueryService.getDatasetWithModel(page));
     }
 
     @Operation(summary = "AI 관리 - 학습 데이터 추가", description = "AI 관리 메뉴에서 AI 학습 데이터를 저장합니다.")
