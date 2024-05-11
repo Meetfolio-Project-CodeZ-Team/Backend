@@ -6,7 +6,6 @@ import com.codez4.meetfolio.domain.enums.BoardType;
 import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
-import com.codez4.meetfolio.global.response.SliceResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EnumType;
@@ -15,9 +14,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class BoardResponse {
@@ -31,7 +32,33 @@ public class BoardResponse {
         @Schema(description = "로그인 사용자 정보")
         private MemberResponse.MemberInfo memberInfo;
         @Schema(description = "게시물 목록 정보")
-        private SliceResponse<BoardItem> boardListInfo;
+        private BoardList boardListInfo;
+    }
+
+    @Schema(description = "관리자 커뮤니티 게시글 목록 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class BoardList {
+
+        @Schema(description = "게시글 목록")
+        private List<BoardItem> boardInfo;
+
+        @Schema(description = "페이징된 리스트의 항목 개수")
+        private Integer listSize;
+
+        @Schema(description = "총 페이징 수 ")
+        private Integer totalPage;
+
+        @Schema(description = "전체 데이터의 개수")
+        private Long totalElements;
+
+        @Schema(description = "첫 페이지의 여부")
+        private Boolean isFirst;
+
+        @Schema(description = "마지막 페이지의 여부")
+        private Boolean isLast;
     }
 
     @Schema(description = "게시글 1개 조회 응답 DTO")
@@ -46,11 +73,22 @@ public class BoardResponse {
         private BoardItem boardInfo;
     }
 
-    public static BoardListResult toBoardListResult(MemberInfo memberInfo, SliceResponse<BoardItem> boardInfo) {
+    public static BoardList toBoardList( Page<BoardQueryItem> boards){
+        List<BoardItem> boardList = boards.stream().map(BoardResponse::toBoardItem).toList();
+        return BoardList.builder()
+                .boardInfo(boardList)
+                .listSize(boardList.size())
+                .isFirst(boards.isFirst())
+                .isLast(boards.isLast())
+                .totalElements(boards.getTotalElements())
+                .totalPage(boards.getTotalPages())
+                .build();
+    }
 
+    public static BoardListResult toBoardListResult(MemberInfo memberInfo, Page<BoardQueryItem> boards) {
         return BoardListResult.builder()
                 .memberInfo(memberInfo)
-                .boardListInfo(boardInfo)
+                .boardListInfo(toBoardList(boards))
                 .build();
     }
 

@@ -1,11 +1,5 @@
 package com.codez4.meetfolio.domain.member.service;
 
-import com.codez4.meetfolio.domain.board.repository.BoardRepository;
-import com.codez4.meetfolio.domain.comment.repository.CommentRepository;
-import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
-import com.codez4.meetfolio.domain.coverLetter.repository.CoverLetterRepository;
-import com.codez4.meetfolio.domain.experience.repository.ExperienceRepository;
-import com.codez4.meetfolio.domain.like.repository.LikeRepository;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.LoginRequest;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
@@ -55,7 +49,7 @@ public class MemberQueryService {
         return member;
     }
 
-    private void comparePassword(String password, Password savedPassword) {
+    public void comparePassword(String password, Password savedPassword) {
         if (!savedPassword.isSamePassword(password, ENCODER)) {
             throw new ApiException(ErrorStatus._INVALID_PASSWORD);
         }

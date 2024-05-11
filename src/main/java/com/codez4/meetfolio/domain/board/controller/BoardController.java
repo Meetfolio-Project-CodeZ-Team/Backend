@@ -3,6 +3,7 @@ package com.codez4.meetfolio.domain.board.controller;
 import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.board.EmploymentBoard;
 import com.codez4.meetfolio.domain.board.GroupBoard;
+import com.codez4.meetfolio.domain.board.dto.BoardQueryItem;
 import com.codez4.meetfolio.domain.board.dto.BoardRequest;
 import com.codez4.meetfolio.domain.board.dto.BoardResponse;
 import com.codez4.meetfolio.domain.board.service.BoardCommandService;
@@ -16,7 +17,6 @@ import com.codez4.meetfolio.global.annotation.AuthenticationMember;
 import com.codez4.meetfolio.global.annotation.EnumValid;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.ApiResponse;
-import com.codez4.meetfolio.global.response.SliceResponse;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import com.codez4.meetfolio.global.utils.TimeUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import static com.codez4.meetfolio.domain.board.dto.BoardResponse.*;
@@ -77,7 +78,7 @@ public class BoardController {
                                                                          @RequestParam(name = "type") @EnumValid (enumClass = BoardType.class) String type,
                                                                          @RequestParam(name = "keyword") String keyword){
         MemberResponse.MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        SliceResponse<BoardItem> boardInfo = boardQueryService.getBoardsByKeyword(member, keyword, BoardType.convert(type), page);
+        Page<BoardQueryItem> boardInfo = boardQueryService.getBoardsByKeyword(member, keyword, BoardType.convert(type), page);
         return ApiResponse.onSuccess(toBoardListResult(memberInfo, boardInfo));
     }
 

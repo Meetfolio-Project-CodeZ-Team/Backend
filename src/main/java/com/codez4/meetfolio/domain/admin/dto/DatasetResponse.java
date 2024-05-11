@@ -1,16 +1,17 @@
 package com.codez4.meetfolio.domain.admin.dto;
 
+import com.codez4.meetfolio.domain.admin.dto.ModelResponse.ModelResult;
 import com.codez4.meetfolio.domain.dataset.Dataset;
+import com.codez4.meetfolio.domain.model.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class DatasetResponse {
 
@@ -20,6 +21,7 @@ public class DatasetResponse {
     @NoArgsConstructor
     @Getter
     public static class DatasetInfo {
+
         @Schema(description = "데이터셋 리스트")
         List<DatasetItem> datasetInfo;
 
@@ -44,7 +46,8 @@ public class DatasetResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class DatasetItem{
+    public static class DatasetItem {
+
         @Schema(description = "생성 일시")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
@@ -65,7 +68,8 @@ public class DatasetResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class DatasetProc{
+    public static class DatasetProc {
+
         @Schema(description = "데이터셋 ID")
         private Long datasetId;
 
@@ -74,33 +78,64 @@ public class DatasetResponse {
         private LocalDateTime createdAt;
     }
 
-    public static DatasetItem toDatasetItem(Dataset dataset){
+    public static DatasetItem toDatasetItem(Dataset dataset) {
         return DatasetItem.builder()
-                .createdAt(dataset.getCreatedAt())
-                .job(dataset.getJobKeyword().getDescription())
-                .domain(dataset.getDomain())
-                .url(dataset.getUrl())
-                .build();
+            .createdAt(dataset.getCreatedAt())
+            .job(dataset.getJobKeyword().getDescription())
+            .domain(dataset.getDomain())
+            .url(dataset.getUrl())
+            .build();
     }
 
-    public static DatasetInfo toDatasetInfo(Page<Dataset> datasets){
+    public static DatasetInfo toDatasetInfo(Page<Dataset> datasets) {
         List<DatasetItem> datasetList = datasets.stream().map(DatasetResponse::toDatasetItem)
-                .toList();
+            .toList();
         return DatasetInfo.builder()
-                .datasetInfo(datasetList)
-                .listSize(datasetList.size())
-                .totalElements(datasets.getTotalElements())
-                .totalPage(datasets.getTotalPages())
-                .isFirst(datasets.isFirst())
-                .isLast(datasets.isLast())
-                .build();
+            .datasetInfo(datasetList)
+            .listSize(datasetList.size())
+            .totalElements(datasets.getTotalElements())
+            .totalPage(datasets.getTotalPages())
+            .isFirst(datasets.isFirst())
+            .isLast(datasets.isLast())
+            .build();
     }
 
-    public static DatasetProc toDatasetProc(Dataset dataset){
+    public static DatasetProc toDatasetProc(Dataset dataset) {
         return DatasetProc.builder()
-                .datasetId(dataset.getId())
-                .createdAt(dataset.getCreatedAt())
-                .build();
+            .datasetId(dataset.getId())
+            .createdAt(dataset.getCreatedAt())
+            .build();
+    }
+
+    @Schema(description = "관리자 - 학습 데이터셋 & 훈련 가능한 데이터 개수 & 활성화된 모델 정보 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class DatasetWithModel {
+
+        private DatasetInfo datasetInfo;
+
+        @Schema(description = "훈련 가능한 데이터셋의 개수")
+        private int trainableNumber;
+
+        private ModelResult modelResult;
+
+    }
+
+    public static DatasetWithModel toDatasetWithModel(Page<Dataset> datasets, int trainableNumber,
+        Model model) {
+
+        DatasetInfo datasetInfo = toDatasetInfo(datasets);
+
+        ModelResult modelResult = ModelResponse.toModelResult(model);
+
+        return DatasetWithModel.builder()
+            .datasetInfo(datasetInfo)
+            .trainableNumber(trainableNumber)
+            .modelResult(modelResult)
+            .build();
+
     }
 }
 

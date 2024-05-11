@@ -1,21 +1,20 @@
 package com.codez4.meetfolio.domain.coverLetter.dto;
 
-import static com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse.AnalysisInfo;
-import static com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
-
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
-import com.codez4.meetfolio.global.response.SliceResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse.AnalysisInfo;
+import static com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
 
 public class CoverLetterResponse {
 
@@ -62,6 +61,42 @@ public class CoverLetterResponse {
 
     }
 
+    @Schema(description = "자기소개서 목록 정보 조회 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CoverLetterListResult {
+        private MemberInfo memberInfo;
+        private CoverLetterList coverLetterInfo;
+    }
+
+    @Schema(description = "자기소개서 목록 정보 조회 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CoverLetterList {
+
+        private List<CoverLetterItem> coverLetterInfo;
+
+        @Schema(description = "페이징된 리스트의 항목 개수")
+        private Integer listSize;
+
+        @Schema(description = "총 페이징 수 ")
+        private Integer totalPage;
+
+        @Schema(description = "전체 데이터의 개수")
+        private Long totalElements;
+
+        @Schema(description = "첫 페이지의 여부")
+        private Boolean isFirst;
+
+        @Schema(description = "마지막 페이지의 여부")
+        private Boolean isLast;
+    }
+
+
     @Schema(description = "자기소개서 세부 정보 조회 응답 DTO")
     @Builder
     @AllArgsConstructor
@@ -73,6 +108,26 @@ public class CoverLetterResponse {
         private CoverLetterInfo coverLetterInfo;
         private FeedbackInfo feedbackInfo;
         private AnalysisInfo analysisInfo;
+    }
+
+    public static CoverLetterListResult toCoverLetterListResult(MemberInfo memberInfo, Page<CoverLetterItem> coverLetters) {
+        CoverLetterList coverLetterList = toCoverLetterList(coverLetters);
+        return CoverLetterListResult.builder()
+                .memberInfo(memberInfo)
+                .coverLetterInfo(coverLetterList)
+                .build();
+    }
+
+    public static CoverLetterList toCoverLetterList(Page<CoverLetterItem> coverLetters) {
+        List<CoverLetterItem> coverLetterItems = coverLetters.stream().toList();
+        return CoverLetterList.builder()
+                .coverLetterInfo(coverLetterItems)
+                .listSize(coverLetterItems.size())
+                .totalElements(coverLetters.getTotalElements())
+                .totalPage(coverLetters.getTotalPages())
+                .isFirst(coverLetters.isFirst())
+                .isLast(coverLetters.isLast())
+                .build();
     }
 
     public static CoverLetterResult toCoverLetterResult(MemberInfo memberInfo,
@@ -122,14 +177,11 @@ public class CoverLetterResponse {
 
     }
 
-    public static SliceResponse<CoverLetterItem> toSliceCoverLetterItem(Slice<CoverLetter> coverLetters) {
-
-        Slice<CoverLetterItem> coverLetterItems = coverLetters.map(coverLetter -> {
+    public static Page<CoverLetterItem> toPageCoverLetterItem(Page<CoverLetter> coverLetters) {
+        return coverLetters.map(coverLetter -> {
             long index = coverLetters.getNumberOfElements() - coverLetters.getContent().indexOf(coverLetter);
             return toCoverLetterItem(coverLetter, index);
         });
-
-        return new SliceResponse<>(coverLetterItems);
     }
 
     @Schema(description = "자기소개서 작성 & 수정 & 삭제 응답 DTO")

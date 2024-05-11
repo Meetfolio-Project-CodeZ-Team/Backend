@@ -4,7 +4,6 @@ import com.codez4.meetfolio.domain.enums.PaymentStatus;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.payment.Payment;
-import com.codez4.meetfolio.domain.payment.dto.PaymentRequest;
 import com.codez4.meetfolio.domain.payment.dto.PaymentResponse;
 import com.codez4.meetfolio.domain.payment.repository.PaymentRepository;
 import com.codez4.meetfolio.domain.point.Point;
@@ -15,7 +14,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
