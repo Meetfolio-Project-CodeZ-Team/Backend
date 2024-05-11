@@ -107,6 +107,7 @@ public class DatasetResponse {
             .build();
     }
 
+    @Schema(description = "관리자 - 학습 데이터셋 & 훈련 가능한 데이터 개수 & 활성화된 모델 정보 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -114,7 +115,10 @@ public class DatasetResponse {
     public static class DatasetWithModel {
 
         private DatasetInfo datasetInfo;
+
+        @Schema(description = "훈련 가능한 데이터셋의 개수")
         private int trainableNumber;
+
         private ModelResult modelResult;
 
     }
