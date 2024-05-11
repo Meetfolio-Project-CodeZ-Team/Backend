@@ -15,4 +15,8 @@ public class AnalysisCommandService {
     public void softDelete(Long coverLetterId) {
         analysisQueryService.findByCoverLetterId(coverLetterId).ifPresent(Analysis::delete);
     }
+
+    public void saveSatisfaction(Analysis analysis, int satisfaction){
+        analysis.setSatisfaction(satisfaction);
+    }
 }

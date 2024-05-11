@@ -35,6 +35,14 @@ public class PaymentRequest {
         private int payment;
     }
 
+    @Schema(description = "카카오페이 승인 정보 저장 dto")
+    @Getter
+    public static class ApproveRequest {
+
+        @Schema(description = "충전할 포인트")
+        private String tid;
+    }
+
 
     /*
         payment 생성 dto
@@ -47,7 +55,7 @@ public class PaymentRequest {
         private int point;
         private Member member;
         private PaymentStatus paymentStatus;
-        private String kakaoPayId;
+        private String tid;
 
     }
 
@@ -57,7 +65,7 @@ public class PaymentRequest {
                 .point(post.point)
                 .member(post.member)
                 .paymentStatus(post.paymentStatus)
-                .kakaoPayId(post.kakaoPayId)
+                .tid(post.tid)
                 .build();
     }
 

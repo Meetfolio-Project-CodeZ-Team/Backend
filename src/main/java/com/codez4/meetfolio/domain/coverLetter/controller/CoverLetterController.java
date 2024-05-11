@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.coverLetter.controller;
 
 import com.codez4.meetfolio.domain.analysis.dto.AnalysisResponse.AnalysisInfo;
+import com.codez4.meetfolio.domain.analysis.service.AnalysisCommandService;
 import com.codez4.meetfolio.domain.analysis.service.AnalysisQueryService;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterRequest;
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse;
@@ -9,13 +10,16 @@ import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLett
 import com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.CoverLetterResult;
 import com.codez4.meetfolio.domain.coverLetter.service.CoverLetterCommandService;
 import com.codez4.meetfolio.domain.coverLetter.service.CoverLetterQueryService;
+import com.codez4.meetfolio.domain.feedback.Feedback;
 import com.codez4.meetfolio.domain.feedback.dto.FeedbackResponse.FeedbackInfo;
+import com.codez4.meetfolio.domain.feedback.service.FeedbackCommandService;
 import com.codez4.meetfolio.domain.feedback.service.FeedbackQueryService;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import com.codez4.meetfolio.domain.member.service.MemberQueryService;
 import com.codez4.meetfolio.global.annotation.AuthenticationMember;
+import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,7 +40,9 @@ public class CoverLetterController {
     private final CoverLetterQueryService coverLetterQueryService;
     private final CoverLetterCommandService coverLetterCommandService;
     private final FeedbackQueryService feedbackQueryService;
+    private final FeedbackCommandService feedbackCommandService;
     private final AnalysisQueryService analysisQueryService;
+    private final AnalysisCommandService analysisCommandService;
     private final MemberQueryService memberQueryService;
 
 
@@ -68,6 +74,7 @@ public class CoverLetterController {
     @Parameter(name = "coverLetterId", description = "자기소개서 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @PatchMapping("/{coverLetterId}")
     public ApiResponse<CoverLetterProc> updateCoverLetter(
+            @AuthenticationMember Member member,
             @PathVariable(name = "coverLetterId") Long coverLetterId,
             @Valid @RequestBody CoverLetterRequest.Patch request) {
 
@@ -78,6 +85,7 @@ public class CoverLetterController {
     @Parameter(name = "coverLetterId", description = "자기소개서 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @DeleteMapping("/{coverLetterId}")
     public ApiResponse<CoverLetterProc> deleteCoverLetter(
+            @AuthenticationMember Member member,
             @PathVariable(name = "coverLetterId") Long coverLetterId) {
 
         return ApiResponse.onSuccess(coverLetterCommandService.softDelete(coverLetterId));
@@ -102,5 +110,23 @@ public class CoverLetterController {
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         Member other = memberQueryService.findByMemberName(memberName);
         return ApiResponse.onSuccess(toCoverLetterListResult(memberInfo,coverLetterQueryService.getOtherCoverLetters(other, page)));
+    }
+
+    @Operation(summary = "만족도 저장", description = "쿼리 스트링으로 피드백 ID 또는 분석 ID를, request body로 만족도를 전송합니다.")
+    @PatchMapping("/satisfaction")
+    @Parameter(name = "feedbackId", description = "피드백 ID, page, Query String입니다.", in = ParameterIn.QUERY)
+    @Parameter(name = "analysisId", description = "분석 ID, page, Query String입니다.", in = ParameterIn.QUERY)
+    public ApiResponse<String> saveSatisfaction(@AuthenticationMember Member member,
+                                 @RequestParam(required = false) Long feedbackId,
+                                 @RequestParam(required = false) Long analysisId,
+                                 @Valid @RequestBody CoverLetterRequest.SatisfactionRequest request){
+        if(feedbackId != null){
+            feedbackCommandService.saveSatisfaction(feedbackQueryService.findById(feedbackId), request.getSatisfaction());
+            return ApiResponse.onSuccess("만족도 저장이 완료되었습니다.");
+        } else if (analysisId != null) {
+            analysisCommandService.saveSatisfaction(analysisQueryService.findById(analysisId), request.getSatisfaction());
+            return ApiResponse.onSuccess("만족도 저장이 완료되었습니다.");
+        }
+        else throw new ApiException(ErrorStatus._BAD_REQUEST);
     }
 }
