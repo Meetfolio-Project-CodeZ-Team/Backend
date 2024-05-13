@@ -35,6 +35,7 @@ public class CommentCommandService {
 
         Member member = commentVO.member();
         Board board = boardQueryService.findById(commentVO.boardId());
+        board.changeComment(true);
         String content = commentVO.content();
         Long parentId = commentVO.parentId();
 
