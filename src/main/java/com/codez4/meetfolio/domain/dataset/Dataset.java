@@ -29,8 +29,8 @@ public class Dataset extends BaseTimeEntity {
 
     @Column
     private String domain;
-  
-    @Column(length = 1000, nullable = false)
+
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String data;
 
     @Column(nullable = false)
