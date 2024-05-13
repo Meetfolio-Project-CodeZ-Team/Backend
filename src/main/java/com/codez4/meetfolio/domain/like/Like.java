@@ -37,7 +37,6 @@ public class Like extends BaseTimeEntity {
      * update
      */
     public Like update() {
-        this.board.changeLike(this.status);
         this.status = (this.status == Status.ACTIVE) ? Status.INACTIVE : Status.ACTIVE;
         return this;
     }

@@ -26,8 +26,7 @@ public class LikeCommandService {
             .map(Like::update)
             .orElseGet(() -> createLike(member, board));
 
-        System.out.println("like = " + like);
-        System.out.println("like.getId() = " + like.getId());
+        board.changeLike(like.getStatus());
         
         return LikeResponse.toLikeResponse(like);
     }
