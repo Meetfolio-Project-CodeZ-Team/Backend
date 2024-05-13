@@ -67,9 +67,9 @@ public class Board extends BaseTimeEntity {
      */
     public void changeLike(Status status) {
         if (status.equals(Status.ACTIVE)) {
-            this.likeCount -= 1;
-        } else {
             this.likeCount += 1;
+        } else {
+            this.likeCount -= 1;
         }
         this.likeCount = this.likeCount < 0 ? 0 : this.likeCount;
     }
@@ -80,5 +80,6 @@ public class Board extends BaseTimeEntity {
         } else {
             this.commentCount -= 1;
         }
+        this.commentCount = this.commentCount < 0 ? 0 : this.commentCount;
     }
 }
