@@ -12,7 +12,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     void deleteByMember(Member member);
 
-    @Query(value = "SELECT Board FROM Board b WHERE b.title LIKE CONCAT('%', :keyword , '%') ")
+    @Query(value = "SELECT b FROM Board b WHERE b.title LIKE CONCAT('%', :keyword , '%') ")
     Page<Board> queryFindBoardsByKeyword(String keyword, Pageable pageable);
 
     @Query(value = "SELECT " +

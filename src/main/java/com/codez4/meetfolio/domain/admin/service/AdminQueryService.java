@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,9 +93,9 @@ public class AdminQueryService {
         String requestMonth = Integer.toString(year) + '-' + month;
         log.info("연월 {}",requestMonth);
         long totalSales = paymentRepository.queryGetTotalSalesByMonth(requestMonth);
-        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         String yearMonth = year + "년" + " " + month + "월";
 
+        PageRequest pageRequest = PageRequest.of(page, 10,  Sort.by("id").descending());
         Page<Payment> payments = paymentRepository.queryGetSalesByMonth(yearMonth, pageRequest);
         List<PaymentResponse.PaymentItem> paymentList = payments.stream().map(payment -> {
             Point point = pointRepository.getPointByPayment(payment).orElseThrow(() -> new ApiException(ErrorStatus._BAD_REQUEST));
@@ -135,14 +134,10 @@ public class AdminQueryService {
         return toAIServiceInfo((int) feedbackCount, (int) analysisCount, avgSatisfaction);
     }
 
-    public BoardResponse.BoardAdminResult getBoards(Pageable page) {
-        Page<Board> boards = boardRepository.findAll(page);
-        return toBoardAdminResult(boards);
-    }
-
-    public BoardResponse.BoardAdminResult getBoardsByKeyword(String keyword, Pageable page) {
+    public BoardResponse.BoardAdminResult getBoardsByKeyword(String keyword, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("id").descending());
         String search = keyword == null ? "" : keyword;
-        Page<Board> boards = boardRepository.queryFindBoardsByKeyword(search, page);
+        Page<Board> boards = boardRepository.queryFindBoardsByKeyword(search,pageRequest);
         return toBoardAdminResult(boards);
     }
 
