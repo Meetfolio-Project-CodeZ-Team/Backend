@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 public class MemberResponse {
 
@@ -99,9 +100,8 @@ public class MemberResponse {
         private String jobKeyword;
         @Schema(description = "포인트")
         private int point;
-        @Schema(description = "활성 상태, ACTIVE/INACTIVE")
-        @Enumerated(EnumType.STRING)
-        private Status status;
+        @Schema(description = "활성 상태, ACTIVE/INACTIVE/WITHDRAW(탈퇴)")
+        private String status;
     }
 
 
@@ -121,10 +121,8 @@ public class MemberResponse {
                         .profile(null)
                         .major(null)
                         .build();
-            }
-            else return null;
-        }
-        else return null;
+            } else return null;
+        } else return null;
     }
 
     public static MemberListResult toMemberList(Page<Member> members) {
@@ -143,18 +141,26 @@ public class MemberResponse {
     }
 
     public static MemberDetailInfo toMemberDetailInfo(Member member) {
-
-        return member == null ? null :
-                MemberDetailInfo.builder()
-                        .memberId(member.getId())
-                        .registrationDate(member.getCreatedAt().toLocalDate())
-                        .email(member.getEmail())
-                        .grade(member.getGrade().getDescription())
-                        .major(member.getMajor())
-                        .jobKeyword(member.getJobKeyword().getDescription())
-                        .point(member.getPoint())
-                        .status(member.getStatus())
-                        .build();
+        MemberDetailInfo.MemberDetailInfoBuilder builder = MemberDetailInfo.builder()
+                .memberId(member.getId())
+                .registrationDate(member.getCreatedAt().toLocalDate())
+                .email(member.getEmail())
+                .point(member.getPoint());
+        if (Objects.equals(member.getEmail(), "")) {
+            return builder
+                    .grade("")
+                    .major("")
+                    .jobKeyword(member.getJobKeyword().getDescription())
+                    .point(member.getPoint())
+                    .status("WITHDRAW")
+                    .build();
+        } else return MemberDetailInfo.builder()
+                .grade(member.getGrade().getDescription())
+                .major(member.getMajor())
+                .jobKeyword(member.getJobKeyword().getDescription())
+                .point(member.getPoint())
+                .status(member.getStatus().name())
+                .build();
     }
 
     public static MemberProc toMemberProc(Member member) {

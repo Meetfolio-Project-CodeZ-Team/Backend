@@ -24,8 +24,6 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -111,7 +109,8 @@ public class AdminController {
                                                                      @RequestParam(required = false) Integer year,
                                                                      @RequestParam(required = false) Integer month) {
         if (year == null && month == null) {
-            return ApiResponse.onSuccess(adminQueryService.getPaymentList(page, LocalDate.now(ZoneId.of("Asia/Seoul")).getYear(), LocalDate.now(ZoneId.of("Asia/Seoul")).getMonthValue()));
+            LocalDate date =  LocalDate.now(ZoneId.of("Asia/Seoul"));
+            return ApiResponse.onSuccess(adminQueryService.getPaymentList(page, date.getYear(), date.getMonthValue()));
         } else if (year != null && month != null) {
             return ApiResponse.onSuccess(adminQueryService.getPaymentList(page, year, month));
         } else throw new ApiException(ErrorStatus._BAD_REQUEST);
