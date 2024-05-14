@@ -26,7 +26,8 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     @Query("SELECT IFNULL(MAX(PAYMENTSUM.POINT), 0) FROM (SELECT DATE_FORMAT(p.createdAt, '%Y-%c') AS MONTH, sum(p.payment) AS POINT FROM Payment p WHERE p.paymentStatus ='APPROVE' GROUP BY MONTH) AS PAYMENTSUM WHERE PAYMENTSUM.MONTH =:month")
     long queryGetTotalSalesByMonth(String month);
 
-    @Query("SELECT p FROM Payment p WHERE p.paymentStatus ='APPROVE' AND DATE_FORMAT(p.createdAt, '%Y-%c') =:month AND p.member.status ='MEMBER'")
+    @Query("SELECT p FROM Payment p WHERE p.paymentStatus ='APPROVE' AND DATE_FORMAT(p.createdAt, '%Y-%c') = :month AND p.member.authority ='MEMBER'")
     Page<Payment> queryGetSalesByMonth(String month, Pageable pageable);
+
 
 }

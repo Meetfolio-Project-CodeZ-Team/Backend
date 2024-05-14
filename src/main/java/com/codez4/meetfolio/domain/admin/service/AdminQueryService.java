@@ -91,12 +91,12 @@ public class AdminQueryService {
 
     public PaymentResponse.PaymentResult getPaymentList(int page, int year, int month) {
         String requestMonth = Integer.toString(year) + '-' + month;
-        log.info("연월 {}",requestMonth);
         long totalSales = paymentRepository.queryGetTotalSalesByMonth(requestMonth);
         String yearMonth = year + "년" + " " + month + "월";
 
         PageRequest pageRequest = PageRequest.of(page, 10,  Sort.by("id").descending());
-        Page<Payment> payments = paymentRepository.queryGetSalesByMonth(yearMonth, pageRequest);
+        Page<Payment> payments = paymentRepository.queryGetSalesByMonth(requestMonth, pageRequest);
+
         List<PaymentResponse.PaymentItem> paymentList = payments.stream().map(payment -> {
             Point point = pointRepository.getPointByPayment(payment).orElseThrow(() -> new ApiException(ErrorStatus._BAD_REQUEST));
             return toPaymentItem(payment, point);
@@ -113,7 +113,7 @@ public class AdminQueryService {
     }
 
     public DatasetResponse.DatasetWithModel getDatasetWithModel(int page) {
-        PageRequest pageRequest = PageRequest.of(page, 7, Sort.by("id").descending());
+        PageRequest pageRequest = PageRequest.of(page, 8, Sort.by("id").descending());
         Page<Dataset> datasets = datasetRepository.getAllBy(pageRequest);
 
         Integer trainableNumber = datasetRepository.countByStatus(Status.INACTIVE);
