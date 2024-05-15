@@ -18,7 +18,7 @@ public class LikeCommandService {
     private final LikeRepository likeRepository;
     private final BoardQueryService boardQueryService;
 
-    public LikeResponse changeLike(Member member, Long boardId) {
+    public LikeResponse.LikeResult changeLike(Member member, Long boardId) {
 
         Board board = boardQueryService.findById(boardId);
 
@@ -28,7 +28,7 @@ public class LikeCommandService {
 
         board.changeLike(like.getStatus());
         
-        return LikeResponse.toLikeResponse(like);
+        return LikeResponse.toLikeResult(board, like);
     }
 
     private Like createLike(Member member, Board board) {

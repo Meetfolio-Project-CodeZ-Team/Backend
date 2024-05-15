@@ -1,7 +1,9 @@
 package com.codez4.meetfolio.domain.like.service;
 
+import com.codez4.meetfolio.domain.board.Board;
 import com.codez4.meetfolio.domain.board.dto.BoardQueryItem;
 import com.codez4.meetfolio.domain.enums.Status;
+import com.codez4.meetfolio.domain.like.dto.LikeResponse;
 import com.codez4.meetfolio.domain.like.repository.LikeRepository;
 import com.codez4.meetfolio.domain.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.codez4.meetfolio.domain.like.dto.LikeResponse.toLikeCountResult;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +30,9 @@ public class LikeQueryService {
         Page<BoardQueryItem> likedBoards = likeRepository.findAllByMemberAndStatus(member, Status.ACTIVE, pageRequest);
         return likedBoards;
 
+    }
+
+    public LikeResponse.LikeCountResult getLikeCount(Board board){
+        return toLikeCountResult(board);
     }
 }
