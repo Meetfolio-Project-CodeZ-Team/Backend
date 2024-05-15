@@ -154,7 +154,7 @@ public class MemberResponse {
                     .point(member.getPoint())
                     .status("WITHDRAW")
                     .build();
-        } else return MemberDetailInfo.builder()
+        } else return builder
                 .grade(member.getGrade().getDescription())
                 .major(member.getMajor())
                 .jobKeyword(member.getJobKeyword().getDescription())
