@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.comment.service;
 
 import com.codez4.meetfolio.domain.board.Board;
+import com.codez4.meetfolio.domain.board.repository.BoardRepository;
 import com.codez4.meetfolio.domain.board.service.BoardQueryService;
 import com.codez4.meetfolio.domain.comment.Comment;
 import com.codez4.meetfolio.domain.comment.dto.CommentResponse;
@@ -64,7 +65,8 @@ public class CommentCommandService {
     }
 
     public CommentResponse.CommentProc delete(Long commentId) {
-
+        Comment comment = commentQueryService.findById(commentId);
+        comment.getBoard().changeComment(false);
         commentRepository.deleteById(commentId);
         return CommentResponse.toCommentProc(commentId);
     }

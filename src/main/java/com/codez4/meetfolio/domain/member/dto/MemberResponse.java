@@ -141,20 +141,11 @@ public class MemberResponse {
     }
 
     public static MemberDetailInfo toMemberDetailInfo(Member member) {
-        MemberDetailInfo.MemberDetailInfoBuilder builder = MemberDetailInfo.builder()
+        return MemberDetailInfo.builder()
                 .memberId(member.getId())
                 .registrationDate(member.getCreatedAt().toLocalDate())
                 .email(member.getEmail())
-                .point(member.getPoint());
-        if (Objects.equals(member.getEmail(), "")) {
-            return builder
-                    .grade("")
-                    .major("")
-                    .jobKeyword(member.getJobKeyword().getDescription())
-                    .point(member.getPoint())
-                    .status("WITHDRAW")
-                    .build();
-        } else return MemberDetailInfo.builder()
+                .point(member.getPoint())
                 .grade(member.getGrade().getDescription())
                 .major(member.getMajor())
                 .jobKeyword(member.getJobKeyword().getDescription())
