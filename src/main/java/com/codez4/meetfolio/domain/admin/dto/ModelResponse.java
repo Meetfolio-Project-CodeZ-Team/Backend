@@ -74,11 +74,15 @@ public class ModelResponse {
         private double version;
         @Schema(description = "모델명")
         private String modelName;
+        @Schema(description = "파일명")
+        private String fileName;
+        @Schema(description = "파일 경로")
+        private String filePath;
         @Schema(description = "성능")
         private double accuracy;
-        @Schema(description = "생성일")
+        @Schema(description = "학습일")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
-        private LocalDateTime createdDate;
+        private LocalDateTime learnedDate;
         @Schema(description = "배포일")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
         private LocalDateTime activatedDate;
@@ -125,8 +129,10 @@ public class ModelResponse {
                 .modelId(model.getId())
                 .version(model.getVersion())
                 .modelName(model.getName())
+                .fileName(model.getFileName())
+                .filePath(model.getFilePath())
                 .accuracy(model.getAccuracy())
-                .createdDate(model.getCreatedAt())
+                .learnedDate(model.getCreatedAt())
                 .activatedDate(model.getActivatedDate())
                 .build();
     }
