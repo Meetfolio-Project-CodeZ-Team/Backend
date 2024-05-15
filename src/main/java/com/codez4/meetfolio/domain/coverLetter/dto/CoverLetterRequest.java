@@ -48,7 +48,6 @@ public class CoverLetterRequest {
         private String keyword2;
 
         @Schema(description = "자기소개서 지원 직무, BACKEND/WEB/APP/DESIGN/AI", example = "BACKEND")
-        @EnumValid(enumClass = JobKeyword.class)
         private String jobKeyword;
     }
 
