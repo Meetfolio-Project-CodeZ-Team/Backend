@@ -23,7 +23,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Page<Member> findMemberByAuthorityAndJobKeywordAndEmailIsNot(Authority authority, JobKeyword jobKeyword, String email, Pageable pageable);
 
-    @Query("SELECT m FROM Member m WHERE SUBSTRING(m.email,1,length(m.email) -13 ) LIKE concat('%',:keyword,'%') AND m.authority =:authority")
+    @Query("SELECT m FROM Member m WHERE SUBSTRING(m.email,1,length(m.email) -13) LIKE concat('%',:keyword,'%') AND m.authority =:authority AND m.email != ''")
     Page<Member> queryFindMemberByAuthorityAndKeywordAndEmailIsNotEmpty(Authority authority,String keyword, Pageable pageable);
 
 }

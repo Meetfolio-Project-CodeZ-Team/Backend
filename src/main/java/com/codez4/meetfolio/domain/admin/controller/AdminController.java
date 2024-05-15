@@ -65,7 +65,7 @@ public class AdminController {
         return ApiResponse.onSuccess(adminQueryService.getMemberList(page, jobKeywordEnum));
     }
 
-    @Operation(summary = "회원 관리 -회원 비활성화", description = "회원관리 메뉴에서 회원을 비활성화합니다.")
+    @Operation(summary = "회원 관리 - 회원 비활성화", description = "회원관리 메뉴에서 회원을 비활성화합니다.")
     @Parameter(name = "memberId", description = "회원 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @DeleteMapping("/members-management/{memberId}")
     public ApiResponse<String> inactivateMember(@AuthenticationMember Member admin,
@@ -76,7 +76,7 @@ public class AdminController {
     }
 
     @Operation(summary = "회원 관리 - 회원 검색", description = "회원 관리 메뉴에서 회원을 검색합니다.")
-    @Parameter(name = "keyword", description = "검색어, Query String입니다.", required = true, example = "BACKEND", in = ParameterIn.QUERY)
+    @Parameter(name = "keyword", description = "검색어, Query String입니다.", required = true, in = ParameterIn.QUERY)
     @GetMapping("/members-management/search")
     public ApiResponse<MemberResponse.MemberListResult> getMemberListByKeyword(@AuthenticationMember Member admin,
                                                                                @RequestParam(value = "page", defaultValue = "0") int page,
