@@ -8,6 +8,7 @@ import com.codez4.meetfolio.domain.board.dto.BoardResponse;
 import com.codez4.meetfolio.domain.board.service.BoardCommandService;
 import com.codez4.meetfolio.domain.board.service.BoardQueryService;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
+import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.member.service.MemberCommandService;
@@ -65,14 +66,29 @@ public class AdminController {
         return ApiResponse.onSuccess(adminQueryService.getMemberList(page, jobKeywordEnum));
     }
 
-    @Operation(summary = "회원 관리 -회원 비활성화", description = "회원관리 메뉴에서 회원을 비활성화합니다.")
+    @Operation(summary = "회원 관리 - 회원 비활성화", description = "회원관리 메뉴에서 회원을 비활성화합니다.")
     @Parameter(name = "memberId", description = "회원 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @DeleteMapping("/members-management/{memberId}")
     public ApiResponse<String> inactivateMember(@AuthenticationMember Member admin,
                                                 @PathVariable(value = "memberId") Long memberId) {
         Member member = memberQueryService.findById(memberId);
-        memberCommandService.deleteData(member);
-        return ApiResponse.onSuccess("회원 비활성화 성공입니다.");
+        if(member.getStatus()== Status.INACTIVE){
+            throw new ApiException(ErrorStatus._MEMBER_INACTIVATED);
+        }
+        else {
+            memberCommandService.deleteData(member);
+            return ApiResponse.onSuccess("회원 비활성화 성공입니다.");
+        }
+    }
+
+    @Operation(summary = "회원 관리 - 회원 활성화", description = "회원관리 메뉴에서 회원을 비활성화합니다.")
+    @Parameter(name = "memberId", description = "회원 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
+    @PatchMapping("/members-management/{memberId}")
+    public ApiResponse<String> activateMember(@AuthenticationMember Member admin,
+                                                @PathVariable(value = "memberId") Long memberId) {
+        Member member = memberQueryService.findById(memberId);
+        adminCommandService.activateMember(member);
+        return ApiResponse.onSuccess("회원 활성화 성공입니다.");
     }
 
     @Operation(summary = "회원 관리 - 회원 검색", description = "회원 관리 메뉴에서 회원을 검색합니다.")

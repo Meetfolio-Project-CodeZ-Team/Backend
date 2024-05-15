@@ -67,10 +67,14 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private JobKeyword jobKeyword;
 
+    public void setStatus(Status status){
+        this.status = status;
+    }
+
     public void setInactive(){
+        setStatus(Status.INACTIVE);
         this.point = 0;
         this.inactiveDate = TimeUtils.getCurrentTime();
-        this.status = Status.INACTIVE;
     }
 
     public void withdraw(){
