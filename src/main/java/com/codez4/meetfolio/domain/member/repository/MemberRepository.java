@@ -19,11 +19,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
 
-    Page<Member> findMemberByAuthority(Authority authority, Pageable pageable);
+    Page<Member> findMemberByAuthorityAndEmailIsNot(Authority authority, String email, Pageable pageable);
 
-    Page<Member> findMemberByAuthorityAndJobKeyword( Authority authority, JobKeyword jobKeyword, Pageable pageable);
+    Page<Member> findMemberByAuthorityAndJobKeywordAndEmailIsNot(Authority authority, JobKeyword jobKeyword, String email, Pageable pageable);
 
     @Query("SELECT m FROM Member m WHERE SUBSTRING(m.email,1,length(m.email) -13 ) LIKE concat('%',:keyword,'%') AND m.authority =:authority")
-    Page<Member> queryFindMemberByAuthorityAndKeyword(Authority authority,String keyword, Pageable pageable);
+    Page<Member> queryFindMemberByAuthorityAndKeywordAndEmailIsNotEmpty(Authority authority,String keyword, Pageable pageable);
 
 }
