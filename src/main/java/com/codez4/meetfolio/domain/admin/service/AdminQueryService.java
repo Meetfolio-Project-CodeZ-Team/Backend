@@ -71,14 +71,14 @@ public class AdminQueryService {
     public MemberResponse.MemberListResult getMemberList(int page, JobKeyword jobKeyword) {
         PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("id").descending());
         if (jobKeyword == null) {
-            return toMemberList(memberRepository.findMemberByAuthority(Authority.MEMBER, pageRequest));
+            return toMemberList(memberRepository.findMemberByAuthorityAndEmailIsNot(Authority.MEMBER, "", pageRequest));
         } else
-            return toMemberList(memberRepository.findMemberByAuthorityAndJobKeyword(Authority.MEMBER, jobKeyword, pageRequest));
+            return toMemberList(memberRepository.findMemberByAuthorityAndJobKeywordAndEmailIsNot(Authority.MEMBER, jobKeyword, "",pageRequest));
     }
 
     public MemberResponse.MemberListResult getMemberListByKeyword(int page, String keyword) {
         PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("id").descending());
-        return toMemberList(memberRepository.queryFindMemberByAuthorityAndKeyword(Authority.MEMBER, keyword, pageRequest));
+        return toMemberList(memberRepository.queryFindMemberByAuthorityAndKeywordAndEmailIsNotEmpty(Authority.MEMBER, keyword, pageRequest));
     }
 
     public PointResponse.PointStatics getPointStatics(int year, int month) {

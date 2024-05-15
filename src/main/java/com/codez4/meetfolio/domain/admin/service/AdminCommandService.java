@@ -26,12 +26,6 @@ public class AdminCommandService {
         return toDatasetProc(datasetRepository.save(toEntity(request)));
     }
 
-    public ModelResponse.ModelProc changeActiveModel(Model model){
-        modelRepository.findModelByStatus(Status.ACTIVE).ifPresent(Model::inactivate);
-        model.activate();
-        return toModelProc(model);
-    }
-
     public ModelResponse.ModelProc deleteModel(Model model){
         modelRepository.delete(model);
         return toModelProc(model);
