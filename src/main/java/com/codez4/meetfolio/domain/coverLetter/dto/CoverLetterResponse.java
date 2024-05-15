@@ -56,7 +56,7 @@ public class CoverLetterResponse {
                 .shareType(coverLetter.getShareType().getDescription())
                 .keyword1(coverLetter.getKeyword1())
                 .keyword2(coverLetter.getKeyword2())
-                .jobKeyword(coverLetter.getJobKeyword().getDescription())
+                .jobKeyword(coverLetter.getJobKeyword() != null ? coverLetter.getJobKeyword().getDescription() : null)
                 .build();
 
     }
