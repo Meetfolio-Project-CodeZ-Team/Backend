@@ -51,8 +51,7 @@ public class PaymentController {
     @Parameter(name = "paymentId", description = "결제 id, Path Variable 입니다.", required = true, in = ParameterIn.PATH)
     public ApiResponse<PaymentResponse.PaymentProc> saveApprovePayment(@AuthenticationMember Member member,
                                                                        @RequestBody PaymentRequest.ApproveRequest request) {
-        LocalDateTime requestTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        Payment payment = paymentQueryService.getApprovePayment(member,request.getTid(),requestTime);
+        Payment payment = paymentQueryService.getApprovePayment(member,request.getTid());
         return ApiResponse.onSuccess(paymentCommandService.saveApprovePayment(member, payment));
 
     }

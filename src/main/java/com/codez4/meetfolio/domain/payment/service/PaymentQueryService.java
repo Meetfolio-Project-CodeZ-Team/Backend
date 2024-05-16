@@ -41,7 +41,7 @@ public class PaymentQueryService {
 
     }
 
-    public Payment getApprovePayment(Member member, String tid, LocalDateTime requestTime){
+    public Payment getApprovePayment(Member member, String tid){
         Payment payment = paymentRepository.findByMemberAndTidAndPaymentStatus(member, tid, PaymentStatus.READY).orElseThrow(() -> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));
         return payment;
     }
