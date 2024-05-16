@@ -11,15 +11,18 @@ import com.codez4.meetfolio.domain.point.repository.PointRepository;
 import com.codez4.meetfolio.global.exception.ApiException;
 import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.*;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class PaymentQueryService {
@@ -30,13 +33,15 @@ public class PaymentQueryService {
         return paymentRepository.findById(paymentId).orElseThrow(() -> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));
     }
 
-    public Payment getReadyPayment(Member member){
-        Payment payment = paymentRepository.findTop1ByMemberAndPaymentStatusOrderByIdDesc(member,PaymentStatus.READY).orElseThrow(() -> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));;
+    public Payment getReadyPayment(Member member, LocalDateTime requestTime){
+        LocalDateTime start = requestTime.minusMinutes(1);
+        LocalDateTime end = requestTime;
+        Payment payment = paymentRepository.findPaymentByMemberAndPaymentStatusAndCreatedAtIsBetweenOrderByIdDesc(member,PaymentStatus.READY,start,end).orElseThrow(() -> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));;
         return payment;
 
     }
 
-    public Payment getApprovePayment(Member member, String tid){
+    public Payment getApprovePayment(Member member, String tid, LocalDateTime requestTime){
         Payment payment = paymentRepository.findByMemberAndTidAndPaymentStatus(member, tid, PaymentStatus.READY).orElseThrow(() -> new ApiException(ErrorStatus._PAYMENT_NOT_FOUND));
         return payment;
     }

@@ -39,7 +39,7 @@ public class PaymentRequest {
     @Getter
     public static class ApproveRequest {
 
-        @Schema(description = "충전할 포인트")
+        @Schema(description = "카카오 tid")
         private String tid;
     }
 

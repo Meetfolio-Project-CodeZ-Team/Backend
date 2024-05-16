@@ -12,9 +12,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentProc;
 
@@ -37,7 +41,8 @@ public class PaymentController {
     @Operation(summary = "카카오페이 tid 요청", description = "결제 대기중인 카카오페이 tid 값을 응답합니다.")
     @GetMapping("/payments/ready")
     public ApiResponse<PaymentResponse.PaymentProc> getReadyPayment(@AuthenticationMember Member member){
-        return ApiResponse.onSuccess(toPaymentProc(paymentQueryService.getReadyPayment(member)));
+        LocalDateTime requestTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        return ApiResponse.onSuccess(toPaymentProc(paymentQueryService.getReadyPayment(member, requestTime)));
 
     }
 
@@ -46,7 +51,8 @@ public class PaymentController {
     @Parameter(name = "paymentId", description = "결제 id, Path Variable 입니다.", required = true, in = ParameterIn.PATH)
     public ApiResponse<PaymentResponse.PaymentProc> saveApprovePayment(@AuthenticationMember Member member,
                                                                        @RequestBody PaymentRequest.ApproveRequest request) {
-        Payment payment = paymentQueryService.getApprovePayment(member,request.getTid());
+        LocalDateTime requestTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        Payment payment = paymentQueryService.getApprovePayment(member,request.getTid(),requestTime);
         return ApiResponse.onSuccess(paymentCommandService.saveApprovePayment(member, payment));
 
     }
