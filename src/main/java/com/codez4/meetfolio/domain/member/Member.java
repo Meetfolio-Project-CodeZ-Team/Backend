@@ -83,11 +83,14 @@ public class Member extends BaseTimeEntity {
     /**
      * update
      */
-    public void update(MemberRequest.Patch request) {
-        this.password = Password.encrypt(request.getPassword(), ENCODER);
+    public void updateInfo(MemberRequest.Patch request) {
         this.major = request.getMajor();
         this.grade = Grade.convert(request.getGrade());
         this.jobKeyword = JobKeyword.convert(request.getJobKeyword());
+    }
+
+    public void updatePassword(String password){
+        this.password = Password.encrypt(password, ENCODER);
     }
       
     public void setPoint(int point){

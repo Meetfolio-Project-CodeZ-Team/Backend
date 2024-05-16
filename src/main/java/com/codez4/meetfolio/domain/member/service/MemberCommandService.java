@@ -40,7 +40,10 @@ public class MemberCommandService {
     }
 
     public MemberResponse.MemberProc update(Member member, MemberRequest.Patch patch) {
-        member.update(patch);
+        if(patch.getPassword()!=null){
+            member.updatePassword(patch.getPassword());
+        }
+        member.updateInfo(patch);
         return MemberResponse.toMemberProc(member);
     }
 
