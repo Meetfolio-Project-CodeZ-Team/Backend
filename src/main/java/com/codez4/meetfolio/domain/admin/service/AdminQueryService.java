@@ -69,7 +69,7 @@ public class AdminQueryService {
     }
 
     public MemberResponse.MemberListResult getMemberList(int page, JobKeyword jobKeyword) {
-        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("id").descending());
+        PageRequest pageRequest = PageRequest.of(page, 8, Sort.by("id").descending());
         if (jobKeyword == null) {
             return toMemberList(memberRepository.findMemberByAuthorityAndEmailIsNot(Authority.MEMBER, "", pageRequest));
         } else
@@ -77,7 +77,7 @@ public class AdminQueryService {
     }
 
     public MemberResponse.MemberListResult getMemberListByKeyword(int page, String keyword) {
-        PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("id").descending());
+        PageRequest pageRequest = PageRequest.of(page, 8, Sort.by("id").descending());
         return toMemberList(memberRepository.queryFindMemberByAuthorityAndKeywordAndEmailIsNotEmpty(Authority.MEMBER, keyword, pageRequest));
     }
 
