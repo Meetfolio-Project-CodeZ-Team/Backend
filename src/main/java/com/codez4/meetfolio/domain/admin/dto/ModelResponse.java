@@ -50,7 +50,7 @@ public class ModelResponse {
         @Schema(description = "모델 id")
         private Long modelId;
         @Schema(description = "모델 버전")
-        private double version;
+        private String version;
         @Schema(description = "모델명")
         private String modelName;
         @Schema(description = "성능")
@@ -71,7 +71,7 @@ public class ModelResponse {
         @Schema(description = "모델 id")
         private Long modelId;
         @Schema(description = "모델 버전")
-        private double version;
+        private String version;
         @Schema(description = "모델명")
         private String modelName;
         @Schema(description = "파일명")
