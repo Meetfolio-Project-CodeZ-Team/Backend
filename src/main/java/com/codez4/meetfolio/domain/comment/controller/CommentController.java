@@ -52,10 +52,10 @@ public class CommentController {
     @Operation(summary = "댓글 수정 요청", description = "댓글 수정 요청을 PATCH로 보냅니다.")
     @Parameter(name = "commentId", description = "댓글 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @PatchMapping("/{commentId}")
-    public ApiResponse<CommentResponse.CommentProc> updateComment(@RequestBody String content,
+    public ApiResponse<CommentResponse.CommentProc> updateComment(@RequestBody CommentRequest.PATCH request,
         @PathVariable(name = "commentId") Long commentId) {
 
-        return ApiResponse.onSuccess(commentCommandService.update(content, commentId));
+        return ApiResponse.onSuccess(commentCommandService.update(request.getContent(), commentId));
     }
 
     @Operation(summary = "댓글 삭제 요청", description = "댓글 삭제 요청을 DELETE로 보냅니다.")
