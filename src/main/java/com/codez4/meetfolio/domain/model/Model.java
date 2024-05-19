@@ -25,7 +25,7 @@ public class Model extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
-    private Double version;
+    private String version;
 
     @Column(nullable = false)
     private String fileName;
