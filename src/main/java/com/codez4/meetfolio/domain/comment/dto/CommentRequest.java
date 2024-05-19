@@ -16,4 +16,13 @@ public class CommentRequest {
         private Long parentId;
     }
 
+    @Schema(description = "게시글 댓글 수정 요청 DTO")
+    @Getter
+    public static class PATCH {
+
+        @Schema(description = "댓글 내용")
+        private String content;
+
+    }
+
 }
