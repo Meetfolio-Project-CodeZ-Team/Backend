@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum VersionStatus {
     DEPRECATED("삭제 요청"),
-    OBSOLETE("삭제 됨")
+    OBSOLETE("삭제 완료")
     ;
 
     private final String description;
