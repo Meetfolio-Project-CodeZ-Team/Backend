@@ -80,20 +80,14 @@ public class CommentResponse {
     }
 
 
-    public static CommentResult toCommentResult(Slice<Comment> comments) {
-
-        // 부모 댓글만 반환하기 (자식 댓글은 부모 댓글 안에 담아서 전달)
-        List<CommentItem> commentItems = comments.stream()
-            .filter(comment -> comment.getParentComment() == null)
-            .map(CommentResponse::toCommentItem)
-            .toList();
+    public static CommentResult toCommentResult(List<CommentItem> commentItems, Slice<Comment> comments) {
 
         return CommentResult.builder()
-            .commentItems(commentItems)
-            .hasNext(comments.hasNext())
-            .isFirst(comments.isFirst())
-            .isLast(comments.isLast())
-            .build();
+                .commentItems(commentItems)
+                .hasNext(comments.hasNext())
+                .isFirst(comments.isFirst())
+                .isLast(comments.isLast())
+                .build();
     }
 
     public static MyCommentResult toMyCommentResult(MemberResponse.MemberInfo memberInfo, Page<MyCommentItem> comments) {
@@ -103,7 +97,7 @@ public class CommentResponse {
                 .build();
     }
 
-    public static MyCommentList toMyCommentList(Page<MyCommentItem> comments){
+    public static MyCommentList toMyCommentList(Page<MyCommentItem> comments) {
         List<MyCommentItem> commentItems = comments.stream().toList();
         return MyCommentList.builder()
                 .commentInfo(commentItems)
@@ -166,7 +160,7 @@ public class CommentResponse {
 
     }
 
-    public static MyCommentItem toMyCommentItem(Comment comment){
+    public static MyCommentItem toMyCommentItem(Comment comment) {
         Board board = comment.getBoard();
         return MyCommentItem.builder()
                 .commentId(comment.getId())
@@ -177,28 +171,19 @@ public class CommentResponse {
                 .build();
     }
 
-    public static CommentItem toCommentItem(Comment comment) {
+    public static CommentItem toCommentItem(Comment comment, List<CommentItem> childComments) {
 
         Member member = comment.getMember();
         long sinceCreation = TimeUtils.getSinceCreation(comment.getCreatedAt());
 
         return CommentItem.builder()
-            .commentId(comment.getId())
-            .content(comment.getContent())
-            .memberName(member.getEmail().split("@")[0])
-            .profile(member.getProfile().name())
-            .sinceCreation(sinceCreation)
-            .childComments(getChildList(comment))
-            .build();
-    }
-
-    private static List<CommentItem> getChildList(Comment comment) {
-
-        return Optional.ofNullable(comment.getChildren())
-            .orElse(new ArrayList<>())
-            .stream()
-            .map(CommentResponse::toCommentItem)
-            .toList();
+                .commentId(comment.getId())
+                .content(comment.getContent())
+                .memberName(member.getEmail().split("@")[0])
+                .profile(member.getProfile().name())
+                .sinceCreation(sinceCreation)
+                .childComments(childComments)
+                .build();
     }
 
     @Schema(description = "댓글 처리 응답 DTO")
@@ -218,20 +203,23 @@ public class CommentResponse {
     public static CommentProc toCommentProc(Long commentId) {
 
         return CommentProc.builder()
-            .commentId(commentId)
-            .createdAt(LocalDateTime.now())
-            .build();
+                .commentId(commentId)
+                .createdAt(LocalDateTime.now())
+                .build();
     }
 
-    public static Comment toEntity(Member member, Board board, String content,
-        Comment parentComment) {
+    public static Comment toEntity(Member member, Board board, String content,Comment parentComment, int ref, int refOrder, int
+            step) {
 
         return Comment.builder()
-            .member(member)
-            .board(board)
-            .content(content)
-            .parentComment(parentComment)
-            .build();
+                .member(member)
+                .board(board)
+                .content(content)
+                .parentComment(parentComment)
+                .ref(ref)
+                .refOrder(refOrder)
+                .step(step)
+                .build();
     }
 
 
