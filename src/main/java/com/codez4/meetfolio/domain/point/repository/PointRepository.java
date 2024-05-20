@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.point.repository;
 
+import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.payment.Payment;
@@ -24,5 +25,8 @@ public interface PointRepository extends JpaRepository<Point, Long> {
 
     @Query("SELECT IFNULL(MAX(POINTSUM.POINT), 0) FROM (SELECT DATE_FORMAT(p.createdAt, '%Y-%c') AS MONTH, sum(p.point) AS POINT FROM Point p WHERE p.pointType != :type GROUP BY MONTH) AS POINTSUM WHERE POINTSUM.MONTH =:month")
     long queryGetAllPointSum(PointType type, String month);
+
+    Optional<Point> getPointByCoverLetterAndMember(CoverLetter coverLetter, Member member);
+
 
 }
