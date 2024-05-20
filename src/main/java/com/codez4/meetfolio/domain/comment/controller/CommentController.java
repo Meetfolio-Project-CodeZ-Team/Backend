@@ -63,7 +63,6 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ApiResponse<CommentResponse.CommentProc> deleteComment(
         @PathVariable(name = "commentId") Long commentId) {
-
         return ApiResponse.onSuccess(commentCommandService.delete(commentId));
     }
 }

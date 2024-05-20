@@ -66,7 +66,8 @@ public class CommentCommandService {
 
     public CommentResponse.CommentProc delete(Long commentId) {
         Comment comment = commentQueryService.findById(commentId);
-        comment.getBoard().changeComment(false);
+        Board board  = comment.getBoard();
+        board.changeComment(false);
         commentRepository.deleteById(commentId);
         return CommentResponse.toCommentProc(commentId);
     }

@@ -186,7 +186,7 @@ public class CommentResponse {
             .commentId(comment.getId())
             .content(comment.getContent())
             .memberName(member.getEmail().split("@")[0])
-            .profile(member.getProfile())
+            .profile(member.getProfile().name())
             .sinceCreation(sinceCreation)
             .childComments(getChildList(comment))
             .build();
