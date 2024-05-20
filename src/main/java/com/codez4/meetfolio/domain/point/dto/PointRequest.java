@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.point.dto;
 
+import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.payment.Payment;
@@ -21,6 +22,7 @@ public class PointRequest {
 
         @Schema(description = "사용할 포인트")
         int point;
+
     }
 
     /*
@@ -35,6 +37,7 @@ public class PointRequest {
         int totalPoint;
         Member member;
         Payment payment;
+        CoverLetter coverLetter;
     }
 
     public static Point toEntity(Post post){
@@ -44,6 +47,7 @@ public class PointRequest {
                 .totalPoint(post.getTotalPoint())
                 .member(post.getMember())
                 .payment(post.payment)
+                .coverLetter(post.coverLetter)
                 .build();
     }
 }

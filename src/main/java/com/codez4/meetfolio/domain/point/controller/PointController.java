@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.point.controller;
 
+import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.coverLetter.service.CoverLetterQueryService;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
@@ -39,31 +40,29 @@ public class PointController {
 
     @Operation(summary = "마이페이지 - 포인트 사용 내역 조회", description = "마이페이지의 포인트 사용 내역을 조회합니다.")
     @GetMapping("/my-points")
-    public ApiResponse<PointResponse.PointResult> getMyPointList(@AuthenticationMember Member member,
-                                                                 @RequestParam(value = "page", defaultValue = "0") int page) {
+    public ApiResponse<PointResponse.PointResult> getMyPointList(@AuthenticationMember Member member, @RequestParam(value = "page", defaultValue = "0") int page) {
         return ApiResponse.onSuccess(pointQueryService.getMyPointList(page, member));
     }
 
     @Operation(summary = "포인트 사용", description = "자소서 조회 / AI 서비스 이용을 위해 포인트를 사용합니다.")
     @Parameter(name = "memberId", description = "자소서 Id, Path Variable입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @PostMapping("/coverLetters/{coverLetterId}/points")
-    public ApiResponse<PointResponse.PointProc> usePoint(@AuthenticationMember Member member,
-                                                         @Valid @RequestBody PointRequest.PointUseRequest request,
-                                                         @PathVariable(value = "coverLetterId") Long coverLetterId) {
+    public ApiResponse<PointResponse.PointProc> usePoint(@AuthenticationMember Member member, @Valid @RequestBody PointRequest.PointUseRequest request, @PathVariable(value = "coverLetterId") Long coverLetterId) {
         PointType type = PointType.convert(request.getType());
-        if (type == PointType.USE_AI_ANALYSIS &&
-                coverLetterQueryService.findById(coverLetterId).getMember() != member) {
-            throw new ApiException(ErrorStatus._FORBIDDEN);
+
+        if (type == PointType.USE_AI_ANALYSIS && coverLetterQueryService.findById(coverLetterId).getMember() != member) {
+                throw new ApiException(ErrorStatus._FORBIDDEN);
         }
         int totalPoint = member.getPoint() - request.getPoint();
-        PointRequest.Post post =
-                PointRequest.Post.builder()
-                        .point(request.getPoint())
-                        .pointType(type)
-                        .totalPoint(totalPoint)
-                        .member(member)
-                        .build();
-        return ApiResponse.onSuccess(pointCommandService.usePoint(post, member));
+        PointRequest.Post.PostBuilder post = PointRequest.Post.builder().point(request.getPoint()).pointType(type).totalPoint(totalPoint).member(member);
+        if(type == PointType.USE_COVER_LETTER) {
+            CoverLetter coverLetter = coverLetterQueryService.findById(coverLetterId);
+            post.coverLetter(coverLetter);
+        }
+        else {
+            post.coverLetter(null);
+        }
+        return ApiResponse.onSuccess(pointCommandService.usePoint(post.build(), member));
     }
 
 
