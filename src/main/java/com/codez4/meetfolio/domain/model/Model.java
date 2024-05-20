@@ -2,6 +2,7 @@ package com.codez4.meetfolio.domain.model;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
 import com.codez4.meetfolio.domain.enums.Status;
+import com.codez4.meetfolio.domain.enums.VersionStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -47,6 +48,10 @@ public class Model extends BaseTimeEntity {
     @Column
     private LocalDateTime activatedDate;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private VersionStatus versionStatus;
+
     public void activate() {
         this.status = Status.ACTIVE;
         this.activatedDate = LocalDateTime.now();
@@ -55,4 +60,6 @@ public class Model extends BaseTimeEntity {
     public void inactivate(){
         this.status = Status.INACTIVE;
     }
+
+    public void softDelete(){this.versionStatus = VersionStatus.DEPRECATED;}
 }

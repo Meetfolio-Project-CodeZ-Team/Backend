@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ModelRepository extends JpaRepository<Model, Long> {
     List<Model> findTop3ByOrderByAccuracy();
 
-    Page<Model> findAllBy(Pageable pageable);
+    Page<Model> findAllByVersionStatusIsNull(Pageable pageable);
 
     Optional<Model> findModelByStatus(Status status);
 }
