@@ -2,11 +2,13 @@ package com.codez4.meetfolio.domain.member.dto;
 
 import com.codez4.meetfolio.domain.enums.Grade;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
+import com.codez4.meetfolio.domain.enums.ProfileEmoji;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.annotation.EnumValid;
 import com.codez4.meetfolio.global.security.Password;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +26,6 @@ public class MemberRequest {
         @NotBlank(message = "비밀번호 입력은 필수입니다.")
         private String password;
 
-
         @Schema(description = "학년 및 학적, FRESHMAN/SOPHOMORE/JUNIOR/SENIOR/GRADUATE")
         @NotBlank(message = "학년 및 학적 입력은 필수입니다.")
         @EnumValid(enumClass = Grade.class)
@@ -35,9 +36,15 @@ public class MemberRequest {
         @EnumValid(enumClass = JobKeyword.class)
         private String jobKeyword;
 
-        @Schema(description = "전공, COMPUTER_ENGINEERING", example = "COMPUTER_ENGINEERING")
+        @Schema(description = "전공")
         @NotBlank(message = "전공 입력은 필수입니다.")
         private String major;
+
+
+        @Schema(description = "프로필 이모지,  BACKEND/WEB/APP/DESIGN/AI/TOOL/MAN/WOMAN/MOUSE/KEYBOARD/FIRE/SPARKLE")
+        @NotNull(message = "이모지를 선택은 필수입니다")
+        @EnumValid(enumClass = ProfileEmoji.class)
+        private String profile;
     }
 
     /*
@@ -52,6 +59,7 @@ public class MemberRequest {
         private Grade grade;
         private JobKeyword jobKeyword;
         private String major;
+        private ProfileEmoji profile;
     }
 
     @Schema(description = "사용자 정보 수정 요청 DTO")
@@ -69,15 +77,21 @@ public class MemberRequest {
 
         @Schema(description = "수정하는 희망 직무 키워드, BACKEND/WEB/APP/DESIGN/AI", example = "BACKEND")
         private String jobKeyword;
+
+        @Schema(description = "프로필 이모지,  BACKEND/WEB/APP/DESIGN/AI/TOOL/MAN/WOMAN/MOUSE/KEYBOARD/FIRE/SPARKLE")
+        @NotNull(message = "이모지를 선택은 필수입니다")
+        @EnumValid(enumClass = ProfileEmoji.class)
+        private String profile;
     }
 
     public static Member toEntity(Post post) {
         return Member.builder()
-            .email(post.getEmail())
-            .password(Password.encrypt(post.getPassword(), ENCODER))
-            .grade(post.getGrade())
-            .jobKeyword(post.getJobKeyword())
-            .major(post.getMajor())
-            .build();
+                .email(post.getEmail())
+                .password(Password.encrypt(post.getPassword(), ENCODER))
+                .grade(post.getGrade())
+                .jobKeyword(post.getJobKeyword())
+                .major(post.getMajor())
+                .profile(post.getProfile())
+                .build();
     }
 }

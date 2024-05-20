@@ -98,6 +98,8 @@ public class MemberResponse {
         private String major;
         @Schema(description = "희망 직무")
         private String jobKeyword;
+        @Schema(description = "프로필 이모지")
+        private String profile;
         @Schema(description = "포인트")
         private int point;
         @Schema(description = "활성 상태, ACTIVE/INACTIVE/WITHDRAW(탈퇴)")
@@ -111,7 +113,7 @@ public class MemberResponse {
                 return MemberInfo.builder()
                         .authority(member.getAuthority().name())
                         .memberName(member.getEmail().split("@")[0])
-                        .profile(member.getProfile())
+                        .profile(member.getProfile().name())
                         .major(member.getMajor())
                         .build();
             } else if (member.getAuthority() == Authority.ADMIN) {
@@ -149,6 +151,7 @@ public class MemberResponse {
                 .grade(member.getGrade().getDescription())
                 .major(member.getMajor())
                 .jobKeyword(member.getJobKeyword().getDescription())
+                .profile(member.getProfile().name())
                 .point(member.getPoint())
                 .status(member.getStatus().name())
                 .build();

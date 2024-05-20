@@ -7,6 +7,7 @@ import com.codez4.meetfolio.domain.comment.dto.CommentResponse;
 import com.codez4.meetfolio.domain.comment.service.CommentQueryService;
 import com.codez4.meetfolio.domain.enums.Grade;
 import com.codez4.meetfolio.domain.enums.JobKeyword;
+import com.codez4.meetfolio.domain.enums.ProfileEmoji;
 import com.codez4.meetfolio.domain.like.service.LikeQueryService;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberRequest;
@@ -48,6 +49,7 @@ public class MemberController {
                 .grade(Grade.convert(request.getGrade()))
                 .jobKeyword(JobKeyword.convert(request.getJobKeyword()))
                 .major(request.getMajor())
+                .profile(ProfileEmoji.convert(request.getProfile()))
                 .build();
         return ApiResponse.onSuccess(memberCommandService.post(post));
     }
