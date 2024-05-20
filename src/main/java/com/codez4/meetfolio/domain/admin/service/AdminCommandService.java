@@ -27,7 +27,7 @@ public class AdminCommandService {
     }
 
     public ModelResponse.ModelProc deleteModel(Model model){
-        modelRepository.delete(model);
+        model.softDelete();
         return toModelProc(model);
     }
 }

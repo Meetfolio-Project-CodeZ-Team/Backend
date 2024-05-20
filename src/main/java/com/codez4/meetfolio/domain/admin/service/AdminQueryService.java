@@ -143,7 +143,7 @@ public class AdminQueryService {
 
     public ModelResponse.ModelListResult getModelsInfo(int page){
         PageRequest pageRequest = PageRequest.of(page, 12, Sort.by("createdAt").descending());
-        Page<Model> models = modelRepository.findAllBy(pageRequest);
+        Page<Model> models = modelRepository.findAllByVersionStatusIsNull(pageRequest);
         return toModelListResult(models);
     }
 
