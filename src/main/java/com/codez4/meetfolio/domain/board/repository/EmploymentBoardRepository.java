@@ -12,18 +12,18 @@ import org.springframework.data.jpa.repository.Query;
 public interface EmploymentBoardRepository extends JpaRepository<EmploymentBoard, Long> {
 
     @Query("SELECT " +
-            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email,(SELECT l.status FROM Like l WHERE l.member = :member AND eb = l.board)) FROM EmploymentBoard eb WHERE eb.id = :boardId")
+            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email,(SELECT l.status FROM Like l WHERE l.member = :member AND eb = l.board)) FROM EmploymentBoard eb WHERE eb.id = :boardId AND eb.member.status = 'ACTIVE'")
     BoardQueryItem queryFindEmploymentBoard(Member member,Long boardId);
 
     @Query("SELECT " +
-            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email,(SELECT l.status FROM Like l WHERE l.member = :member AND eb = l.board)) FROM EmploymentBoard eb")
+            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email,(SELECT l.status FROM Like l WHERE l.member = :member AND eb = l.board)) FROM EmploymentBoard eb WHERE eb.member.status = 'ACTIVE'")
     Page<BoardQueryItem> queryFindAllEmploymentBoards(Member member, Pageable pageable);
 
     @Query("SELECT " +
-            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email, (SELECT l.status FROM Like l WHERE l.member = :member AND eb = l.board)) FROM EmploymentBoard eb WHERE eb.jobKeyword = :jobKeyword ")
+            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email, (SELECT l.status FROM Like l WHERE l.member = :member AND eb = l.board)) FROM EmploymentBoard eb WHERE eb.jobKeyword = :jobKeyword AND eb.member.status = 'ACTIVE'")
     Page<BoardQueryItem> queryFindAllEmploymentBoardsByJobKeyword(Member member, JobKeyword jobKeyword, Pageable pageable);
 
     @Query(value = "SELECT " +
-            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email, (SELECT l.status from Like l WHERE l.member = :member AND l.board = eb)) FROM EmploymentBoard eb WHERE eb.title LIKE CONCAT('%', :keyword , '%') ")
+            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(eb, eb.member.email, (SELECT l.status from Like l WHERE l.member = :member AND l.board = eb)) FROM EmploymentBoard eb WHERE eb.title LIKE CONCAT('%', :keyword , '%') AND eb.member.status = 'ACTIVE'")
     Page<BoardQueryItem> queryFindBoardsByKeyword(Member member, String keyword, Pageable pageable);
 }

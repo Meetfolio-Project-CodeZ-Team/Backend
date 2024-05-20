@@ -42,19 +42,19 @@ public class CommentCommandService {
 
         if (parentId != null) {
             Comment parentComment = getParentComment(parentId);
-            return CommentResponse.toEntity(member, board, content, parentComment);
+            int ref = commentRepository.getRefNumOfParent(board, parentId);
+            int refOrder = commentRepository.getRefOrder(board, ref);
+            int step = commentRepository.getStep(board, parentId);
+            return CommentResponse.toEntity(member, board, content, parentComment, ref, refOrder+1, step+1);
         }
-        return CommentResponse.toEntity(member, board, content, null);
+        else {
+            int ref = commentRepository.getRefNum(board);
+            return CommentResponse.toEntity(member, board, content, null, ref + 1, 0, 0);
+        }
     }
 
     public Comment getParentComment(Long parentId) {
-        Comment parentComment = commentQueryService.findById(parentId);
-
-        // 부모의 댓글이 있는 경우 -> 에러 발생 (대댓글까지만 가능)
-        if (parentComment.getParentComment() != null) {
-            throw new ApiException(ErrorStatus._COMMENT_OVER_DEPTH_);
-        }
-        return parentComment;
+        return commentQueryService.findById(parentId);
     }
 
     public CommentResponse.CommentProc update(String content, Long commentId) {

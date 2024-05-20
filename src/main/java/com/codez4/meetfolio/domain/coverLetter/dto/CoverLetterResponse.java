@@ -45,9 +45,12 @@ public class CoverLetterResponse {
 
         @Schema(description = "지원 직무")
         private String jobKeyword;
+
+        @Schema(description = "타 사용자 자소서 조회할 때, 포인트 사용 여부")
+        private Boolean isPaid;
     }
 
-    public static CoverLetterInfo toCoverLetterInfo(CoverLetter coverLetter) {
+    public static CoverLetterInfo toCoverLetterInfo(CoverLetter coverLetter, Boolean isPaid) {
 
         return CoverLetterInfo.builder()
                 .coverLetterId(coverLetter.getId())
@@ -57,6 +60,7 @@ public class CoverLetterResponse {
                 .keyword1(coverLetter.getKeyword1())
                 .keyword2(coverLetter.getKeyword2())
                 .jobKeyword(coverLetter.getJobKeyword() != null ? coverLetter.getJobKeyword().getDescription() : null)
+                .isPaid(isPaid)
                 .build();
 
     }
