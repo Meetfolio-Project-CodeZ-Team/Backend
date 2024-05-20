@@ -18,11 +18,11 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     void deleteByMember(Member member);
 
-    @Query(value = "SELECT c FROM Comment c JOIN FETCH Board b ON b = c.board WHERE c.member = :member ")
+    @Query(value = "SELECT c FROM Comment c JOIN FETCH Board b ON b = c.board WHERE c.member = :member AND c.member.status = 'ACTIVE'")
     Page<Comment> findByMemberFetchJoinBoard(@Param("member") Member member,
                                              PageRequest pageRequest);
 
-    @Query("SELECT c FROM Comment c JOIN FETCH c.member where c.board.id = :boardId")
+    @Query("SELECT c FROM Comment c JOIN FETCH c.member where c.board.id = :boardId AND c.member.status = 'ACTIVE'")
     Slice<Comment> findByBoardFetchJoinMember(@Param("boardId") Long boardId,
         PageRequest pageRequest);
 
