@@ -186,15 +186,6 @@ public class CommentResponse {
                 .build();
     }
 
-//    private static List<CommentItem> getChildList(Comment comment) {
-//
-//        return Optional.ofNullable(comment.getChildren())
-//                .orElse(new ArrayList<>())
-//                .stream()
-//                .map(CommentResponse::toCommentItem)
-//                .toList();
-//    }
-
     @Schema(description = "댓글 처리 응답 DTO")
     @Builder
     @AllArgsConstructor
