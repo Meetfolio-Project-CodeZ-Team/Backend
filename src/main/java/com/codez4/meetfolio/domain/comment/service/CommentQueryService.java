@@ -14,6 +14,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.codez4.meetfolio.domain.comment.dto.CommentResponse.toCommentItem;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -42,6 +47,13 @@ public class CommentQueryService {
         Slice<Comment> comments = commentRepository.findByBoardFetchJoinMember(
             boardId, pageRequest);
 
-        return CommentResponse.toCommentResult(comments);
+        // 부모 댓글만 반환하기 (자식 댓글은 부모 댓글 안에 담아서 전달)
+        List<CommentResponse.CommentItem> parentComments = comments.stream()
+                .filter(comment -> comment.getParentComment() == null)
+                .map(comment -> toCommentItem(comment,commentRepository.findAllByBoard_IdAndRef(boardId,
+                        comment.getRef()).stream().filter(child -> child.getRefOrder() != 0).map(child -> {return toCommentItem(child,new ArrayList<>());}).toList() ))
+                .toList();
+
+        return CommentResponse.toCommentResult(parentComments,comments);
     }
 }

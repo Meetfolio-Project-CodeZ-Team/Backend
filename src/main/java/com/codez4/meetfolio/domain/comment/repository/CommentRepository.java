@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
@@ -35,4 +37,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("SELECT c.step FROM Comment c WHERE c.board = :board and c.id = :parent")
     int getStep(Board board, Long parent);
+
+    List<Comment> findAllByBoard_IdAndRef(Long boardId, int ref);
 }

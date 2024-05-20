@@ -80,13 +80,7 @@ public class CommentResponse {
     }
 
 
-    public static CommentResult toCommentResult(Slice<Comment> comments) {
-
-        // 부모 댓글만 반환하기 (자식 댓글은 부모 댓글 안에 담아서 전달)
-        List<CommentItem> commentItems = comments.stream()
-                .filter(comment -> comment.getParentComment() == null)
-                .map(CommentResponse::toCommentItem)
-                .toList();
+    public static CommentResult toCommentResult(List<CommentItem> commentItems, Slice<Comment> comments) {
 
         return CommentResult.builder()
                 .commentItems(commentItems)
@@ -177,7 +171,7 @@ public class CommentResponse {
                 .build();
     }
 
-    public static CommentItem toCommentItem(Comment comment) {
+    public static CommentItem toCommentItem(Comment comment, List<CommentItem> childComments) {
 
         Member member = comment.getMember();
         long sinceCreation = TimeUtils.getSinceCreation(comment.getCreatedAt());
@@ -188,18 +182,18 @@ public class CommentResponse {
                 .memberName(member.getEmail().split("@")[0])
                 .profile(member.getProfile().name())
                 .sinceCreation(sinceCreation)
-                .childComments(getChildList(comment))
+                .childComments(childComments)
                 .build();
     }
 
-    private static List<CommentItem> getChildList(Comment comment) {
-
-        return Optional.ofNullable(comment.getChildren())
-                .orElse(new ArrayList<>())
-                .stream()
-                .map(CommentResponse::toCommentItem)
-                .toList();
-    }
+//    private static List<CommentItem> getChildList(Comment comment) {
+//
+//        return Optional.ofNullable(comment.getChildren())
+//                .orElse(new ArrayList<>())
+//                .stream()
+//                .map(CommentResponse::toCommentItem)
+//                .toList();
+//    }
 
     @Schema(description = "댓글 처리 응답 DTO")
     @Builder
