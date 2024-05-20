@@ -53,7 +53,7 @@ public class CoverLetterController {
                                                          @PathVariable(name = "coverLetterId") Long coverLetterId) {
 
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
-        CoverLetterInfo coverLetterInfo = coverLetterQueryService.getCoverLetterInfo(coverLetterId);
+        CoverLetterInfo coverLetterInfo = coverLetterQueryService.getCoverLetterInfo(member, coverLetterId);
         FeedbackInfo feedbackInfo = feedbackQueryService.getFeedbackInfo(coverLetterId);
         AnalysisInfo analysisInfo = analysisQueryService.getAnalysisInfo(coverLetterId);
         CoverLetterResult coverLetterResult = CoverLetterResponse.toCoverLetterResult(memberInfo,
