@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.point;
 
 import com.codez4.meetfolio.domain.common.BaseTimeEntity;
+import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.payment.Payment;
@@ -35,4 +36,8 @@ public class Point extends BaseTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PointType pointType;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coverletter_id", nullable = true)
+    private CoverLetter coverLetter;
 }
