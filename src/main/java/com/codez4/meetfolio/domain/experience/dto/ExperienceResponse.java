@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.experience.dto;
 
 import com.codez4.meetfolio.domain.experience.Experience;
+import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -120,6 +121,21 @@ public class ExperienceResponse {
         private ExperienceCardInfo experienceCardInfo;
     }
 
+    @Schema(description = "타 사용자 경험 카드 목록 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class OtherMemberExperienceCardResult {
+
+        private MemberInfo memberInfo;
+        @Schema(description = "작성자 아이디")
+        private String memberName;
+        @Schema(description = "작성자 프로필")
+        private String profile;
+        private ExperienceCardInfo experienceCardInfo;
+    }
+
     public static ExperienceCardResult toExperienceCardResult(MemberInfo memberInfo,
         ExperienceCardInfo experienceCardInfo) {
 
@@ -127,6 +143,16 @@ public class ExperienceResponse {
             .memberInfo(memberInfo)
             .experienceCardInfo(experienceCardInfo)
             .build();
+    }
+
+    public static OtherMemberExperienceCardResult toOtherMemberExperienceCardResult(MemberInfo memberInfo,
+                                                                                    ExperienceCardInfo experienceCardInfo, Member other){
+        return OtherMemberExperienceCardResult.builder()
+                .memberInfo(memberInfo)
+                .experienceCardInfo(experienceCardInfo)
+                .memberName(other.getEmail().split("@")[0])
+                .profile(other.getProfile().name())
+                .build();
     }
 
     @Schema(description = "경험 카드 목록 응답 DTO")

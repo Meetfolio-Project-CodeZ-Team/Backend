@@ -80,7 +80,7 @@ public class CoverLetterResponse {
         private CoverLetterList coverLetterInfo;
     }
 
-    @Schema(description = "자기소개서 목록 정보 조회 응답 DTO")
+    @Schema(description = "타 사용자 자기소개서 목록 정보 조회 응답 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
