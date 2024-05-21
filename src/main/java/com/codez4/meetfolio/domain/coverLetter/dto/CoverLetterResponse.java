@@ -1,6 +1,7 @@
 package com.codez4.meetfolio.domain.coverLetter.dto;
 
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
+import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse.MemberInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -72,6 +73,24 @@ public class CoverLetterResponse {
     @Getter
     public static class CoverLetterListResult {
         private MemberInfo memberInfo;
+        @Schema(description = "작성자 아이디")
+        private String memberName;
+        @Schema(description = "작성자 프로필")
+        private String profile;
+        private CoverLetterList coverLetterInfo;
+    }
+
+    @Schema(description = "타 사용자 자기소개서 목록 정보 조회 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class OtherMemberCoverLetterListResult {
+        private MemberInfo memberInfo;
+        @Schema(description = "작성자 아이디")
+        private String memberName;
+        @Schema(description = "작성자 프로필")
+        private String profile;
         private CoverLetterList coverLetterInfo;
     }
 
@@ -119,6 +138,16 @@ public class CoverLetterResponse {
         return CoverLetterListResult.builder()
                 .memberInfo(memberInfo)
                 .coverLetterInfo(coverLetterList)
+                .build();
+    }
+
+    public static OtherMemberCoverLetterListResult toOtherMemberCoverLetterListResult(MemberInfo memberInfo, Page<CoverLetterItem> coverLetters, Member other){
+        CoverLetterList coverLetterList = toCoverLetterList(coverLetters);
+        return OtherMemberCoverLetterListResult.builder()
+                .memberInfo(memberInfo)
+                .coverLetterInfo(coverLetterList)
+                .memberName(other.getEmail().split("@")[0])
+                .profile(other.getProfile().name())
                 .build();
     }
 

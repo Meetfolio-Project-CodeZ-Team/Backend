@@ -97,14 +97,14 @@ public class ExperienceController {
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @Parameter(name = "memberName", description = "다른 사용자 이름, page, Query String입니다.", in = ParameterIn.QUERY)
     @PostMapping("/members")
-    public ApiResponse<ExperienceCardResult> getOtherCoverLetters(
+    public ApiResponse<OtherMemberExperienceCardResult> getOtherCoverLetters(
             @AuthenticationMember Member member,
             @RequestParam String memberName,
             @RequestParam(value = "page", defaultValue = "0") int page) {
         Member other = memberQueryService.findByMemberName(memberName);
         ExperienceCardInfo experienceCardInfo = experienceQueryService.getExperienceCardInfo(other,
                 page);
-        return ApiResponse.onSuccess(toExperienceCardResult(MemberResponse.toMemberInfo(other), experienceCardInfo));
+        return ApiResponse.onSuccess(toOtherMemberExperienceCardResult(MemberResponse.toMemberInfo(other), experienceCardInfo, other));
     }
 
 }
