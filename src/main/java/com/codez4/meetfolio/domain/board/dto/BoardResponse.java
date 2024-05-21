@@ -117,6 +117,9 @@ public class BoardResponse {
         @Schema(description = "게시글 작성자")
         private String memberName;
 
+        @Schema(description = "작성자 프로필")
+        private String profile;
+
         @Schema(description = "게시글 제목")
         private String title;
 
