@@ -183,6 +183,7 @@ public class BoardResponse {
     public static BoardItem toBoardItem(BoardQueryItem board) {
         BoardItemBuilder boardItemBuilder = BoardItem.builder()
                 .memberName(board.getEmail().split("@")[0])
+                .profile(board.getProfile())
                 .boardId(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
