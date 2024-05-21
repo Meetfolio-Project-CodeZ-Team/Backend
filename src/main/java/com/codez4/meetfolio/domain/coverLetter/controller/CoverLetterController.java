@@ -30,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import static com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.toCoverLetterListResult;
+import static com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.toOtherMemberCoverLetterListResult;
 
 @Tag(name = "자기소개서 API")
 @RestController
@@ -103,13 +104,14 @@ public class CoverLetterController {
     @Operation(summary = "다른 사용자의 자기소개서 목록 조회", description = "타 사용자의 자기소개서 목록 정보를 조회합니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @PostMapping("/members")
-    public ApiResponse<CoverLetterResponse.CoverLetterListResult> getOtherCoverLetters(
+    public ApiResponse<CoverLetterResponse.OtherMemberCoverLetterListResult> getOtherCoverLetters(
             @AuthenticationMember Member member,
             @RequestParam String memberName,
             @RequestParam(value = "page", defaultValue = "0") int page) {
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         Member other = memberQueryService.findByMemberName(memberName);
-        return ApiResponse.onSuccess(toCoverLetterListResult(memberInfo,coverLetterQueryService.getOtherCoverLetters(other, page)));
+        return ApiResponse.onSuccess(toOtherMemberCoverLetterListResult(memberInfo,coverLetterQueryService.getOtherCoverLetters(other, page), other
+        ));
     }
 
     @Operation(summary = "만족도 저장", description = "쿼리 스트링으로 피드백 ID 또는 분석 ID를, request body로 만족도를 전송합니다.")
