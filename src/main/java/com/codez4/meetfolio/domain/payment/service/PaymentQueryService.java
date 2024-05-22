@@ -18,7 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.*;
+import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentItem;
+import static com.codez4.meetfolio.domain.payment.dto.PaymentResponse.toPaymentResult;
 
 @Service
 @AllArgsConstructor

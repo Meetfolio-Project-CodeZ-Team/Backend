@@ -1,7 +1,6 @@
 package com.codez4.meetfolio.domain.coverLetter.dto;
 
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
-import com.codez4.meetfolio.domain.enums.JobKeyword;
 import com.codez4.meetfolio.domain.enums.ShareType;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.global.annotation.EnumValid;
