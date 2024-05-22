@@ -27,18 +27,17 @@ public class CommentCommandService {
     public CommentProc write(CommentVO commentVO) {
 
         Comment comment = commentRepository.save(createComment(commentVO));
-        comment.getBoard().changeComment(true);
-
+        Board board = boardQueryService.findById(commentVO.boardId());
+        board.changeComment(true);
         return CommentResponse.toCommentProc(comment.getId());
     }
 
     private Comment createComment(CommentVO commentVO) {
 
         Member member = commentVO.member();
-        Board board = boardQueryService.findById(commentVO.boardId());
-        board.changeComment(true);
         String content = commentVO.content();
         Long parentId = commentVO.parentId();
+        Board board = boardQueryService.findById(commentVO.boardId());
 
         if (parentId != null) {
             Comment parentComment = getParentComment(parentId);
