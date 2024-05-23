@@ -16,7 +16,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> queryFindBoardsByKeyword(String keyword, Pageable pageable);
 
     @Query(value = "SELECT " +
-            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(b, b.member.email, (SELECT l.status from Like l WHERE l.member = :member AND l.board = b)) FROM Board b WHERE b.member = :member")
+            "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(b, b.member.email, b.member.profile, (SELECT l.status from Like l WHERE l.member = :member AND l.board = b)) FROM Board b WHERE b.member = :member")
     Page<BoardQueryItem> queryFindAllMyBoards(Member member, Pageable pageable);
 
 }

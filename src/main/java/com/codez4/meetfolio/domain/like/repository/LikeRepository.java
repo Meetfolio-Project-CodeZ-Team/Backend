@@ -19,7 +19,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     void deleteByMember(Member member);
 
     @Query("SELECT " +
-        "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(lb, lb.member.email, l.status) FROM Like l JOIN fetch Board lb ON l.board = lb  WHERE l.member = :member AND l.status = :status")
+        "NEW com.codez4.meetfolio.domain.board.dto.BoardQueryItem(lb, lb.member.email, lb.member.profile, l.status) FROM Like l JOIN fetch Board lb ON l.board = lb  WHERE l.member = :member AND l.status = :status")
     Page<BoardQueryItem> findAllByMemberAndStatus(@Param("member") Member member,
                                                   @Param("status") Status status, PageRequest pageRequest);
 
