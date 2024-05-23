@@ -1,7 +1,6 @@
 package com.codez4.meetfolio.domain.comment.service;
 
 import com.codez4.meetfolio.domain.board.Board;
-import com.codez4.meetfolio.domain.board.repository.BoardRepository;
 import com.codez4.meetfolio.domain.board.service.BoardQueryService;
 import com.codez4.meetfolio.domain.comment.Comment;
 import com.codez4.meetfolio.domain.comment.dto.CommentResponse;
@@ -9,8 +8,6 @@ import com.codez4.meetfolio.domain.comment.dto.CommentResponse.CommentProc;
 import com.codez4.meetfolio.domain.comment.dto.CommentVO;
 import com.codez4.meetfolio.domain.comment.repository.CommentRepository;
 import com.codez4.meetfolio.domain.member.Member;
-import com.codez4.meetfolio.global.exception.ApiException;
-import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

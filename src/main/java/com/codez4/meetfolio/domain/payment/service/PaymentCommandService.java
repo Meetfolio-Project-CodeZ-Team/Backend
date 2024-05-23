@@ -11,8 +11,6 @@ import com.codez4.meetfolio.domain.payment.dto.PaymentResponse;
 import com.codez4.meetfolio.domain.payment.repository.PaymentRepository;
 import com.codez4.meetfolio.domain.point.dto.PointRequest;
 import com.codez4.meetfolio.domain.point.repository.PointRepository;
-import com.codez4.meetfolio.global.exception.ApiException;
-import com.codez4.meetfolio.global.response.code.status.ErrorStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

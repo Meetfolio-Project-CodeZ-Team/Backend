@@ -1,7 +1,6 @@
 package com.codez4.meetfolio.domain.member.dto;
 
 import com.codez4.meetfolio.domain.enums.Authority;
-import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Page;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 public class MemberResponse {
 

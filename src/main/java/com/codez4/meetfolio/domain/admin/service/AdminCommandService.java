@@ -4,7 +4,6 @@ import com.codez4.meetfolio.domain.admin.dto.DatasetRequest;
 import com.codez4.meetfolio.domain.admin.dto.DatasetResponse;
 import com.codez4.meetfolio.domain.admin.dto.ModelResponse;
 import com.codez4.meetfolio.domain.dataset.repository.DatasetRepository;
-import com.codez4.meetfolio.domain.enums.Status;
 import com.codez4.meetfolio.domain.model.Model;
 import com.codez4.meetfolio.domain.model.repository.ModelRepository;
 import lombok.RequiredArgsConstructor;
