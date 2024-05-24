@@ -12,9 +12,10 @@ import lombok.Builder;
 import lombok.Getter;
 
 public class PointRequest {
+
     @Schema(description = "포인트 사용 요청 dto")
     @Getter
-    public static class PointUseRequest{
+    public static class PointUseRequest {
 
         @Schema(description = "포인트 사용 타입, USE_COVER_LETTER/USE_AI_ANALYSIS")
         @EnumValid(enumClass = PointType.class)
@@ -31,7 +32,8 @@ public class PointRequest {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class Post{
+    public static class Post {
+
         int point;
         PointType pointType;
         int totalPoint;
@@ -40,7 +42,7 @@ public class PointRequest {
         CoverLetter coverLetter;
     }
 
-    public static Point toEntity(Post post){
+    public static Point toEntity(Post post) {
         return Point.builder()
                 .point(post.getPoint())
                 .pointType(post.getPointType())
@@ -48,6 +50,18 @@ public class PointRequest {
                 .member(post.getMember())
                 .payment(post.payment)
                 .coverLetter(post.coverLetter)
+                .build();
+    }
+
+    public static Point toSharePoint(int point, PointType pointType, int totalPoint, Member member,
+            CoverLetter coverLetter) {
+
+        return Point.builder()
+                .point(point)
+                .pointType(pointType)
+                .totalPoint(totalPoint)
+                .member(member)
+                .coverLetter(coverLetter)
                 .build();
     }
 }
