@@ -16,6 +16,7 @@ public interface PointRepository extends JpaRepository<Point, Long> {
 
     Page<Point> findByMemberAndPointType(Member member, PointType pointType, Pageable pageable);
 
+    @Query("SELECT p FROM Point p WHERE p.member = :member AND p.pointType <> 'CHARGE'")
     Page<Point> getPointByMember(Member member, Pageable pageable);
 
     Optional<Point> getPointByPayment(Payment payment);

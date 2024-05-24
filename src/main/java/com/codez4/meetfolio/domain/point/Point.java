@@ -37,7 +37,7 @@ public class Point extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PointType pointType;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coverletter_id", nullable = true)
     private CoverLetter coverLetter;
 }
