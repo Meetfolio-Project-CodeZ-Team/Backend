@@ -30,6 +30,9 @@ public class CoverLetter extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String answer;
 
+    @Column(name = "index_member")
+    private Long index;
+
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private ShareType shareType;
