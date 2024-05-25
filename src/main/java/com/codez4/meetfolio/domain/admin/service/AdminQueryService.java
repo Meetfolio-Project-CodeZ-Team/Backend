@@ -94,7 +94,7 @@ public class AdminQueryService {
         long totalSales = paymentRepository.queryGetTotalSalesByMonth(requestMonth);
         String yearMonth = year + "년" + " " + month + "월";
 
-        PageRequest pageRequest = PageRequest.of(page, 10,  Sort.by("id").descending());
+        PageRequest pageRequest = PageRequest.of(page, 9,  Sort.by("id").descending());
         Page<Payment> payments = paymentRepository.queryGetSalesByMonth(requestMonth, pageRequest);
 
         List<PaymentResponse.PaymentItem> paymentList = payments.stream().map(payment -> {
