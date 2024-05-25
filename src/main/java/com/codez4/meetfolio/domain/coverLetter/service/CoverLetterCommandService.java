@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -23,8 +25,9 @@ public class CoverLetterCommandService {
     private final FeedbackCommandService feedbackCommandService;
 
     public CoverLetterProc write(Member member, CoverLetterRequest.Post request) {
-
-        CoverLetter coverLetter = save(CoverLetterRequest.toEntity(member, request));
+        Optional<CoverLetter> lastCoverLetter = coverLetterRepository.findFirstByMemberOrderByIdDesc(member);
+        Long index = lastCoverLetter.isEmpty() ? 0L : lastCoverLetter.get().getIndex();
+        CoverLetter coverLetter = save(CoverLetterRequest.toEntity(member, request, index+1));
 
         return CoverLetterResponse.toCoverLetterProc(coverLetter.getId());
 
