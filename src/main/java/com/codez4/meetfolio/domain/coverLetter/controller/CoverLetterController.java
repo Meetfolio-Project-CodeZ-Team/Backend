@@ -110,8 +110,7 @@ public class CoverLetterController {
             @RequestParam(value = "page", defaultValue = "0") int page) {
         MemberInfo memberInfo = MemberResponse.toMemberInfo(member);
         Member other = memberQueryService.findByMemberName(memberName);
-        return ApiResponse.onSuccess(toOtherMemberCoverLetterListResult(memberInfo,coverLetterQueryService.getOtherCoverLetters(other, page), other
-        ));
+        return ApiResponse.onSuccess(toOtherMemberCoverLetterListResult(memberInfo, coverLetterQueryService.getOtherCoverLetters(other, page), other));
     }
 
     @Operation(summary = "만족도 저장", description = "쿼리 스트링으로 피드백 ID 또는 분석 ID를, request body로 만족도를 전송합니다.")
