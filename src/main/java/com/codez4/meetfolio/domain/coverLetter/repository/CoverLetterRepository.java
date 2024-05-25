@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CoverLetterRepository extends JpaRepository<CoverLetter, Long> {
 
@@ -18,4 +19,5 @@ public interface CoverLetterRepository extends JpaRepository<CoverLetter, Long> 
 
     @Query("SELECT c FROM CoverLetter c WHERE c.member = :member and c.shareType = 'PUBLIC' and c.status = 'ACTIVE'")
     Page<CoverLetter> findPublicAndActiveCoverLetterByMember(Member member, Pageable pageable);
+    Optional<CoverLetter> findFirstByMemberOrderByIdDesc(Member member);
 }
