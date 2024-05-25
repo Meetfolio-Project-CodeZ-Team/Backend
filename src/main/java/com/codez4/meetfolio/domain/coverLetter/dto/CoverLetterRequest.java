@@ -50,23 +50,24 @@ public class CoverLetterRequest {
         private String jobKeyword;
     }
 
-    @Schema( description = "만족도 DTO")
+    @Schema(description = "만족도 DTO")
     @Getter
-    public static class SatisfactionRequest{
-        @Schema(description = "만족도, 0부터 5까지의 정수만 입력 가능합니다." )
+    public static class SatisfactionRequest {
+        @Schema(description = "만족도, 0부터 5까지의 정수만 입력 가능합니다.")
         @Max(value = 5)
         @Min(value = 0)
         private int satisfaction;
     }
 
-    public static CoverLetter toEntity(Member member, CoverLetterRequest.Post request) {
+    public static CoverLetter toEntity(Member member, CoverLetterRequest.Post request, Long index) {
 
         return CoverLetter.builder()
-            .question(request.getQuestion())
-            .answer(request.getAnswer())
-            .shareType(ShareType.convert(request.getShareType()))
-            .member(member)
-            .build();
+                .question(request.getQuestion())
+                .answer(request.getAnswer())
+                .shareType(ShareType.convert(request.getShareType()))
+                .member(member)
+                .index(index)
+                .build();
     }
 
     @Getter

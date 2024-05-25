@@ -133,26 +133,24 @@ public class CoverLetterResponse {
         private AnalysisInfo analysisInfo;
     }
 
-    public static CoverLetterListResult toCoverLetterListResult(MemberInfo memberInfo, Page<CoverLetterItem> coverLetters) {
-        CoverLetterList coverLetterList = toCoverLetterList(coverLetters);
+    public static CoverLetterListResult toCoverLetterListResult(MemberInfo memberInfo, CoverLetterList coverLetters) {
         return CoverLetterListResult.builder()
                 .memberInfo(memberInfo)
-                .coverLetterInfo(coverLetterList)
+                .coverLetterInfo(coverLetters)
                 .build();
     }
 
-    public static OtherMemberCoverLetterListResult toOtherMemberCoverLetterListResult(MemberInfo memberInfo, Page<CoverLetterItem> coverLetters, Member other){
-        CoverLetterList coverLetterList = toCoverLetterList(coverLetters);
+    public static OtherMemberCoverLetterListResult toOtherMemberCoverLetterListResult(MemberInfo memberInfo, CoverLetterList coverLetters, Member other){
         return OtherMemberCoverLetterListResult.builder()
                 .memberInfo(memberInfo)
-                .coverLetterInfo(coverLetterList)
+                .coverLetterInfo(coverLetters)
                 .memberName(other.getEmail().split("@")[0])
                 .profile(other.getProfile().name())
                 .build();
     }
 
-    public static CoverLetterList toCoverLetterList(Page<CoverLetterItem> coverLetters) {
-        List<CoverLetterItem> coverLetterItems = coverLetters.stream().toList();
+    public static CoverLetterList toCoverLetterList(Page<CoverLetter> coverLetters) {
+        List<CoverLetterItem> coverLetterItems = coverLetters.stream().map(CoverLetterResponse::toCoverLetterItem).toList();
         return CoverLetterList.builder()
                 .coverLetterInfo(coverLetterItems)
                 .listSize(coverLetterItems.size())
@@ -199,22 +197,15 @@ public class CoverLetterResponse {
         private LocalDateTime createdAt;
     }
 
-    public static CoverLetterItem toCoverLetterItem(CoverLetter coverLetter, long index) {
+    public static CoverLetterItem toCoverLetterItem(CoverLetter coverLetter) {
         return CoverLetterItem.builder()
                 .coverLetterId(coverLetter.getId())
-                .index(index)
+                .index(coverLetter.getIndex())
                 .question(coverLetter.getQuestion())
                 .answer(coverLetter.getAnswer())
                 .createdAt(coverLetter.getCreatedAt())
                 .build();
 
-    }
-
-    public static Page<CoverLetterItem> toPageCoverLetterItem(Page<CoverLetter> coverLetters) {
-        return coverLetters.map(coverLetter -> {
-            long index = coverLetters.getNumberOfElements() - coverLetters.getContent().indexOf(coverLetter);
-            return toCoverLetterItem(coverLetter, index);
-        });
     }
 
     @Schema(description = "자기소개서 작성 & 수정 & 삭제 응답 DTO")

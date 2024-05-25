@@ -16,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.codez4.meetfolio.domain.coverLetter.dto.CoverLetterResponse.toCoverLetterList;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -44,21 +46,21 @@ public class CoverLetterQueryService {
         );
     }
 
-    public Page<CoverLetterResponse.CoverLetterItem> getMyCoverLetters(Member member,
+    public CoverLetterResponse.CoverLetterList getMyCoverLetters(Member member,
         int page) {
         PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("id").descending());
         Page<CoverLetter> coverLetters = coverLetterRepository.findActiveByMember(member,
             pageRequest);
-        return CoverLetterResponse.toPageCoverLetterItem(coverLetters);
+        return toCoverLetterList(coverLetters);
     }
 
-    public Page<CoverLetterResponse.CoverLetterItem> getOtherCoverLetters(Member other,
-        int page) {
+    public CoverLetterResponse.CoverLetterList getOtherCoverLetters(Member other,
+                                                                                     int page) {
         PageRequest pageRequest = PageRequest.of(page, 4, Sort.by("id").descending());
 
         Page<CoverLetter> otherCoverLetters = coverLetterRepository.findPublicAndActiveCoverLetterByMember(
             other,
             pageRequest);
-        return CoverLetterResponse.toPageCoverLetterItem(otherCoverLetters);
+        return toCoverLetterList(otherCoverLetters);
     }
 }

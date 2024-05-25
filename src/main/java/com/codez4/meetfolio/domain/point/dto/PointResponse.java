@@ -1,5 +1,6 @@
 package com.codez4.meetfolio.domain.point.dto;
 
+import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.member.Member;
 import com.codez4.meetfolio.domain.member.dto.MemberResponse;
 import com.codez4.meetfolio.domain.point.Point;
@@ -28,9 +29,53 @@ public class PointResponse {
         @Schema(description = "로그인 사용자 정보")
         private MemberResponse.MemberInfo memberInfo;
 
-        @Schema(description = "결제 내역")
+        @Schema(description = "포인트 내역")
         private PointResponse.PointInfo pointInfo;
 
+    }
+
+    @Schema(description = "포인트 적립 내역 목록 응답 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class EarnedPointResult {
+
+        @Schema(description = "로그인 사용자 정보")
+        private MemberResponse.MemberInfo memberInfo;
+
+        @Schema(description = "적립 내역")
+        private PointResponse.EarnedPointInfo pointInfo;
+
+    }
+
+    @Schema(description = "적립 내역 목록 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class EarnedPointInfo {
+
+        @Schema(description = "내 포인트")
+        private int myPoint;
+
+        @Schema(description = "적립 내역 목록")
+        private List<PointResponse.EarnedPointItem> pointList;
+
+        @Schema(description = "페이징된 리스트의 항목 개수")
+        private Integer listSize;
+
+        @Schema(description = "총 페이징 수 ")
+        private Integer totalPage;
+
+        @Schema(description = "전체 데이터의 개수")
+        private Long totalElements;
+
+        @Schema(description = "첫 페이지의 여부")
+        private Boolean isFirst;
+
+        @Schema(description = "마지막 페이지의 여부")
+        private Boolean isLast;
     }
 
     @Schema(description = "결제 내역 목록 DTO")
@@ -62,7 +107,7 @@ public class PointResponse {
         private Boolean isLast;
     }
 
-    @Schema(description = "포인트 내역 목록 DTO")
+    @Schema(description = "포인트 내역 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -80,6 +125,27 @@ public class PointResponse {
         private String type;
 
         @Schema(description = "사용/충전 후 포인트")
+        private int totalPoint;
+    }
+
+    @Schema(description = "포인트 적립 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class EarnedPointItem {
+
+        @Schema(description = "적립일시")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+        private LocalDateTime createdAt;
+
+        @Schema(description = "적립 포인트")
+        private int point;
+
+        @Schema(description = "자소서 번호")
+        private long coverLetterId;
+
+        @Schema(description = "적립 후 포인트")
         private int totalPoint;
     }
 
@@ -120,9 +186,30 @@ public class PointResponse {
 
     }
 
+    public static EarnedPointResult toEarnedPointResult(Member member, Page<Point> points) {
+        return EarnedPointResult.builder()
+                .memberInfo(toMemberInfo(member))
+                .pointInfo(toEarnedPointInfo(member.getPoint(), points))
+                .build();
+
+    }
+
     public static PointInfo toPointInfo(int myPoint, Page<Point> points) {
         List<PointItem> pointList = points.stream().map(PointResponse::toPointItem).toList();
         return PointInfo.builder()
+                .myPoint(myPoint)
+                .pointList(pointList)
+                .listSize(pointList.size())
+                .totalPage(points.getTotalPages())
+                .totalElements(points.getTotalElements())
+                .isFirst(points.isFirst())
+                .isLast(points.isLast())
+                .build();
+    }
+
+    public static EarnedPointInfo toEarnedPointInfo(int myPoint, Page<Point> points) {
+        List<EarnedPointItem> pointList = points.stream().map(PointResponse::toEarnedPointItem).toList();
+        return EarnedPointInfo.builder()
                 .myPoint(myPoint)
                 .pointList(pointList)
                 .listSize(pointList.size())
@@ -145,6 +232,16 @@ public class PointResponse {
                 .createdAt(point.getCreatedAt())
                 .point(point.getPoint())
                 .type(point.getPointType().getDescription())
+                .totalPoint(point.getTotalPoint())
+                .build();
+    }
+
+    public static EarnedPointItem toEarnedPointItem(Point point) {
+        CoverLetter coverLetter = point.getCoverLetter();
+        return EarnedPointItem.builder()
+                .createdAt(point.getCreatedAt())
+                .point(point.getPoint())
+                .coverLetterId(coverLetter.getIndex())
                 .totalPoint(point.getTotalPoint())
                 .build();
     }
