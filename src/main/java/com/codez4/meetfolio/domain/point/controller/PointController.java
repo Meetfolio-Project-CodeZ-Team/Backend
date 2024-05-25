@@ -39,9 +39,15 @@ public class PointController {
     }
 
     @Operation(summary = "마이페이지 - 포인트 사용 내역 조회", description = "마이페이지의 포인트 사용 내역을 조회합니다.")
-    @GetMapping("/my-points")
+    @GetMapping("/my-points/usage")
     public ApiResponse<PointResponse.PointResult> getMyPointList(@AuthenticationMember Member member, @RequestParam(value = "page", defaultValue = "0") int page) {
         return ApiResponse.onSuccess(pointQueryService.getMyPointList(page, member));
+    }
+
+    @Operation(summary = "마이페이지 - 포인트 적립 내역 조회", description = "마이페이지의 포인트 적립 내역을 조회합니다.")
+    @GetMapping("/my-points/saving")
+    public ApiResponse<PointResponse.EarnedPointResult> getMyEarnedPointList(@AuthenticationMember Member member, @RequestParam(value = "page", defaultValue = "0") int page) {
+        return ApiResponse.onSuccess(pointQueryService.getMyEarnedPointList(page, member));
     }
 
     @Operation(summary = "포인트 사용", description = "자소서 조회 / AI 서비스 이용을 위해 포인트를 사용합니다.")
