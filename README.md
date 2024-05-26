@@ -9,11 +9,13 @@
 
 ## 팀원 구성
 
-|                                         Backend                                          |                                         Backend                                          |                                        Frontend                                         |                                        Frontend                                         |
-|:----------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|
-| <img src="https://avatars.githubusercontent.com/u/85955988?v=4 " width=200px alt="서주원"/> | <img src="https://avatars.githubusercontent.com/u/103489352?v=4" width=200px alt="김현겸"/> | <img src="https://avatars.githubusercontent.com/u/99270060?v=4" width=200px alt="최민규"/> | <img src="https://avatars.githubusercontent.com/u/91466601?v=4" width=200px alt="김낙도"/> |
-|                            [서주원](https://github.com/joowojr)                             |                            [김현겸](https://github.com/kylo-dev)                            |                          [최민규](https://github.com/Minkyu0424)                           |                             [김낙도](https://github.com/NAKDO)                             |
-|                                          1 2 3                                           |                                 1 2 3                                   |                       1 2 3                          |                                1 2 3                                   |
+|                                         Backend / AI                                         |                                       Backend / AI                                       |                                        Frontend                                         |                                        Frontend                                         |
+|:--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|
+|   <img src="https://avatars.githubusercontent.com/u/85955988?v=4 " width=200px alt="서주원"/>   | <img src="https://avatars.githubusercontent.com/u/103489352?v=4" width=200px alt="김현겸"/> | <img src="https://avatars.githubusercontent.com/u/99270060?v=4" width=200px alt="최민규"/> | <img src="https://avatars.githubusercontent.com/u/91466601?v=4" width=200px alt="김낙도"/> |
+|                            [@joowojr](https://github.com/joowojr)                            |                         [@kylo-dev](https://github.com/kylo-dev)                         |                      [@Minkyu0424](https://github.com/Minkyu0424)                       |                           [@NAKDO](https://github.com/NAKDO)                            |
+|                                           [팀장] 서주원                                           |                                           김현겸                                            |                                           최민규                                           | 김낙도 |
+
+## 역할 분담
 
 ## 1. 개발 환경
 
@@ -199,10 +201,8 @@
 <img width="650" alt="image" src="https://github.com/Meetfolio-Project-CodeZ-Team/Backend/assets/103489352/7a484989-d956-4bd2-bd3e-de43cdc631b8">
 
 
-## 6. 역할 분담
 
-
-## 7. 개발 기간 및 작업 관리
+## 6. 개발 기간 및 작업 관리
 
 ### 2024.03 ~ 2024.06.07
 * 요구 분석 [03/05 ~ 03/18]
@@ -210,10 +210,10 @@
 * 구현 단계 [04/08 ~ 05/19]
 * 완료 단계(보고서 작성 및 시연) [05/14 ~ 06/07]
 
-## 8. 페이지별 기능
+## 7. 페이지별 기능
 
 
-## 9. 트러블 슈팅
+## 8. 트러블 슈팅
 
 
-## 10. 프로젝트 후기
+## 9. 프로젝트 후기
