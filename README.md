@@ -1,6 +1,6 @@
 ## 📑 Kobert, GPT AI를 통한 자기소개서 피드백 : 경험 분석 및 공유 서비스
 
-<img width="1512" alt="image" src="https://github.com/Meetfolio-Project-CodeZ-Team/Backend/assets/103489352/f4f6c461-9371-4e9d-a914-ee7207aba434">
+<img width="850" alt="image" src="https://github.com/Meetfolio-Project-CodeZ-Team/Backend/assets/103489352/f4f6c461-9371-4e9d-a914-ee7207aba434">
 
 > WEB URL : http://www.meetfolio.kro.kr:60005/
 
@@ -11,7 +11,7 @@
 
 |                                         Backend                                          |                                         Backend                                          |                                        Frontend                                         |                                        Frontend                                         |
 |:----------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|
-| <img src="https://avatars.githubusercontent.com/u/85955988?v=4 " width=320px alt="서주원"/> | <img src="https://avatars.githubusercontent.com/u/103489352?v=4" width=320px alt="김현겸"/> | <img src="https://avatars.githubusercontent.com/u/99270060?v=4" width=320px alt="최민규"/> | <img src="https://avatars.githubusercontent.com/u/91466601?v=4" width=320px alt="김낙도"/> |
+| <img src="https://avatars.githubusercontent.com/u/85955988?v=4 " width=200px alt="서주원"/> | <img src="https://avatars.githubusercontent.com/u/103489352?v=4" width=200px alt="김현겸"/> | <img src="https://avatars.githubusercontent.com/u/99270060?v=4" width=200px alt="최민규"/> | <img src="https://avatars.githubusercontent.com/u/91466601?v=4" width=200px alt="김낙도"/> |
 |                            [서주원](https://github.com/joowojr)                             |                            [김현겸](https://github.com/kylo-dev)                            |                          [최민규](https://github.com/Minkyu0424)                           |                             [김낙도](https://github.com/NAKDO)                             |
 |                                          1 2 3                                           |                                 1 2 3                                   |                       1 2 3                          |                                1 2 3                                   |
 
@@ -191,11 +191,12 @@
 
 ## 4. 프로젝트 아키텍처
 
-![img_2.png](img_2.png)
+<img width="650" alt="image" src="https://github.com/Meetfolio-Project-CodeZ-Team/Backend/assets/103489352/1dadd295-6506-4ff0-a5d0-e42e8739c373">
+
 
 ## 5. 프로젝트 CI/CD 파이프라인
 
-![img_3.png](img_3.png)
+<img width="650" alt="image" src="https://github.com/Meetfolio-Project-CodeZ-Team/Backend/assets/103489352/7a484989-d956-4bd2-bd3e-de43cdc631b8">
 
 
 ## 6. 역할 분담
