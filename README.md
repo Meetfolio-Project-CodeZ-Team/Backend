@@ -198,7 +198,8 @@
 
 ## 5. 프로젝트 CI/CD 파이프라인
 
-<img width="650" alt="image" src="https://github.com/Meetfolio-Project-CodeZ-Team/Backend/assets/103489352/7a484989-d956-4bd2-bd3e-de43cdc631b8">
+<img width="650" alt="image" src="https://github.com/Meetfolio-Project-CodeZ-Team/Backend/assets/103489352/6a312027-6cc0-467d-b097-91cab3ec1239">
+
 
 
 
