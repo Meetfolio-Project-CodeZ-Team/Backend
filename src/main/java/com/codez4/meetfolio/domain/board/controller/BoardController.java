@@ -100,7 +100,7 @@ public class BoardController {
 
     @Operation(summary = "게시물 1개 조회")
     @Parameter(name = "boardId", description = "게시물 Id, Path Variable입니다.", in = ParameterIn.PATH)
-    @PostMapping("/{boardId}")
+    @GetMapping("/{boardId}")
     public ApiResponse<BoardResponse.BoardResult> getBoard(@AuthenticationMember Member member,
                                                            @PathVariable Long boardId) {
         BoardResponse.BoardItem boardItem = boardQueryService.getBoard(member, boardId);
