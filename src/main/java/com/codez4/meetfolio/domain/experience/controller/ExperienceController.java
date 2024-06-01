@@ -96,7 +96,7 @@ public class ExperienceController {
     @Operation(summary = "다른 사용자의 경험 카드 목록 조회", description = "타 사용자의 경험 카드 목록 정보를 조회합니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
     @Parameter(name = "memberName", description = "다른 사용자 이름, page, Query String입니다.", in = ParameterIn.QUERY)
-    @PostMapping("/members")
+    @GetMapping("/members")
     public ApiResponse<OtherMemberExperienceCardResult> getOtherCoverLetters(
             @AuthenticationMember Member member,
             @RequestParam String memberName,
