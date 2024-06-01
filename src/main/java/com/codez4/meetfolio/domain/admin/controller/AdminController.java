@@ -137,14 +137,14 @@ public class AdminController {
     }
 
     @Operation(summary = "AI 관리 - 모델 리스트 조회 ", description = "AI 관리 메뉴에서 AI 모델 목록을 조회합니다.")
-    @PostMapping("/data-management/version")
+    @GetMapping("/data-management/version")
     public ApiResponse<ModelResponse.ModelListResult> getModelList(@AuthenticationMember Member admin,
                                                                    @RequestParam(value = "page", defaultValue = "0") int page) {
         return ApiResponse.onSuccess(adminQueryService.getModelsInfo(page));
     }
 
     @Operation(summary = "AI 관리 - 모델 상세 정보 조회 ", description = "AI 관리 메뉴에서 AI 모델 상세 정보를 조회합니다.")
-    @PostMapping("/data-management/version/{modelId}")
+    @GetMapping("/data-management/version/{modelId}")
     @Parameter(name = "modelId", required = true, in = ParameterIn.PATH)
     public ApiResponse<ModelResponse.ModelResult> getModelList(@AuthenticationMember Member admin,
                                                                @PathVariable(value = "modelId") Long modelId) {

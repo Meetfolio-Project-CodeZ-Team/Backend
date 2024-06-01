@@ -103,7 +103,7 @@ public class CoverLetterController {
 
     @Operation(summary = "다른 사용자의 자기소개서 목록 조회", description = "타 사용자의 자기소개서 목록 정보를 조회합니다.")
     @Parameter(name = "page", description = "페이징 번호, page, Query String입니다.", example = "0", in = ParameterIn.QUERY)
-    @PostMapping("/members")
+    @GetMapping("/members")
     public ApiResponse<CoverLetterResponse.OtherMemberCoverLetterListResult> getOtherCoverLetters(
             @AuthenticationMember Member member,
             @RequestParam String memberName,
