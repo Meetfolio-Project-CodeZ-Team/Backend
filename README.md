@@ -13,7 +13,7 @@
     <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FMeetfolio-Project-CodeZ-Team%2FFrontend&count_bg=%23002681&title_bg=%234191E0&icon=metrodeparis.svg&icon_color=%23FFFFFF&title=hits&edge_flat=false"/></a>
 </div>
 
-## 프로젝트 소개
+## ✏️프로젝트 소개
 
 <img width="650" alt="image" src="https://github.com/Meetfolio-Project-CodeZ-Team/Backend/assets/103489352/d22f69c7-686f-4dfa-b6fa-4741069b130a">
 
@@ -33,7 +33,7 @@
 사용자들이 작성한 경험카드와 공개된 자기소개서를 다른 사용자가 조회할 수 있도록 하여, 비슷한 진로를 가진 사람인지, 포트폴리오 준비를 어떻게 하고 있는지 등의 정보를 공유할 수 있는 서비스를 기획하였습니다.
 
 
-## 팀원 구성
+## 👨‍💻팀원 구성
 
 |                                         Backend / AI                                         |                                       Backend / AI                                       |                                        Frontend                                         |                                        Frontend                                         |
 |:--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|
@@ -41,15 +41,15 @@
 |                            [@joowojr](https://github.com/joowojr)                            |                         [@kylo-dev](https://github.com/kylo-dev)                         |                      [@Minkyu0424](https://github.com/Minkyu0424)                       |                           [@NAKDO](https://github.com/NAKDO)                            |
 |                                           [팀장] 서주원                                           |                                           김현겸                                            |                                           최민규                                           | 김낙도 |
 
-## 역할 분담
+## 🤝역할 분담
 
 |        Backend / AI        |                    Backend / AI                    |                   Frontend                   |             Frontend             |
 |:--------------------------:|:-------------------------------------:|:--------------------------------------------:|:--------------------------------:|
 |        **[팀장] 서주원**        |                  **김현겸**                    |                 **최민규**                  |            **김낙도**            |
-| 회원가입, 로그인/로그아웃, 이메일 인증 <br/> 카카오 페이 API, 포인트 충전 및 관리, <br/> 관리자, 커뮤니티 관리 | 경험 카드, 자기소개서 관리, <br/> 마이페이지, 댓글 관리 <br/> GPT를 통한 AI 자기소개서 피드백, <br/> KoBERT를 통한 AI 직무 역량 분석 | 메인 페이지, 회원가입, 로그인 페이지 <br/> 카카오 페이 API 연동, 커뮤니티 페이지, <br/> 관리자 페이지 | 경험 카드, 자기소개서 페이지, <br/> 마이페이지, AI 피드백 결과 페이지 |
+| 회원가입, 로그인/로그아웃, 이메일 인증 <br/> 카카오 페이 API, 포인트 충전 및 관리, <br/> 관리자, 커뮤니티 관리 | 경험 카드, 자기소개서 관리, <br/> 마이페이지, 댓글 관리 <br/> GPT를 통한 AI 자기소개서 피드백, <br/> KoBERT를 통한 AI 직무 역량 분석 | 메인 페이지, 회원가입, 로그인 <br/> 카카오 페이 API 연동, 커뮤니티, <br/> 관리자 | 경험 카드, 자기소개서, <br/> 마이페이지, AI 피드백 결과 |
 
 
-## 1. 개발 환경
+## 1. ⚙️ 개발 환경
 
 ### Backend Stack
 
@@ -61,7 +61,47 @@
 * Git: Git, Github, Git Submodule
 
 ### Frontend Stack
+<table>
+    <thead>
+        <tr>
+            <th>분류</th>
+            <th>기술 스택</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                  <p>프론트엔드</p>
+            </td>
+            <td>
+                  <img src="https://img.shields.io/badge/Next.js-000000?style=flat&logo=Next.js&logoColor=white"/>
+                  <img src="https://img.shields.io/badge/typescript-1572B6?style=flat&logo=typescript&logoColor=000000"/>
+                  <img src="https://img.shields.io/badge/tailwindcss-1252B6?style=flat&logo=tailwindcss&logoColor=white"/>
+                  <img src="https://img.shields.io/badge/recoil-61DAFB?style=flat&logo=recoil&logoColor=000000"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>백엔드</p>
+            </td>
+            <td>
+                <img src="https://img.shields.io/badge/Docker-2496ED?&logo=Docker&logoColor=white">
+              <img src="https://img.shields.io/badge/Spring_Boot-%236DB33F?logo=springboot&logoColor=white">
+              <img src="https://img.shields.io/badge/Spring_JPA-%236DB33F?logo=spring&logoColor=white">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>협업</p>
+            </td>
+            <td>
+                <img src="https://img.shields.io/badge/Notion-000000?logo=Notion">
+                <img src="https://img.shields.io/badge/Figma-F24E1E?logo=Figma&logoColor=ffffff">
+            </td>
+        </tr>
+    </tbody>
 
+</table>
 * Next.js, Tailwind, Recoil
 
 ### AI Stack
@@ -89,8 +129,10 @@ Git 분기 전략을 통해 여러 버전의 코드를 동시에 관리하고, �
 * fix : 버그 수정 또는 긴급 문제 해결을 위해 develop 또는 feature 브랜치로부터 분기하는 브랜치입니다. 문제 해결 후 develop 또는 feature 브랜치에 병합됩니다.
 '''
 ```
+<details>
+  <summary><h2> 3. 프로젝트 구조</h2></summary>
+  <div markdown="1">
 
-## 3. 프로젝트 구조
 
 ```
 📦 
@@ -238,6 +280,8 @@ Git 분기 전략을 통해 여러 버전의 코드를 동시에 관리하고, �
                         └─ TimeUtils.java
 ```
 ©generated by [Project Tree Generator](https://woochanleee.github.io/project-tree-generator)
+</div>
+</details>
 
 ## 4. 프로젝트 아키텍처
 
