@@ -6,6 +6,13 @@
 
 > 작성자 : 김현겸 (kylo-dev)
 
+<br/>
+
+<p align=center>
+<div align=center>
+    <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FMeetfolio-Project-CodeZ-Team%2FFrontend&count_bg=%23002681&title_bg=%234191E0&icon=metrodeparis.svg&icon_color=%23FFFFFF&title=hits&edge_flat=false"/></a>
+</div>
+
 ## 프로젝트 소개
 
 <img width="650" alt="image" src="https://github.com/Meetfolio-Project-CodeZ-Team/Backend/assets/103489352/d22f69c7-686f-4dfa-b6fa-4741069b130a">
