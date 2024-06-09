@@ -25,7 +25,7 @@ public class ExperienceRequest {
     @Schema(description = "경험 카테고리")
     private String experienceType;
 
-    @Schema(description = "경험 업무 내용")
+    @Schema(description = "경험 업무 내용, $로 구분")
     private String task;
 
     @Schema(description = "경험 동기 & 이유")
@@ -41,7 +41,7 @@ public class ExperienceRequest {
     @Schema(description = "경험 세부 내용")
     private String detail;
 
-    @Schema(description = "결과 및 성과")
+    @Schema(description = "결과 및 성과, $로 구분")
     private String advance;
 
     public static Experience toEntity(ExperienceRequest reqeust, Member member) {

@@ -25,8 +25,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletResponse response,
             AuthenticationException authException
     ) throws IOException {
-        log.error("Not Authenticated Request", authException);
-        log.error("Request Uri : {}", request.getRequestURI());
         handleException(response);
     }
 

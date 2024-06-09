@@ -42,7 +42,6 @@ public class MemberQueryService {
     }
 
     public Member checkEmailAndPassword(LoginRequest request) {
-        log.debug("email {}", request.getEmail());
         Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ApiException(ErrorStatus._MEMBER_NOT_FOUND));
         comparePassword(request.getPassword(), member.getPassword());

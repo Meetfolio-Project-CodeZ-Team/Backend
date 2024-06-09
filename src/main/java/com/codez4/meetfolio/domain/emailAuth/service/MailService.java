@@ -24,7 +24,6 @@ public class MailService {
         try {
             emailSender.send(emailForm);
         } catch (RuntimeException e) {
-            log.info("MailService.sendEmail exception occur email: {}", e.getCause());
             throw new ApiException(ErrorStatus._AUTHENTICATION_SEND_EMAIL_ERROR);
         }
     }

@@ -44,7 +44,6 @@ public class EmailAuthCommandService {
             }
             return builder.toString();
         } catch (NoSuchAlgorithmException e) {
-            log.debug("EmailAuthCommandService.createCode() exception occur");
             throw new ApiException(ErrorStatus._INTERNAL_SERVER_ERROR);
         }
     }
