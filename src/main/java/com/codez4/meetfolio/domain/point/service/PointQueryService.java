@@ -13,7 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.codez4.meetfolio.domain.point.dto.PointResponse.*;
+import static com.codez4.meetfolio.domain.point.dto.PointResponse.toEarnedPointResult;
+import static com.codez4.meetfolio.domain.point.dto.PointResponse.toPointResult;
 
 @Slf4j
 @Service

@@ -1,9 +1,5 @@
 package com.codez4.meetfolio.domain.point.service;
 
-import static com.codez4.meetfolio.domain.point.dto.PointRequest.toEntity;
-import static com.codez4.meetfolio.domain.point.dto.PointRequest.toSharePoint;
-import static com.codez4.meetfolio.domain.point.dto.PointResponse.toPointProc;
-
 import com.codez4.meetfolio.domain.coverLetter.CoverLetter;
 import com.codez4.meetfolio.domain.enums.PointType;
 import com.codez4.meetfolio.domain.member.Member;
@@ -14,6 +10,10 @@ import com.codez4.meetfolio.domain.point.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.codez4.meetfolio.domain.point.dto.PointRequest.toEntity;
+import static com.codez4.meetfolio.domain.point.dto.PointRequest.toSharePoint;
+import static com.codez4.meetfolio.domain.point.dto.PointResponse.toPointProc;
 
 @Service
 @RequiredArgsConstructor
