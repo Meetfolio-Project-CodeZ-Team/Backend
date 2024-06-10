@@ -13,7 +13,7 @@ public class KakaoPayRequest {
 
 
     public static KakaoPayRequest toReadyRequest(Long paymentId, PaymentRequest.ChargeRequest chargeRequest) {
-        String MEETFOLIO_HOST = "http://34.64.35.232:9090";
+        String MEETFOLIO_HOST = "http://34.64.95.73:9090";
         String KAKAO_PAY_READY_URL = "https://kapi.kakao.com/v1/payment/ready";
 
         LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
